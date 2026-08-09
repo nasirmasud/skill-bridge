@@ -23,7 +23,7 @@ export const useAuthStore = create<AuthState>()((set) => ({
   user: null,
   accessToken: getAccessToken(),
   isAuthenticated: Boolean(getAccessToken()),
-  isLoading: false,
+  isLoading: Boolean(getAccessToken()),
 
   login: (result) => {
     setTokens(result.accessToken, result.refreshToken)
