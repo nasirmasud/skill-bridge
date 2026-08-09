@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom"
+import { DashboardLayout } from "@/components/layout/DashboardLayout"
 import ManageCategories from "@/pages/dashboard/admin/ManageCategories"
 import ManageOrders from "@/pages/dashboard/admin/ManageOrders"
 import ManageUsers from "@/pages/dashboard/admin/ManageUsers"
@@ -26,28 +27,49 @@ export const router = createBrowserRouter([
   {
     element: <ProtectedRoute allowedRoles={["CLIENT"]} />,
     children: [
-      { path: "/dashboard/client/orders", element: <MyOrders /> },
-      { path: "/dashboard/client/profile", element: <ClientProfile /> },
+      {
+        element: <DashboardLayout />,
+        children: [
+          { path: "/dashboard/client/orders", element: <MyOrders /> },
+          { path: "/dashboard/client/profile", element: <ClientProfile /> },
+        ],
+      },
     ],
   },
   {
     element: <ProtectedRoute allowedRoles={["FREELANCER"]} />,
     children: [
-      { path: "/dashboard/freelancer/services", element: <MyServices /> },
-      { path: "/dashboard/freelancer/services/new", element: <CreateService /> },
       {
-        path: "/dashboard/freelancer/services/:id/edit",
-        element: <EditService />,
+        element: <DashboardLayout />,
+        children: [
+          { path: "/dashboard/freelancer/services", element: <MyServices /> },
+          {
+            path: "/dashboard/freelancer/services/new",
+            element: <CreateService />,
+          },
+          {
+            path: "/dashboard/freelancer/services/:id/edit",
+            element: <EditService />,
+          },
+          { path: "/dashboard/freelancer/orders", element: <ReceivedOrders /> },
+        ],
       },
-      { path: "/dashboard/freelancer/orders", element: <ReceivedOrders /> },
     ],
   },
   {
     element: <ProtectedRoute allowedRoles={["ADMIN"]} />,
     children: [
-      { path: "/dashboard/admin/users", element: <ManageUsers /> },
-      { path: "/dashboard/admin/categories", element: <ManageCategories /> },
-      { path: "/dashboard/admin/orders", element: <ManageOrders /> },
+      {
+        element: <DashboardLayout />,
+        children: [
+          { path: "/dashboard/admin/users", element: <ManageUsers /> },
+          {
+            path: "/dashboard/admin/categories",
+            element: <ManageCategories />,
+          },
+          { path: "/dashboard/admin/orders", element: <ManageOrders /> },
+        ],
+      },
     ],
   },
 
