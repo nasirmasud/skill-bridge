@@ -13,6 +13,11 @@ export interface ApiResponse<T> {
 
 export type PaginatedResponse<T> = ApiResponse<T[]>
 
+export interface PaginatedData<T> {
+  data: T[]
+  meta: PaginationMeta
+}
+
 export interface ErrorSource {
   path: string
   message: string
