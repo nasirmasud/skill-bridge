@@ -72,7 +72,7 @@ export function Navbar() {
     >
       <div className="mx-auto flex h-16 w-full items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link to="/" aria-label="Skillbridge home">
-          <Logo />
+          <Logo textClassName="text-2xl" />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
@@ -186,7 +186,7 @@ export function Navbar() {
               <SheetHeader className="border-b">
                 <SheetTitle className="sr-only">Navigation menu</SheetTitle>
                 <Link to="/" onClick={() => setMenuOpen(false)}>
-                  <Logo />
+                  <Logo textClassName="text-2xl" />
                 </Link>
               </SheetHeader>
 

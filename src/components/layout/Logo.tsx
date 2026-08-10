@@ -2,12 +2,13 @@ import { cn } from "@/lib/utils"
 
 interface LogoProps {
   className?: string
+  textClassName?: string
 }
 
-export function Logo({ className }: LogoProps) {
+export function Logo({ className, textClassName }: LogoProps) {
   return (
     <span className={cn("inline-flex items-center shrink-0", className)}>
-      <span className="text-xl font-bold tracking-tight">
+      <span className={cn("text-xl font-bold tracking-tight", textClassName)}>
         <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
           Skill
         </span>
