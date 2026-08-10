@@ -1,8 +1,20 @@
 import { useState, type ReactNode } from "react"
 import { Link } from "react-router-dom"
-import { Home, Mail, Lock, Eye, EyeOff, Users, ShieldCheck, MessageCircle } from "lucide-react"
+import {
+  Eye,
+  EyeOff,
+  Home,
+  Laptop,
+  Lock,
+  Mail,
+  MessageCircle,
+  ShieldCheck,
+  User,
+  Users,
+} from "lucide-react"
 
 type Tab = "login" | "register"
+type Role = "CLIENT" | "FREELANCER"
 
 interface LoginRegisterProps {
   initialTab?: Tab
@@ -24,11 +36,23 @@ interface FieldProps {
 interface SocialButtonProps {
   label: string
   icon: ReactNode
-  full?: boolean
+}
+
+interface RoleOptionProps {
+  selected: boolean
+  onClick: () => void
+  icon: ReactNode
+  label: string
+}
+
+interface DemoButtonProps {
+  icon: ReactNode
+  role: string
 }
 
 export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
   const [tab, setTab] = useState<Tab>(initialTab)
+  const [role, setRole] = useState<Role>("CLIENT")
   const [showPassword, setShowPassword] = useState(false)
   const [remember, setRemember] = useState(false)
 
@@ -123,6 +147,27 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
               className="flex flex-col gap-5"
               onSubmit={(e) => e.preventDefault()}
             >
+              {/* Role selector */}
+              <div className="flex flex-col gap-1.5">
+                <span className="text-sm font-medium text-foreground">
+                  I want to join as
+                </span>
+                <div className="grid grid-cols-2 gap-2">
+                  <RoleOption
+                    selected={role === "CLIENT"}
+                    onClick={() => setRole("CLIENT")}
+                    icon={<User className="h-4 w-4" />}
+                    label="Client"
+                  />
+                  <RoleOption
+                    selected={role === "FREELANCER"}
+                    onClick={() => setRole("FREELANCER")}
+                    icon={<Laptop className="h-4 w-4" />}
+                    label="Freelancer"
+                  />
+                </div>
+              </div>
+
               {tab === "register" && (
                 <Field label="Full name">
                   <input
@@ -224,10 +269,32 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
             {/* Social buttons */}
             <div className="grid grid-cols-2 gap-3">
               <SocialButton label="Google" icon={<GoogleIcon />} />
-              <SocialButton label="Facebook" icon={<FacebookIcon />} />
+              <SocialButton label="GitHub" icon={<GitHubIcon />} />
             </div>
-            <div className="mt-3">
-              <SocialButton label="Apple" icon={<AppleIcon />} full />
+
+            {/* Demo login */}
+            <div className="mt-6">
+              <div className="flex items-center gap-3">
+                <div className="h-px flex-1 bg-border" />
+                <span className="whitespace-nowrap text-xs text-muted-foreground">
+                  Demo Login
+                </span>
+                <div className="h-px flex-1 bg-border" />
+              </div>
+              <div className="mt-4 grid grid-cols-3 gap-2">
+                <DemoButton
+                  icon={<ShieldCheck className="h-4 w-4 text-primary" />}
+                  role="Admin"
+                />
+                <DemoButton
+                  icon={<User className="h-4 w-4 text-primary" />}
+                  role="Client"
+                />
+                <DemoButton
+                  icon={<Laptop className="h-4 w-4 text-primary" />}
+                  role="Freelancer"
+                />
+              </div>
             </div>
 
             <p className="mt-6 text-center text-sm text-muted-foreground">
@@ -291,16 +358,45 @@ function Field({ label, icon, trailing, children }: FieldProps) {
   )
 }
 
-function SocialButton({ label, icon, full }: SocialButtonProps) {
+function RoleOption({ selected, onClick, icon, label }: RoleOptionProps) {
   return (
     <button
       type="button"
-      className={`flex items-center justify-center gap-2 rounded-lg border border-border bg-muted/40 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted ${
-        full ? "w-full" : ""
+      onClick={onClick}
+      className={`flex items-center justify-center gap-2 rounded-lg border py-2.5 text-sm font-semibold transition-colors ${
+        selected
+          ? "border-purple-400 bg-purple-600/20 text-foreground"
+          : "border-border bg-muted/40 text-muted-foreground hover:text-foreground"
       }`}
     >
       {icon}
       {label}
+    </button>
+  )
+}
+
+function SocialButton({ label, icon }: SocialButtonProps) {
+  return (
+    <button
+      type="button"
+      className="flex items-center justify-center gap-2 rounded-lg border border-border bg-muted/40 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+    >
+      {icon}
+      {label}
+    </button>
+  )
+}
+
+function DemoButton({ icon, role }: DemoButtonProps) {
+  return (
+    <button
+      type="button"
+      className="flex flex-col items-center gap-2 rounded-lg border border-border bg-muted/40 px-3 py-3 transition-colors hover:bg-muted"
+    >
+      <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-purple-400/20 bg-purple-500/10">
+        {icon}
+      </span>
+      <span className="text-xs font-semibold text-foreground">{role}</span>
     </button>
   )
 }
@@ -328,22 +424,10 @@ function GoogleIcon() {
   )
 }
 
-function FacebookIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4">
-      <circle cx="12" cy="12" r="12" fill="#1877F2" />
-      <path
-        fill="#fff"
-        d="M15.1 12.9h-2v7h-2.9v-7H8.6v-2.5h1.6V8.7c0-1.6.9-3 3.4-3h2.1v2.4h-1.4c-.6 0-.8.3-.8.8v1.5h2.2l-.3 2.5z"
-      />
-    </svg>
-  )
-}
-
-function AppleIcon() {
+function GitHubIcon() {
   return (
     <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
-      <path d="M16.4 1.2c.1 1-.3 2-1 2.8-.7.8-1.8 1.4-2.8 1.3-.1-1 .4-2.1 1-2.8.7-.8 1.9-1.4 2.8-1.3zM19.9 17c-.4 1-.8 1.9-1.5 2.7-.9 1.1-1.7 1.9-2.6 1.9-.9 0-1.2-.6-2.3-.6-1.1 0-1.5.6-2.3.6-.9 0-1.6-.9-2.5-2-1.5-1.8-2.6-5.1-1.1-7.4.7-1.1 2-1.9 3.3-1.9 1 0 1.7.6 2.3.6.6 0 1.5-.7 2.7-.6.5 0 2 .2 2.9 1.6-.1.1-1.7 1-1.7 3 0 2.4 2 3.2 2 3.2z" />
+      <path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z" />
     </svg>
   )
 }

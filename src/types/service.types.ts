@@ -8,6 +8,7 @@ export interface Category {
   name: string
   description: string | null
   icon: string | null
+  serviceCount?: number
   isDeleted: boolean
   createdAt: string
   updatedAt: string
@@ -26,6 +27,12 @@ export interface Service {
   price: string
   deliveryDays: number
   thumbnail: string | null
+  gallery: string[]
+  tools: string[]
+  highlights: string[]
+  whatYouGet: string[]
+  packageName: string | null
+  packageFeatures: string[]
   status: ServiceStatus
   isDeleted: boolean
   createdAt: string
@@ -35,6 +42,7 @@ export interface Service {
   category: CategorySummary
   freelancer: UserSummary
   _count?: { reviews: number }
+  avgRating?: number
 }
 
 export interface ServiceDetail extends Service {
@@ -59,5 +67,11 @@ export interface CreateServicePayload {
   deliveryDays: number
   categoryId: string
   thumbnail?: string
+  gallery?: string[]
+  tools?: string[]
+  highlights?: string[]
+  whatYouGet?: string[]
+  packageName?: string
+  packageFeatures?: string[]
   status?: ServiceStatus
 }
