@@ -6,6 +6,7 @@ import { ThemeProvider } from "next-themes"
 import "./index.css"
 import { router } from "./routes/router"
 import { useAuthStore } from "./store/authStore"
+import { Toaster } from "./components/ui/sonner"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +29,7 @@ createRoot(document.getElementById("root")!).render(
     >
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
+        <Toaster richColors position="top-center" />
       </QueryClientProvider>
     </ThemeProvider>
   </StrictMode>

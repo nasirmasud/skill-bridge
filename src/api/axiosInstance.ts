@@ -92,7 +92,6 @@ apiClient.interceptors.response.use(
         })
       } catch {
         clearTokens()
-        window.location.href = "/login"
       }
     }
 

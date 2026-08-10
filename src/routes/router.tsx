@@ -14,6 +14,7 @@ import Home from "@/pages/home/Home"
 import NotFound from "@/pages/NotFound"
 import Login from "@/pages/auth/Login"
 import Register from "@/pages/auth/Register"
+import { OAuthCallback } from "@/pages/auth/OAuthCallback"
 import ServiceDetails from "@/pages/services/ServiceDetails"
 import ServiceList from "@/pages/services/ServiceList"
 import { ProtectedRoute } from "./ProtectedRoute"
@@ -22,7 +23,7 @@ export const router = createBrowserRouter([
   {
     element: <PublicLayout />,
     children: [
-      { path: "/", element: <Home /> },
+      { path: "/", element: <OAuthCallback><Home /></OAuthCallback> },
       { path: "/services", element: <ServiceList /> },
       { path: "/services/:id", element: <ServiceDetails /> },
       { path: "*", element: <NotFound /> },

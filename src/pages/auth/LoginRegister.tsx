@@ -1,20 +1,60 @@
 import { useState, type ReactNode } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { useForm, useWatch, type Resolver } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+import { AxiosError } from "axios"
+import { toast } from "sonner"
 import {
   Eye,
   EyeOff,
   Home,
   Laptop,
+  Loader2,
   Lock,
   Mail,
   MessageCircle,
   ShieldCheck,
+  TriangleAlert,
   User,
   Users,
 } from "lucide-react"
+import { authApi } from "@/api/auth.api"
+import { useAuth } from "@/hooks/useAuth"
+import { getDashboardPath, getErrorMessage } from "@/lib/utils"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import type { ErrorResponse } from "@/types/api.types"
+import type { Role } from "@/types/user.types"
 
 type Tab = "login" | "register"
-type Role = "CLIENT" | "FREELANCER"
+type SignupRole = "CLIENT" | "FREELANCER"
+
+const loginSchema = z.object({
+  email: z.email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
+})
+
+const registerSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters").max(100),
+  email: z.email("Invalid email address"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  role: z.enum(["CLIENT", "FREELANCER"]),
+})
+
+interface FormValues {
+  name: string
+  email: string
+  password: string
+  role: SignupRole
+}
+
+const DEMO_ACCOUNTS: { role: Role; email: string }[] = [
+  { role: "ADMIN", email: "admin@skillbridge.com" },
+  { role: "CLIENT", email: "nusrat@example.com" },
+  { role: "FREELANCER", email: "rakib@example.com" },
+]
+
+const DEMO_PASSWORD = "Password123!"
 
 interface LoginRegisterProps {
   initialTab?: Tab
@@ -30,12 +70,14 @@ interface FieldProps {
   label: string
   icon?: ReactNode
   trailing?: ReactNode
+  error?: string
   children: ReactNode
 }
 
 interface SocialButtonProps {
   label: string
   icon: ReactNode
+  onClick: () => void
 }
 
 interface RoleOptionProps {
@@ -47,14 +89,114 @@ interface RoleOptionProps {
 
 interface DemoButtonProps {
   icon: ReactNode
-  role: string
+  role: Role
+  label: string
+  loading: boolean
+  disabled: boolean
+  onClick: () => void
 }
 
 export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
   const [tab, setTab] = useState<Tab>(initialTab)
-  const [role, setRole] = useState<Role>("CLIENT")
   const [showPassword, setShowPassword] = useState(false)
   const [remember, setRemember] = useState(false)
+  const [generalError, setGeneralError] = useState("")
+  const [demoLoading, setDemoLoading] = useState<Role | null>(null)
+
+  const { login } = useAuth()
+  const navigate = useNavigate()
+
+  const resolver: Resolver<FormValues> =
+    tab === "register"
+      ? (zodResolver(registerSchema) as unknown as Resolver<FormValues>)
+      : (zodResolver(loginSchema) as unknown as Resolver<FormValues>)
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    setError,
+    clearErrors,
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>({
+    resolver,
+    defaultValues: { name: "", email: "", password: "", role: "CLIENT" },
+  })
+
+  const selectedRole = useWatch({ control, name: "role" })
+  const busy = isSubmitting || demoLoading !== null
+
+  const switchTab = (next: Tab) => {
+    setTab(next)
+    clearErrors()
+    setGeneralError("")
+  }
+
+  const onSubmit = handleSubmit(async (values) => {
+    clearErrors()
+    setGeneralError("")
+    try {
+      const result =
+        tab === "register"
+          ? await authApi.register({
+              name: values.name,
+              email: values.email,
+              password: values.password,
+              role: values.role,
+            })
+          : await authApi.login({
+              email: values.email,
+              password: values.password,
+            })
+
+      login(result)
+      toast.success(
+        tab === "register" ? "Account created successfully" : "Welcome back!"
+      )
+      navigate(getDashboardPath(result.user.role), { replace: true })
+    } catch (error) {
+      const axiosError = error as AxiosError<ErrorResponse>
+      const sources = axiosError.response?.data?.errorSources
+      if (sources && sources.length > 0) {
+        sources.forEach((source) => {
+          setError(source.path as keyof FormValues, {
+            message: source.message,
+          })
+        })
+      }
+      setGeneralError(getErrorMessage(error))
+    }
+  })
+
+  const handleDemoLogin = async (role: Role) => {
+    setDemoLoading(role)
+    setGeneralError("")
+    const account = DEMO_ACCOUNTS.find((entry) => entry.role === role)
+    if (!account) {
+      setDemoLoading(null)
+      return
+    }
+    try {
+      const result = await authApi.login({
+        email: account.email,
+        password: DEMO_PASSWORD,
+      })
+      login(result)
+      toast.success(`Logged in as ${result.user.name}`)
+      navigate(getDashboardPath(result.user.role), { replace: true })
+    } catch (error) {
+      const message = getErrorMessage(error)
+      setGeneralError(message)
+      toast.error(message)
+    } finally {
+      setDemoLoading(null)
+    }
+  }
+
+  const handleSocial = (provider: "google" | "github") => {
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/${provider}`
+  }
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-center bg-background px-4 py-12 font-sans sm:px-6">
@@ -121,7 +263,7 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
             <div className="mb-6 grid grid-cols-2 gap-3">
               <button
                 type="button"
-                onClick={() => setTab("login")}
+                onClick={() => switchTab("login")}
                 className={`rounded-lg border py-2.5 text-sm font-semibold transition-colors ${
                   tab === "login"
                     ? "border-purple-400 bg-purple-600/20 text-foreground"
@@ -132,7 +274,7 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
               </button>
               <button
                 type="button"
-                onClick={() => setTab("register")}
+                onClick={() => switchTab("register")}
                 className={`rounded-lg border py-2.5 text-sm font-semibold transition-colors ${
                   tab === "register"
                     ? "border-purple-400 bg-purple-600/20 text-foreground"
@@ -145,7 +287,8 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
 
             <form
               className="flex flex-col gap-5"
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={onSubmit}
+              noValidate
             >
               {/* Role selector */}
               <div className="flex flex-col gap-1.5">
@@ -154,26 +297,41 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
                 </span>
                 <div className="grid grid-cols-2 gap-2">
                   <RoleOption
-                    selected={role === "CLIENT"}
-                    onClick={() => setRole("CLIENT")}
+                    selected={selectedRole === "CLIENT"}
+                    onClick={() =>
+                      setValue("role", "CLIENT", {
+                        shouldValidate: tab === "register",
+                      })
+                    }
                     icon={<User className="h-4 w-4" />}
                     label="Client"
                   />
                   <RoleOption
-                    selected={role === "FREELANCER"}
-                    onClick={() => setRole("FREELANCER")}
+                    selected={selectedRole === "FREELANCER"}
+                    onClick={() =>
+                      setValue("role", "FREELANCER", {
+                        shouldValidate: tab === "register",
+                      })
+                    }
                     icon={<Laptop className="h-4 w-4" />}
                     label="Freelancer"
                   />
                 </div>
+                {errors.role?.message && (
+                  <p className="text-xs font-medium text-destructive">
+                    {errors.role.message}
+                  </p>
+                )}
               </div>
 
               {tab === "register" && (
-                <Field label="Full name">
+                <Field label="Full name" error={errors.name?.message}>
                   <input
                     type="text"
                     placeholder="Enter your full name"
                     className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+                    aria-invalid={Boolean(errors.name)}
+                    {...register("name")}
                   />
                 </Field>
               )}
@@ -181,11 +339,15 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
               <Field
                 label="Email address"
                 icon={<Mail className="h-4 w-4 text-muted-foreground" />}
+                error={errors.email?.message}
               >
                 <input
                   type="email"
                   placeholder="Enter your email"
+                  autoComplete="email"
                   className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+                  aria-invalid={Boolean(errors.email)}
+                  {...register("email")}
                 />
               </Field>
 
@@ -206,11 +368,17 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
                     )}
                   </button>
                 }
+                error={errors.password?.message}
               >
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
+                  autoComplete={
+                    tab === "register" ? "new-password" : "current-password"
+                  }
                   className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground"
+                  aria-invalid={Boolean(errors.password)}
+                  {...register("password")}
                 />
               </Field>
 
@@ -227,6 +395,7 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
                   </label>
                   <a
                     href="#"
+                    onClick={(e) => e.preventDefault()}
                     className="text-sm font-medium text-primary hover:text-primary/80"
                   >
                     Forgot password?
@@ -249,10 +418,22 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
                 </label>
               )}
 
+              {generalError && (
+                <Alert variant="destructive">
+                  <TriangleAlert className="text-destructive" />
+                  <AlertTitle>Something went wrong</AlertTitle>
+                  <AlertDescription>{generalError}</AlertDescription>
+                </Alert>
+              )}
+
               <button
                 type="submit"
-                className="mt-1 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(99,60,220,0.35)] transition-colors hover:from-blue-500 hover:to-purple-500"
+                disabled={busy}
+                className="mt-1 flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 py-3 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(99,60,220,0.35)] transition-colors hover:from-blue-500 hover:to-purple-500 disabled:cursor-not-allowed disabled:opacity-60"
               >
+                {isSubmitting && (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                )}
                 {tab === "login" ? "Login" : "Create account"}
               </button>
             </form>
@@ -268,8 +449,16 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
 
             {/* Social buttons */}
             <div className="grid grid-cols-2 gap-3">
-              <SocialButton label="Google" icon={<GoogleIcon />} />
-              <SocialButton label="GitHub" icon={<GitHubIcon />} />
+              <SocialButton
+                label="Google"
+                icon={<GoogleIcon />}
+                onClick={() => handleSocial("google")}
+              />
+              <SocialButton
+                label="GitHub"
+                icon={<GitHubIcon />}
+                onClick={() => handleSocial("github")}
+              />
             </div>
 
             {/* Demo login */}
@@ -284,15 +473,27 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
               <div className="mt-4 grid grid-cols-3 gap-2">
                 <DemoButton
                   icon={<ShieldCheck className="h-4 w-4 text-primary" />}
-                  role="Admin"
+                  role="ADMIN"
+                  label="Admin"
+                  loading={demoLoading === "ADMIN"}
+                  disabled={busy}
+                  onClick={() => handleDemoLogin("ADMIN")}
                 />
                 <DemoButton
                   icon={<User className="h-4 w-4 text-primary" />}
-                  role="Client"
+                  role="CLIENT"
+                  label="Client"
+                  loading={demoLoading === "CLIENT"}
+                  disabled={busy}
+                  onClick={() => handleDemoLogin("CLIENT")}
                 />
                 <DemoButton
                   icon={<Laptop className="h-4 w-4 text-primary" />}
-                  role="Freelancer"
+                  role="FREELANCER"
+                  label="Freelancer"
+                  loading={demoLoading === "FREELANCER"}
+                  disabled={busy}
+                  onClick={() => handleDemoLogin("FREELANCER")}
                 />
               </div>
             </div>
@@ -303,7 +504,7 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
                   Don&apos;t have an account?{" "}
                   <button
                     type="button"
-                    onClick={() => setTab("register")}
+                    onClick={() => switchTab("register")}
                     className="font-medium text-primary hover:text-primary/80"
                   >
                     Register
@@ -314,7 +515,7 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
                   Already have an account?{" "}
                   <button
                     type="button"
-                    onClick={() => setTab("login")}
+                    onClick={() => switchTab("login")}
                     className="font-medium text-primary hover:text-primary/80"
                   >
                     Login
@@ -345,15 +546,24 @@ function Feature({ icon, title, description }: FeatureProps) {
   )
 }
 
-function Field({ label, icon, trailing, children }: FieldProps) {
+function Field({ label, icon, trailing, error, children }: FieldProps) {
   return (
     <div className="flex flex-col gap-1.5">
       <label className="text-sm font-medium text-foreground">{label}</label>
-      <div className="flex items-center gap-2.5 rounded-lg border border-border bg-muted/50 px-3.5 py-3 transition-colors focus-within:border-purple-400/60">
+      <div
+        className={`flex items-center gap-2.5 rounded-lg border bg-muted/50 px-3.5 py-3 transition-colors ${
+          error
+            ? "border-destructive/60"
+            : "border-border focus-within:border-purple-400/60"
+        }`}
+      >
         {icon}
         {children}
         {trailing}
       </div>
+      {error && (
+        <p className="text-xs font-medium text-destructive">{error}</p>
+      )}
     </div>
   )
 }
@@ -375,10 +585,11 @@ function RoleOption({ selected, onClick, icon, label }: RoleOptionProps) {
   )
 }
 
-function SocialButton({ label, icon }: SocialButtonProps) {
+function SocialButton({ label, icon, onClick }: SocialButtonProps) {
   return (
     <button
       type="button"
+      onClick={onClick}
       className="flex items-center justify-center gap-2 rounded-lg border border-border bg-muted/40 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted"
     >
       {icon}
@@ -387,16 +598,30 @@ function SocialButton({ label, icon }: SocialButtonProps) {
   )
 }
 
-function DemoButton({ icon, role }: DemoButtonProps) {
+function DemoButton({
+  icon,
+  role,
+  label,
+  loading,
+  disabled,
+  onClick,
+}: DemoButtonProps) {
   return (
     <button
       type="button"
-      className="flex flex-col items-center gap-2 rounded-lg border border-border bg-muted/40 px-3 py-3 transition-colors hover:bg-muted"
+      onClick={onClick}
+      disabled={disabled}
+      className="flex flex-col items-center gap-2 rounded-lg border border-border bg-muted/40 px-3 py-3 transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-60"
+      aria-label={`Demo login as ${role}`}
     >
       <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-purple-400/20 bg-purple-500/10">
-        {icon}
+        {loading ? (
+          <Loader2 className="h-4 w-4 animate-spin text-primary" />
+        ) : (
+          icon
+        )}
       </span>
-      <span className="text-xs font-semibold text-foreground">{role}</span>
+      <span className="text-xs font-semibold text-foreground">{label}</span>
     </button>
   )
 }
