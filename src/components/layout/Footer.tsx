@@ -45,7 +45,7 @@ const LEGAL_LINKS = [
 export function Footer() {
   return (
     <footer className="border-t bg-card">
-      <div className="mx-auto grid w-full max-w-[1380px] gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.4fr] lg:px-8">
+      <div className="mx-auto grid w-full gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.4fr] lg:px-8">
         <div className="flex flex-col gap-4">
           <Logo />
           <p className="max-w-xs text-sm text-muted-foreground">
@@ -131,7 +131,7 @@ export function Footer() {
       </div>
 
       <div className="border-t">
-        <div className="mx-auto flex w-full max-w-[1380px] flex-col gap-4 px-4 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+        <div className="mx-auto flex w-full flex-col gap-4 px-4 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p className="text-sm text-muted-foreground">
             © 2026 Skillbridge. All rights reserved.
           </p>

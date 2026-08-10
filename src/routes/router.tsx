@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom"
 import { DashboardLayout } from "@/components/layout/DashboardLayout"
+import { PublicLayout } from "@/components/layout/PublicLayout"
 import ManageCategories from "@/pages/dashboard/admin/ManageCategories"
 import ManageOrders from "@/pages/dashboard/admin/ManageOrders"
 import ManageUsers from "@/pages/dashboard/admin/ManageUsers"
@@ -18,9 +19,15 @@ import ServiceList from "@/pages/services/ServiceList"
 import { ProtectedRoute } from "./ProtectedRoute"
 
 export const router = createBrowserRouter([
-  { path: "/", element: <Home /> },
-  { path: "/services", element: <ServiceList /> },
-  { path: "/services/:id", element: <ServiceDetails /> },
+  {
+    element: <PublicLayout />,
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/services", element: <ServiceList /> },
+      { path: "/services/:id", element: <ServiceDetails /> },
+      { path: "*", element: <NotFound /> },
+    ],
+  },
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
 

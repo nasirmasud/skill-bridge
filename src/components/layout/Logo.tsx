@@ -1,4 +1,3 @@
-import { Zap } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface LogoProps {
@@ -7,12 +6,14 @@ interface LogoProps {
 
 export function Logo({ className }: LogoProps) {
   return (
-    <span className={cn("inline-flex items-center gap-2", className)}>
-      <span className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-        <Zap className="size-4" />
-      </span>
-      <span className="text-lg font-semibold tracking-tight text-foreground">
-        Skillbridge
+    <span className={cn("inline-flex items-center shrink-0", className)}>
+      <span className="text-xl font-bold tracking-tight">
+        <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+          Skill
+        </span>
+        <span className="bg-gradient-to-r from-indigo-500 to-fuchsia-500 bg-clip-text text-transparent">
+          Bridge
+        </span>
       </span>
     </span>
   )

@@ -65,24 +65,23 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 border-b transition-colors duration-200",
-        scrolled
-          ? "border-border bg-background/80 backdrop-blur"
-          : "border-transparent bg-background/0"
+        "sticky top-0 z-40 border-b backdrop-blur transition-colors duration-200",
+        "border-black/5 bg-white/80 dark:border-white/5 dark:bg-[#07070c]/80",
+        scrolled && "shadow-sm"
       )}
     >
-      <div className="mx-auto flex h-16 w-full max-w-[1380px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 w-full items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link to="/" aria-label="Skillbridge home">
           <Logo />
         </Link>
 
-        <nav className="hidden items-center gap-6 lg:flex" aria-label="Main">
+        <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
           {NAV_LINKS.map((link) =>
             link.to.startsWith("/#") ? (
               <Link
                 key={link.label}
                 to={link.to}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                className="text-sm font-medium text-black/60 transition-colors hover:text-black dark:text-white/70 dark:hover:text-white"
               >
                 {link.label}
               </Link>
@@ -93,10 +92,10 @@ export function Navbar() {
                 end
                 className={({ isActive }) =>
                   cn(
-                    "text-sm font-medium transition-colors",
+                    "text-sm transition-colors",
                     isActive
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "font-semibold text-black dark:text-white"
+                      : "font-medium text-black/60 hover:text-black dark:text-white/70 dark:hover:text-white"
                   )
                 }
               >
@@ -106,7 +105,7 @@ export function Navbar() {
           )}
         </nav>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-5">
           <ThemeToggle />
 
           {!isLoading &&
@@ -157,10 +156,16 @@ export function Navbar() {
               </DropdownMenu>
             ) : (
               <>
-                <Button variant="ghost" asChild>
-                  <Link to="/login">Login</Link>
-                </Button>
-                <Button asChild>
+                <Link
+                  to="/login"
+                  className="hidden text-sm font-medium text-black/80 transition-colors hover:text-black sm:inline dark:text-white/85 dark:hover:text-white"
+                >
+                  Login
+                </Link>
+                <Button
+                  asChild
+                  className="rounded-lg border-0 bg-gradient-to-r from-indigo-600 to-fuchsia-500 px-5 text-white shadow-none transition-opacity hover:opacity-90"
+                >
                   <Link to="/register">Sign Up</Link>
                 </Button>
               </>
@@ -171,7 +176,7 @@ export function Navbar() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="lg:hidden"
+                className="md:hidden"
                 aria-label="Open navigation menu"
               >
                 <Menu />
