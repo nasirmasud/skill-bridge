@@ -31,6 +31,7 @@ import { useAuth } from "@/hooks/useAuth"
 import { useMyOrders } from "@/hooks/useOrders"
 import { userApi } from "@/api/user.api"
 import { getErrorMessage, cn } from "@/lib/utils"
+import { formatDate } from "@/lib/format"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -369,11 +370,7 @@ export default function ClientProfile() {
               <p className="flex items-center gap-1.5">
                 <Calendar className="h-3.5 w-3.5" />
                 Member since{" "}
-                {new Date(user.createdAt).toLocaleDateString(undefined, {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
+                {formatDate(user.createdAt)}
               </p>
             </div>
           </div>

@@ -23,6 +23,7 @@ import {
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts"
 import { useAdminOrders, useDeleteOrder } from "@/hooks/useOrders"
 import { getErrorMessage, cn } from "@/lib/utils"
+import { formatCurrency, formatDate, formatTime } from "@/lib/format"
 import { Pagination } from "@/components/shared/Pagination"
 import { LoadingState } from "@/components/shared/LoadingState"
 import { ErrorState } from "@/components/shared/ErrorState"
@@ -91,26 +92,6 @@ function serviceIcon(title: string): LucideIcon {
   if (lower.includes("blog") || lower.includes("content") || lower.includes("write"))
     return PenLine
   return Code2
-}
-
-function formatPrice(price: string | number) {
-  const num = Number(price)
-  return `$${Number.isInteger(num) ? num.toLocaleString() : num.toFixed(2)}`
-}
-
-function formatDate(date: string): string {
-  return new Date(date).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  })
-}
-
-function formatTime(date: string): string {
-  return new Date(date).toLocaleTimeString(undefined, {
-    hour: "numeric",
-    minute: "2-digit",
-  })
 }
 
 function initials(name: string): string {
@@ -510,7 +491,7 @@ export default function ManageOrders() {
                           </div>
                         </td>
                         <td className="px-4 py-3.5 font-medium">
-                          {formatPrice(o.totalPrice)}
+                          {formatCurrency(o.totalPrice)}
                         </td>
                         <td className="px-4 py-3.5">
                           <div className="flex items-center justify-end gap-1">
@@ -625,7 +606,7 @@ export default function ManageOrders() {
             <h3 className="text-sm font-semibold">Total Revenue</h3>
             <div className="mt-2 flex items-baseline gap-2">
               <span className="text-2xl font-bold">
-                {isLoading ? "—" : formatPrice(totalRevenue)}
+                {isLoading ? "—" : formatCurrency(totalRevenue)}
               </span>
               <span className="flex items-center gap-0.5 text-xs font-medium text-emerald-400">
                 <TrendingUp size={12} strokeWidth={2.5} />
@@ -663,7 +644,7 @@ export default function ManageOrders() {
                       />
                       <span className="max-w-[140px] truncate">{s.name}</span>
                     </span>
-                    <span>{formatPrice(s.amount)}</span>
+                    <span>{formatCurrency(s.amount)}</span>
                   </div>
                 ))
               )}
@@ -727,7 +708,7 @@ export default function ManageOrders() {
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Amount</span>
                   <span className="text-sm font-medium">
-                    {formatPrice(viewTarget.totalPrice)}
+                    {formatCurrency(viewTarget.totalPrice)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">

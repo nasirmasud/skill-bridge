@@ -3,12 +3,8 @@ import { Heart, Star, ArrowRight, Grid } from "lucide-react"
 import { useServices } from "@/hooks/useServices"
 import { ErrorState } from "@/components/shared/ErrorState"
 import { getErrorMessage } from "@/lib/utils"
+import { formatPrice, formatRating } from "@/lib/format"
 import type { Service } from "@/types/service.types"
-
-function formatPrice(price: string | number) {
-  const num = Number(price)
-  return Number.isInteger(num) ? num.toLocaleString() : num.toFixed(2)
-}
 
 function Avatar({ name, src }: { name: string; src?: string | null }) {
   const initials = name
@@ -90,7 +86,7 @@ function ServiceCard({ service }: { service: Service }) {
           <div className="flex items-center gap-1 text-sm">
             <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
             <span className="font-medium text-foreground">
-              {service.avgRating ? service.avgRating.toFixed(1) : "—"}
+              {formatRating(service.avgRating)}
             </span>
             <span className="text-muted-foreground">
               ({service._count?.reviews ?? 0})

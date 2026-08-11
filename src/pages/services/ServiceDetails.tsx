@@ -17,6 +17,7 @@ import { useService, useServices } from "@/hooks/useServices"
 import { useCreateOrder } from "@/hooks/useOrders"
 import { useAuth } from "@/hooks/useAuth"
 import { getErrorMessage, cn } from "@/lib/utils"
+import { formatPrice, formatDate, formatRating } from "@/lib/format"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -28,11 +29,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import type { Service } from "@/types/service.types"
-
-function formatPrice(price: string | number) {
-  const num = Number(price)
-  return Number.isInteger(num) ? num.toLocaleString() : num.toFixed(2)
-}
 
 function Stars({ rating }: { rating: number }) {
   return (
@@ -119,7 +115,7 @@ function RelatedCard({ service }: { service: Service }) {
         <div className="mt-3 flex items-center justify-between">
           <span className="inline-flex items-center gap-1 text-xs text-foreground/80">
             <Star size={12} className="fill-amber-400 text-amber-400" />
-            {service.avgRating ? service.avgRating.toFixed(1) : "—"}
+            {formatRating(service.avgRating)}
             <span className="text-muted-foreground/70">
               ({service._count?.reviews ?? 0})
             </span>
@@ -361,7 +357,7 @@ export default function ServiceDetails() {
                 <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
                   <span className="inline-flex items-center gap-1 font-medium text-foreground">
                     <Star size={14} className="fill-amber-400 text-amber-400" />
-                    {service.avgRating ? service.avgRating.toFixed(1) : "—"}
+                    {formatRating(service.avgRating)}
                     <span className="font-normal text-muted-foreground">
                       ({service.reviewCount} reviews)
                     </span>
@@ -507,7 +503,7 @@ export default function ServiceDetails() {
                           <div className="mt-0.5 flex items-center gap-1">
                             <Stars rating={review.rating} />
                             <span className="ml-1 text-xs text-muted-foreground">
-                              {review.rating.toFixed(1)}
+                              {formatRating(review.rating)}
                             </span>
                           </div>
                         </div>
@@ -516,7 +512,7 @@ export default function ServiceDetails() {
                         {review.comment ?? "No comment provided."}
                       </p>
                       <span className="mt-3 block text-xs text-muted-foreground/60">
-                        {new Date(review.createdAt).toLocaleDateString()}
+                        {formatDate(review.createdAt)}
                       </span>
                     </div>
                   ))}
@@ -595,8 +591,7 @@ export default function ServiceDetails() {
                   <div className="mt-0.5 flex items-center gap-1">
                     <Stars rating={Math.round(service.avgRating)} />
                     <span className="text-xs text-muted-foreground">
-                      {service.avgRating ? service.avgRating.toFixed(1) : "—"} (
-                      {service.reviewCount})
+                      {formatRating(service.avgRating)} ({service.reviewCount})
                     </span>
                   </div>
                 </div>

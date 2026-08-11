@@ -24,6 +24,7 @@ import { toast } from "sonner"
 import { useMyOrders } from "@/hooks/useOrders"
 import { useCreateReview } from "@/hooks/useReviews"
 import { getErrorMessage, cn } from "@/lib/utils"
+import { formatPrice, formatDateTime } from "@/lib/format"
 import { OrderStatusBadge } from "@/components/order/OrderStatusBadge"
 import { Pagination } from "@/components/shared/Pagination"
 import { LoadingState } from "@/components/shared/LoadingState"
@@ -59,26 +60,6 @@ const THUMB_GRADIENTS = [
   "from-fuchsia-800 to-purple-950",
   "from-slate-800 to-slate-950",
 ]
-
-function formatPrice(price: string | number) {
-  const num = Number(price)
-  return Number.isInteger(num) ? num.toLocaleString() : num.toFixed(2)
-}
-
-function formatDateTime(iso: string) {
-  const date = new Date(iso)
-  return {
-    date: date.toLocaleDateString(undefined, {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    }),
-    time: date.toLocaleTimeString(undefined, {
-      hour: "2-digit",
-      minute: "2-digit",
-    }),
-  }
-}
 
 function serviceIcon(title: string): LucideIcon {
   const lower = title.toLowerCase()

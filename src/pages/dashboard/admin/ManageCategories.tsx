@@ -31,6 +31,7 @@ import {
   useDeleteCategory,
 } from "@/hooks/useCategories"
 import { getErrorMessage, cn } from "@/lib/utils"
+import { formatDate } from "@/lib/format"
 import { LoadingState } from "@/components/shared/LoadingState"
 import { ErrorState } from "@/components/shared/ErrorState"
 import { Button } from "@/components/ui/button"
@@ -96,14 +97,6 @@ const PIE_COLORS = [
 function categoryIcon(category: Category): LucideIcon {
   if (!category.icon) return Grid
   return ICON_MAP[category.icon] ?? Grid
-}
-
-function formatDate(date: string): string {
-  return new Date(date).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  })
 }
 
 function StatCard({

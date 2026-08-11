@@ -28,6 +28,7 @@ import { LoadingState } from "@/components/shared/LoadingState"
 import { ErrorState } from "@/components/shared/ErrorState"
 import { Pagination } from "@/components/shared/Pagination"
 import { getErrorMessage, cn } from "@/lib/utils"
+import { formatPrice, formatRating } from "@/lib/format"
 import type { Category, Service } from "@/types/service.types"
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -43,11 +44,6 @@ const ICON_MAP: Record<string, LucideIcon> = {
 }
 
 const PAGE_SIZE = 8
-
-function formatPrice(price: string | number) {
-  const num = Number(price)
-  return Number.isInteger(num) ? num.toLocaleString() : num.toFixed(2)
-}
 
 function categoryIcon(category: Category | null): LucideIcon {
   if (!category?.icon) return Grid
@@ -124,7 +120,7 @@ function ServiceCard({ service }: { service: Service }) {
           <div className="flex items-center gap-1 text-sm">
             <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
             <span className="font-medium text-foreground">
-              {service.avgRating ? service.avgRating.toFixed(1) : "—"}
+              {formatRating(service.avgRating)}
             </span>
             <span className="text-muted-foreground">
               ({service._count?.reviews ?? 0})

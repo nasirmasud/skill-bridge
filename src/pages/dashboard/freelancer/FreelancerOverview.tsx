@@ -32,6 +32,7 @@ import { useReceivedOrders } from "@/hooks/useOrders"
 import { useFreelancerServices } from "@/hooks/useServices"
 import { useAuth } from "@/hooks/useAuth"
 import { getErrorMessage, cn } from "@/lib/utils"
+import { formatPrice, formatShortMonth } from "@/lib/format"
 import { OrderStatusBadge } from "@/components/order/OrderStatusBadge"
 import { LoadingState } from "@/components/shared/LoadingState"
 import { ErrorState } from "@/components/shared/ErrorState"
@@ -74,11 +75,6 @@ function serviceIcon(title: string): LucideIcon {
   return Code2
 }
 
-function formatPrice(price: string | number) {
-  const num = Number(price)
-  return Number.isInteger(num) ? num.toLocaleString() : num.toFixed(2)
-}
-
 function timeAgo(date: string): string {
   const diff = Date.now() - new Date(date).getTime()
   const days = Math.floor(diff / 86_400_000)
@@ -96,7 +92,7 @@ function lastMonths(count: number): { key: string; label: string }[] {
     const d = new Date(now.getFullYear(), now.getMonth() - (count - 1 - i), 1)
     return {
       key: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`,
-      label: d.toLocaleDateString(undefined, { month: "short" }),
+      label: formatShortMonth(d),
     }
   })
 }

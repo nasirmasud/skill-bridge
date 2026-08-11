@@ -21,6 +21,7 @@ import {
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts"
 import { useReceivedOrders, useUpdateOrderStatus } from "@/hooks/useOrders"
 import { getErrorMessage, cn } from "@/lib/utils"
+import { formatPrice, formatDate, formatShortMonth } from "@/lib/format"
 import { LoadingState } from "@/components/shared/LoadingState"
 import { ErrorState } from "@/components/shared/ErrorState"
 import { Pagination } from "@/components/shared/Pagination"
@@ -130,19 +131,6 @@ function serviceIcon(title: string): LucideIcon {
   )
     return Megaphone
   return Code2
-}
-
-function formatPrice(price: string | number) {
-  const num = Number(price)
-  return Number.isInteger(num) ? num.toLocaleString() : num.toFixed(2)
-}
-
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  })
 }
 
 function getInitials(name: string): string {
@@ -372,7 +360,7 @@ export default function ReceivedOrders() {
       const d = new Date(now.getFullYear(), now.getMonth() - (5 - i), 1)
       return {
         key: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`,
-        label: d.toLocaleDateString(undefined, { month: "short" }),
+        label: formatShortMonth(d),
       }
     })
     const buckets = new Map(months.map((m) => [m.key, 0]))

@@ -38,6 +38,7 @@ import { useRoleCount, useAdminUsers } from "@/hooks/useUsers"
 import { useCategories } from "@/hooks/useCategories"
 import { useAuth } from "@/hooks/useAuth"
 import { cn } from "@/lib/utils"
+import { formatCurrency, formatShortMonth } from "@/lib/format"
 import { OrderStatusBadge } from "@/components/order/OrderStatusBadge"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -60,11 +61,6 @@ function serviceIcon(title: string): LucideIcon {
   if (lower.includes("blog") || lower.includes("content") || lower.includes("write"))
     return PenLine
   return Code2
-}
-
-function formatPrice(price: string | number) {
-  const num = Number(price)
-  return `$${Number.isInteger(num) ? num.toLocaleString() : num.toFixed(2)}`
 }
 
 function initials(name: string): string {
@@ -97,7 +93,7 @@ function lastMonths(count: number): { key: string; label: string }[] {
     const d = new Date(now.getFullYear(), now.getMonth() - (count - 1 - i), 1)
     return {
       key: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`,
-      label: d.toLocaleDateString(undefined, { month: "short" }),
+      label: formatShortMonth(d),
     }
   })
 }
@@ -345,7 +341,7 @@ export default function AdminOverview() {
           iconBg="bg-emerald-500/15"
           iconColor="text-emerald-400"
           label="Total Revenue"
-          value={ordersLoading ? "—" : formatPrice(totalRevenue)}
+          value={ordersLoading ? "—" : formatCurrency(totalRevenue)}
           delta="Non-cancelled"
         />
         <StatCard
@@ -368,7 +364,7 @@ export default function AdminOverview() {
                 <h3 className="text-sm font-semibold">Revenue Trend</h3>
                 <div className="mt-1 flex items-baseline gap-2">
                   <span className="text-2xl font-bold">
-                    {ordersLoading ? "—" : formatPrice(totalRevenue)}
+                    {ordersLoading ? "—" : formatCurrency(totalRevenue)}
                   </span>
                   <span className="flex items-center gap-0.5 text-xs font-medium text-emerald-400">
                     <TrendingUp size={12} strokeWidth={2.5} />
@@ -420,7 +416,7 @@ export default function AdminOverview() {
                       tickFormatter={(v: number) => `$${v}`}
                     />
                     <Tooltip
-                      formatter={(value) => formatPrice(value as number)}
+                      formatter={(value) => formatCurrency(value as number)}
                     />
                     <Area
                       type="monotone"
@@ -511,7 +507,7 @@ export default function AdminOverview() {
                       </Avatar>
                       <OrderStatusBadge status={o.status} className="hidden sm:inline-block" />
                       <span className="w-14 shrink-0 text-right text-sm font-medium">
-                        {formatPrice(o.totalPrice)}
+                        {formatCurrency(o.totalPrice)}
                       </span>
                       <Button variant="ghost" size="icon-sm" asChild>
                         <a href="/dashboard/admin/orders">

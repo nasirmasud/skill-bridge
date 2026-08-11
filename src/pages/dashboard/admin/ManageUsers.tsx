@@ -22,6 +22,7 @@ import {
   useDeleteUser,
 } from "@/hooks/useUsers"
 import { getErrorMessage, cn } from "@/lib/utils"
+import { formatDate } from "@/lib/format"
 import { Pagination } from "@/components/shared/Pagination"
 import { LoadingState } from "@/components/shared/LoadingState"
 import { ErrorState } from "@/components/shared/ErrorState"
@@ -69,14 +70,6 @@ const ROLE_LABELS: Record<Role, string> = {
 }
 
 const PIE_COLORS = ["var(--primary)", "#38bdf8", "#f59e0b"]
-
-function formatDate(date: string): string {
-  return new Date(date).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  })
-}
 
 function initials(name: string): string {
   return name

@@ -28,6 +28,7 @@ import {
 import { useFreelancerServices, useDeleteService } from "@/hooks/useServices"
 import { useAuth } from "@/hooks/useAuth"
 import { getErrorMessage, cn } from "@/lib/utils"
+import { formatPrice, formatShortMonth } from "@/lib/format"
 import { LoadingState } from "@/components/shared/LoadingState"
 import { ErrorState } from "@/components/shared/ErrorState"
 import { Button } from "@/components/ui/button"
@@ -127,18 +128,13 @@ function serviceIcon(title: string): LucideIcon {
   return Code2
 }
 
-function formatPrice(price: string | number) {
-  const num = Number(price)
-  return Number.isInteger(num) ? num.toLocaleString() : num.toFixed(2)
-}
-
 function lastMonths(count: number): { key: string; label: string }[] {
   const now = new Date()
   return Array.from({ length: count }, (_, i) => {
     const d = new Date(now.getFullYear(), now.getMonth() - (count - 1 - i), 1)
     return {
       key: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`,
-      label: d.toLocaleDateString(undefined, { month: "short" }),
+      label: formatShortMonth(d),
     }
   })
 }
