@@ -1,3 +1,5 @@
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { Search, Star, ShieldCheck, RotateCcw, Headphones } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -49,6 +51,14 @@ function AvatarStack({ size = "h-6 w-6" }: { size?: string }) {
 }
 
 export function Hero() {
+  const [query, setQuery] = useState("")
+  const navigate = useNavigate()
+
+  const submitSearch = (value: string) => {
+    const term = value.trim()
+    navigate(term ? `/services?search=${encodeURIComponent(term)}` : "/services")
+  }
+
   return (
     <section className="relative w-full overflow-hidden bg-[#07070c]">
       {/* Ambient background effects */}
@@ -93,17 +103,28 @@ export function Hero() {
           </p>
 
           {/* Search bar */}
-          <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-1.5 pl-4 max-w-lg">
+          <form
+            className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-1.5 pl-4 max-w-lg"
+            onSubmit={(e) => {
+              e.preventDefault()
+              submitSearch(query)
+            }}
+          >
             <Search className="h-4 w-4 shrink-0 text-white/40" />
             <input
               type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
               placeholder="What service are you looking for?"
               className="w-full bg-transparent text-sm text-white placeholder:text-white/40 focus:outline-none"
             />
-            <Button className="shrink-0 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-500 px-6 text-white hover:opacity-90">
+            <Button
+              type="submit"
+              className="shrink-0 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-500 px-6 text-white hover:opacity-90"
+            >
               Search
             </Button>
-          </div>
+          </form>
 
           {/* Popular tags */}
           <div className="flex flex-wrap items-center gap-2 text-sm">
@@ -112,6 +133,7 @@ export function Hero() {
               <button
                 key={tag}
                 type="button"
+                onClick={() => submitSearch(tag)}
                 className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/80 transition-colors hover:bg-white/10"
               >
                 {tag}

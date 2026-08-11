@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import { useParams, Link } from "react-router-dom"
+import { useState } from "react"
+import { useParams, Link, useNavigate } from "react-router-dom"
 import {
   Home,
   ChevronRight,
@@ -14,7 +14,19 @@ import {
   Loader2,
 } from "lucide-react"
 import { useService, useServices } from "@/hooks/useServices"
+import { useCreateOrder } from "@/hooks/useOrders"
+import { useAuth } from "@/hooks/useAuth"
 import { getErrorMessage, cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import type { Service } from "@/types/service.types"
 
 function formatPrice(price: string | number) {
@@ -126,9 +138,15 @@ function RelatedCard({ service }: { service: Service }) {
 
 export default function ServiceDetails() {
   const { id = "" } = useParams()
+  const navigate = useNavigate()
   const [activeThumb, setActiveThumb] = useState(0)
   const [activeTab, setActiveTab] = useState("Overview")
   const [liked, setLiked] = useState(false)
+  const [orderOpen, setOrderOpen] = useState(false)
+  const [requirement, setRequirement] = useState("")
+
+  const { user, isAuthenticated } = useAuth()
+  const createOrder = useCreateOrder()
 
   const {
     data: service,
@@ -154,9 +172,39 @@ export default function ServiceDetails() {
       )
     : []
 
-  useEffect(() => {
+  const [prevId, setPrevId] = useState(id)
+  if (prevId !== id) {
+    setPrevId(id)
     setActiveThumb(0)
-  }, [id])
+  }
+
+  const isOwnService = Boolean(
+    service && user && service.freelancer.id === user.id
+  )
+
+  const canOrder = isAuthenticated && user?.role === "CLIENT" && !isOwnService
+
+  const handleOrderClick = () => {
+    if (!isAuthenticated) {
+      navigate("/login")
+      return
+    }
+    if (canOrder) setOrderOpen(true)
+  }
+
+  const submitOrder = () => {
+    if (!service) return
+    createOrder.mutate(
+      { serviceId: service.id, requirement: requirement.trim() || undefined },
+      {
+        onSuccess: () => {
+          setOrderOpen(false)
+          setRequirement("")
+          navigate("/dashboard/client/orders")
+        },
+      }
+    )
+  }
 
   if (isLoading) {
     return (
@@ -507,12 +555,20 @@ export default function ServiceDetails() {
                 ))}
               </ul>
 
-              <button
+              <Button
                 type="button"
+                onClick={handleOrderClick}
+                disabled={isAuthenticated && !canOrder}
                 className="mt-5 w-full rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 py-2.5 font-semibold text-white shadow-lg shadow-violet-900/30 transition hover:from-blue-500 hover:to-violet-500"
               >
-                Continue (${formatPrice(service.price)})
-              </button>
+                {isAuthenticated && !canOrder
+                  ? isOwnService
+                    ? "You can't order your own service"
+                    : "Only clients can order"
+                  : isAuthenticated
+                    ? `Continue ($${formatPrice(service.price)})`
+                    : "Login to Order"}
+              </Button>
               <button
                 type="button"
                 className="mt-2.5 w-full rounded-xl border border-border py-2.5 font-medium text-foreground/80 transition hover:bg-muted"
@@ -627,6 +683,66 @@ export default function ServiceDetails() {
           </div>
         )}
       </div>
+
+      {/* Order dialog */}
+      <Dialog open={orderOpen} onOpenChange={setOrderOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Place your order</DialogTitle>
+            <DialogDescription>
+              Confirm the details below to order this service from{" "}
+              <span className="font-medium text-foreground">
+                {service.freelancer.name}
+              </span>
+              .
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex flex-col gap-4">
+            <div className="flex items-start justify-between gap-4 rounded-xl border border-border bg-muted/30 p-4">
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold text-foreground">
+                  {service.title}
+                </p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  {service.deliveryDays} day delivery
+                </p>
+              </div>
+              <div className="text-lg font-bold text-foreground">
+                ${formatPrice(service.price)}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="order-requirement" className="text-sm font-medium">
+                Requirement (optional)
+              </label>
+              <Textarea
+                id="order-requirement"
+                rows={4}
+                value={requirement}
+                onChange={(e) => setRequirement(e.target.value)}
+                placeholder="Describe what you need done..."
+                className="resize-none"
+              />
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setOrderOpen(false)}
+              disabled={createOrder.isPending}
+            >
+              Cancel
+            </Button>
+            <Button onClick={submitOrder} disabled={createOrder.isPending}>
+              {createOrder.isPending && <Loader2 className="animate-spin" />}
+              Confirm order
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

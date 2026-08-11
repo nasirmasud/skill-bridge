@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react"
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import {
   Home,
   ChevronRight,
@@ -143,19 +143,39 @@ function ServiceCard({ service }: { service: Service }) {
 }
 
 export default function ServiceList() {
-  const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null)
-  const [query, setQuery] = useState("")
-  const [debouncedQuery, setDebouncedQuery] = useState("")
-  const [page, setPage] = useState(1)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const activeCategoryId = searchParams.get("categoryId") ?? null
+  const query = searchParams.get("search") ?? ""
+  const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10) || 1)
+
+  const [debouncedQuery, setDebouncedQuery] = useState(query)
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(query), 300)
     return () => clearTimeout(timer)
   }, [query])
 
-  useEffect(() => {
-    setPage(1)
-  }, [activeCategoryId, debouncedQuery])
+  const setSearch = (value: string) => {
+    const params = new URLSearchParams(searchParams)
+    if (value) params.set("search", value)
+    else params.delete("search")
+    params.delete("page")
+    setSearchParams(params, { replace: true })
+  }
+
+  const setCategory = (id: string | null) => {
+    const params = new URLSearchParams(searchParams)
+    if (id) params.set("categoryId", id)
+    else params.delete("categoryId")
+    params.delete("page")
+    setSearchParams(params, { replace: true })
+  }
+
+  const setPage = (next: number) => {
+    const params = new URLSearchParams(searchParams)
+    params.set("page", String(Math.max(1, next)))
+    setSearchParams(params, { replace: true })
+  }
 
   const { data: categories } = useCategories()
   const {
@@ -233,14 +253,14 @@ export default function ServiceList() {
             <input
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Search services..."
               className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
             />
           </div>
           <button
             type="button"
-            onClick={() => setActiveCategoryId(null)}
+            onClick={() => setCategory(null)}
             className="flex items-center gap-2 rounded-xl border border-border bg-muted/50 px-4 py-3 text-sm whitespace-nowrap text-muted-foreground"
           >
             <Grid className="h-4 w-4" />
@@ -275,7 +295,7 @@ export default function ServiceList() {
                 name="All Services"
                 icon={<Grid className="h-4 w-4" strokeWidth={1.75} />}
                 count={total}
-                onClick={() => setActiveCategoryId(null)}
+                onClick={() => setCategory(null)}
               />
               {categories?.map((c) => {
                 const Icon = categoryIcon(c)
@@ -286,7 +306,7 @@ export default function ServiceList() {
                     name={c.name}
                     icon={<Icon className="h-4 w-4" strokeWidth={1.75} />}
                     count={c.serviceCount}
-                    onClick={() => setActiveCategoryId(c.id)}
+                    onClick={() => setCategory(c.id)}
                   />
                 )
               })}
@@ -345,7 +365,7 @@ export default function ServiceList() {
                     <button
                       type="button"
                       disabled={meta.page <= 1}
-                      onClick={() => setPage((p) => Math.max(1, p - 1))}
+                      onClick={() => setPage(meta.page - 1)}
                       className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition hover:bg-muted/50 disabled:pointer-events-none disabled:opacity-40"
                       aria-label="Previous page"
                     >
@@ -359,7 +379,7 @@ export default function ServiceList() {
                     <button
                       type="button"
                       disabled={meta.page >= Math.ceil(total / meta.limit)}
-                      onClick={() => setPage((p) => p + 1)}
+                      onClick={() => setPage(meta.page + 1)}
                       className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition hover:bg-muted/50 disabled:pointer-events-none disabled:opacity-40"
                       aria-label="Next page"
                     >
