@@ -17,7 +17,7 @@ export function DashboardLayout() {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b bg-background/80 px-4 backdrop-blur lg:hidden">
-        <Logo />
+        <Logo showText={false} imgClassName="h-30 w-30" />
         <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
           <SheetTrigger asChild>
             <Button

@@ -38,7 +38,7 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:[grid-template-columns:1.4fr_0.8fr_0.8fr_1.3fr]">
           {/* Brand */}
           <div>
-            <Logo textClassName="text-lg" />
+            <Logo showText={false} imgClassName="h-30 w-30" />
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
               The best place to discover and hire skilled freelancers for any
               project.

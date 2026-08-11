@@ -13,6 +13,7 @@ import {
   BadgeCheck,
   TrendingUp,
   Loader2,
+  ChevronDown,
   Code2,
   Clapperboard,
   Smartphone,
@@ -21,7 +22,11 @@ import {
   type LucideIcon,
 } from "lucide-react"
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts"
-import { useAdminOrders, useDeleteOrder } from "@/hooks/useOrders"
+import {
+  useAdminOrders,
+  useDeleteOrder,
+  useUpdateOrderStatus,
+} from "@/hooks/useOrders"
 import { getErrorMessage, cn } from "@/lib/utils"
 import { formatCurrency, formatDate, formatTime } from "@/lib/format"
 import { Pagination } from "@/components/shared/Pagination"
@@ -37,6 +42,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import {
   Dialog,
   DialogContent,
@@ -75,6 +86,50 @@ const STATUS_FILTERS: OrderStatus[] = [
   "COMPLETED",
   "CANCELLED",
 ]
+
+const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
+  PENDING: ["ACCEPTED", "CANCELLED"],
+  ACCEPTED: ["IN_PROGRESS", "CANCELLED"],
+  IN_PROGRESS: ["COMPLETED"],
+  COMPLETED: [],
+  CANCELLED: [],
+}
+
+const STATUS_META: Record<
+  OrderStatus,
+  { label: string; pill: string; dot: string; color: string }
+> = {
+  PENDING: {
+    label: "Pending",
+    pill: "bg-amber-500/15 text-amber-400",
+    dot: "bg-amber-400",
+    color: "#fbbf24",
+  },
+  ACCEPTED: {
+    label: "Accepted",
+    pill: "bg-sky-500/15 text-sky-400",
+    dot: "bg-sky-400",
+    color: "#60a5fa",
+  },
+  IN_PROGRESS: {
+    label: "In Progress",
+    pill: "bg-violet-500/15 text-violet-400",
+    dot: "bg-violet-400",
+    color: "#a78bfa",
+  },
+  COMPLETED: {
+    label: "Completed",
+    pill: "bg-emerald-500/15 text-emerald-400",
+    dot: "bg-emerald-400",
+    color: "#34d399",
+  },
+  CANCELLED: {
+    label: "Cancelled",
+    pill: "bg-rose-500/15 text-rose-400",
+    dot: "bg-rose-400",
+    color: "#fb7185",
+  },
+}
 
 const STATUS_COLORS: Record<OrderStatus, string> = {
   PENDING: "#f59e0b",
@@ -134,12 +189,48 @@ function StatCard({
   )
 }
 
+function StatusMenu({
+  order,
+  onUpdate,
+  pending,
+}: {
+  order: Order
+  onUpdate: (id: string, status: OrderStatus) => void
+  pending: boolean
+}) {
+  const allowed = ALLOWED_TRANSITIONS[order.status]
+  if (allowed.length === 0) return null
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm" disabled={pending}>
+          {pending && <Loader2 className="size-3.5 animate-spin" />}
+          Update Status
+          <ChevronDown className="size-3.5" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        {allowed.map((next) => (
+          <DropdownMenuItem key={next} onClick={() => onUpdate(order.id, next)}>
+            <span
+              className={cn("h-2 w-2 rounded-full", STATUS_META[next].dot)}
+            />
+            Mark as {STATUS_META[next].label}
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}
+
 export default function ManageOrders() {
   const { data, isLoading, isError, error, refetch } = useAdminOrders({
     page: 1,
     limit: 100,
   })
   const deleteOrder = useDeleteOrder()
+  const updateStatus = useUpdateOrderStatus()
 
   const [search, setSearch] = useState("")
   const [status, setStatus] = useState<"ALL" | OrderStatus>("ALL")
@@ -253,6 +344,19 @@ export default function ManageOrders() {
     if (!deleteTarget) return
     await deleteOrder.mutateAsync(deleteTarget.id)
     setDeleteTarget(null)
+  }
+
+  const handleUpdateStatus = (id: string, next: OrderStatus) => {
+    updateStatus.mutate(
+      { id, status: next },
+      {
+        onSuccess: () => {
+          setViewTarget((current) =>
+            current && current.id === id ? { ...current, status: next } : current
+          )
+        },
+      }
+    )
   }
 
   return (
@@ -495,6 +599,11 @@ export default function ManageOrders() {
                         </td>
                         <td className="px-4 py-3.5">
                           <div className="flex items-center justify-end gap-1">
+                            <StatusMenu
+                              order={o}
+                              onUpdate={handleUpdateStatus}
+                              pending={updateStatus.isPending}
+                            />
                             <Button
                               variant="ghost"
                               size="icon-sm"
@@ -703,7 +812,14 @@ export default function ManageOrders() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Status</span>
-                  <OrderStatusBadge status={viewTarget.status} />
+                  <div className="flex items-center gap-2">
+                    <OrderStatusBadge status={viewTarget.status} />
+                    <StatusMenu
+                      order={viewTarget}
+                      onUpdate={handleUpdateStatus}
+                      pending={updateStatus.isPending}
+                    />
+                  </div>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Amount</span>

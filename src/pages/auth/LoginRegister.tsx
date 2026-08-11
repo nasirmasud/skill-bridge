@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import { useForm, useWatch, type Resolver } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
@@ -103,7 +103,7 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
   const [generalError, setGeneralError] = useState("")
   const [demoLoading, setDemoLoading] = useState<Role | null>(null)
 
-  const { login } = useAuth()
+  const { login, isAuthenticated, user } = useAuth()
   const navigate = useNavigate()
 
   const resolver: Resolver<FormValues> =
@@ -196,6 +196,10 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
 
   const handleSocial = (provider: "google" | "github") => {
     window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/${provider}`
+  }
+
+  if (isAuthenticated && user) {
+    return <Navigate to={getDashboardPath(user.role)} replace />
   }
 
   return (

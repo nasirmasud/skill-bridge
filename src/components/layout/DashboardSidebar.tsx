@@ -88,7 +88,7 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
         className="flex h-9 items-center"
         aria-label="Skillbridge home"
       >
-        <Logo />
+        <Logo showText={false} imgClassName="h-30 w-30" />
       </Link>
 
       <nav className="flex flex-1 flex-col gap-1" aria-label="Dashboard">

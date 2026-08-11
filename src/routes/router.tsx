@@ -13,6 +13,7 @@ import EditService from "@/pages/dashboard/freelancer/EditService"
 import MyServices from "@/pages/dashboard/freelancer/MyServices"
 import ReceivedOrders from "@/pages/dashboard/freelancer/ReceivedOrders"
 import FreelancerOverview from "@/pages/dashboard/freelancer/FreelancerOverview"
+import DashboardIndex from "@/pages/dashboard/DashboardIndex"
 import Home from "@/pages/home/Home"
 import NotFound from "@/pages/NotFound"
 import Login from "@/pages/auth/Login"
@@ -34,6 +35,11 @@ export const router = createBrowserRouter([
   },
   { path: "/login", element: <Login /> },
   { path: "/register", element: <Register /> },
+
+  {
+    element: <ProtectedRoute />,
+    children: [{ path: "/dashboard", element: <DashboardIndex /> }],
+  },
 
   {
     element: <ProtectedRoute allowedRoles={["CLIENT"]} />,
