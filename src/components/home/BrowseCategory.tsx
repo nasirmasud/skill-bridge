@@ -23,7 +23,10 @@ const CATEGORIES = [
 
 export function BrowseCategory() {
   return (
-    <section className="w-full bg-background px-6 py-10 pb-28">
+    <section
+      id="categories"
+      className="w-full scroll-mt-20 bg-background px-6 py-10 pb-28"
+    >
       <div className="mx-auto w-full rounded-2xl border border-border bg-card/50 p-6 sm:p-8">
         {/* Header */}
         <div className="flex items-center justify-between">

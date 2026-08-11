@@ -37,6 +37,11 @@ const NAV_ITEMS: Record<Role, NavItem[]> = {
   ],
   FREELANCER: [
     {
+      label: "Overview",
+      to: "/dashboard/freelancer/overview",
+      icon: LayoutDashboard,
+    },
+    {
       label: "My Services",
       to: "/dashboard/freelancer/services",
       icon: Briefcase,
@@ -53,6 +58,7 @@ const NAV_ITEMS: Record<Role, NavItem[]> = {
     },
   ],
   ADMIN: [
+    { label: "Overview", to: "/dashboard/admin/overview", icon: LayoutDashboard },
     { label: "Users", to: "/dashboard/admin/users", icon: Users },
     { label: "Categories", to: "/dashboard/admin/categories", icon: Tags },
     { label: "Orders", to: "/dashboard/admin/orders", icon: ShoppingCart },

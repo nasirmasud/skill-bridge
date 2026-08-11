@@ -3,6 +3,7 @@ import { BrowseCategory } from "@/components/home/BrowseCategory"
 import { PopularServices } from "@/components/home/PopularServices"
 import { Stats } from "@/components/home/Stats"
 import { HowItWorks } from "@/components/home/HowItWorks"
+import { BecomeASeller } from "@/components/home/BecomeASeller"
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <PopularServices />
       <Stats />
       <HowItWorks />
+      <BecomeASeller />
     </main>
   )
 }
