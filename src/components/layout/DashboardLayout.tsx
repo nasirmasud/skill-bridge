@@ -35,7 +35,7 @@ export function DashboardLayout() {
         </Sheet>
       </header>
 
-      <div className="mx-auto flex w-full max-w-[1440px]">
+      <div className="flex w-full">
         <aside className="sticky top-0 hidden h-screen w-64 shrink-0 border-r lg:block">
           <DashboardSidebar />
         </aside>

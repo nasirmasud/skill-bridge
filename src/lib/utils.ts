@@ -16,7 +16,7 @@ export function getErrorMessage(error: unknown): string {
 export function getDashboardPath(role: Role): string {
   switch (role) {
     case "CLIENT":
-      return "/dashboard/client/orders"
+      return "/dashboard/client/overview"
     case "FREELANCER":
       return "/dashboard/freelancer/services"
     case "ADMIN":

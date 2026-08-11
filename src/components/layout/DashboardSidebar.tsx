@@ -2,7 +2,9 @@ import { Link, NavLink, useNavigate } from "react-router-dom"
 import type { LucideIcon } from "lucide-react"
 import {
   Briefcase,
+  Home,
   Inbox,
+  LayoutDashboard,
   LogOut,
   PlusCircle,
   ShoppingBag,
@@ -25,6 +27,11 @@ interface NavItem {
 
 const NAV_ITEMS: Record<Role, NavItem[]> = {
   CLIENT: [
+    {
+      label: "Overview",
+      to: "/dashboard/client/overview",
+      icon: LayoutDashboard,
+    },
     { label: "My Orders", to: "/dashboard/client/orders", icon: ShoppingBag },
     { label: "Profile", to: "/dashboard/client/profile", icon: User },
   ],
@@ -79,6 +86,23 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
       </Link>
 
       <nav className="flex flex-1 flex-col gap-1" aria-label="Dashboard">
+        <NavLink
+          to="/"
+          end
+          onClick={onNavigate}
+          className={({ isActive }) =>
+            cn(
+              "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+              isActive
+                ? "bg-primary/10 text-primary"
+                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+            )
+          }
+        >
+          <Home className="size-4" />
+          Home
+        </NavLink>
+
         {items.map((item) => (
           <NavLink
             key={item.to}

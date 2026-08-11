@@ -6,6 +6,7 @@ import ManageOrders from "@/pages/dashboard/admin/ManageOrders"
 import ManageUsers from "@/pages/dashboard/admin/ManageUsers"
 import ClientProfile from "@/pages/dashboard/client/ClientProfile"
 import MyOrders from "@/pages/dashboard/client/MyOrders"
+import ClientOverview from "@/pages/dashboard/client/ClientOverview"
 import CreateService from "@/pages/dashboard/freelancer/CreateService"
 import EditService from "@/pages/dashboard/freelancer/EditService"
 import MyServices from "@/pages/dashboard/freelancer/MyServices"
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
       {
         element: <DashboardLayout />,
         children: [
+          {
+            path: "/dashboard/client/overview",
+            element: <ClientOverview />,
+          },
           { path: "/dashboard/client/orders", element: <MyOrders /> },
           { path: "/dashboard/client/profile", element: <ClientProfile /> },
         ],

@@ -1,5 +1,6 @@
 import type { ServiceStatus } from "./service.types"
 import type { UserSummary } from "./user.types"
+import type { CategorySummary } from "./service.types"
 
 export type OrderStatus =
   | "PENDING"
@@ -14,6 +15,7 @@ export interface OrderServiceSummary {
   price: string
   thumbnail: string | null
   status: ServiceStatus
+  category: CategorySummary
   freelancer: UserSummary
 }
 
