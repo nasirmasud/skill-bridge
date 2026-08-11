@@ -4,6 +4,7 @@ import { PublicLayout } from "@/components/layout/PublicLayout"
 import ManageCategories from "@/pages/dashboard/admin/ManageCategories"
 import ManageOrders from "@/pages/dashboard/admin/ManageOrders"
 import ManageUsers from "@/pages/dashboard/admin/ManageUsers"
+import AdminOverview from "@/pages/dashboard/admin/AdminOverview"
 import ClientProfile from "@/pages/dashboard/client/ClientProfile"
 import MyOrders from "@/pages/dashboard/client/MyOrders"
 import ClientOverview from "@/pages/dashboard/client/ClientOverview"
@@ -11,6 +12,7 @@ import CreateService from "@/pages/dashboard/freelancer/CreateService"
 import EditService from "@/pages/dashboard/freelancer/EditService"
 import MyServices from "@/pages/dashboard/freelancer/MyServices"
 import ReceivedOrders from "@/pages/dashboard/freelancer/ReceivedOrders"
+import FreelancerOverview from "@/pages/dashboard/freelancer/FreelancerOverview"
 import Home from "@/pages/home/Home"
 import NotFound from "@/pages/NotFound"
 import Login from "@/pages/auth/Login"
@@ -55,6 +57,10 @@ export const router = createBrowserRouter([
       {
         element: <DashboardLayout />,
         children: [
+          {
+            path: "/dashboard/freelancer/overview",
+            element: <FreelancerOverview />,
+          },
           { path: "/dashboard/freelancer/services", element: <MyServices /> },
           {
             path: "/dashboard/freelancer/services/new",
@@ -75,6 +81,10 @@ export const router = createBrowserRouter([
       {
         element: <DashboardLayout />,
         children: [
+          {
+            path: "/dashboard/admin/overview",
+            element: <AdminOverview />,
+          },
           { path: "/dashboard/admin/users", element: <ManageUsers /> },
           {
             path: "/dashboard/admin/categories",

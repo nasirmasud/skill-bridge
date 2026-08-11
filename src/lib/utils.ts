@@ -18,8 +18,8 @@ export function getDashboardPath(role: Role): string {
     case "CLIENT":
       return "/dashboard/client/overview"
     case "FREELANCER":
-      return "/dashboard/freelancer/services"
+      return "/dashboard/freelancer/overview"
     case "ADMIN":
-      return "/dashboard/admin/users"
+      return "/dashboard/admin/overview"
   }
 }
