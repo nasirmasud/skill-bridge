@@ -1,4 +1,4 @@
-# SkillBridge Client
+# SkillBridge
 
 Freelance service marketplace frontend built with React 19, Vite, TypeScript, and Tailwind CSS.
 
@@ -8,23 +8,23 @@ Freelance service marketplace frontend built with React 19, Vite, TypeScript, an
 
 ## Tech Stack
 
-| Tool            | Purpose                                              |
-| --------------- | ---------------------------------------------------- |
-| React 19        | UI framework                                         |
-| Vite 8          | Build tool & dev server                              |
-| TypeScript 6    | Type safety                                          |
-| React Router v7 | Routing (`createBrowserRouter`, data router)         |
-| Tailwind CSS v4 | Styling (CSS-first, tokens in `src/index.css`)       |
-| shadcn/ui       | Accessible UI component library (Radix + Base UI)    |
-| TanStack Query  | Server state, caching, auto refetch on mutation      |
-| Zustand         | Auth/global client state (JWT tokens, user profile)  |
-| Axios           | HTTP client (JWT request/response interceptors)      |
-| React Hook Form | Form state management                                |
-| Zod             | Schema validation (form + API response validation)   |
-| Sonner          | Toast notifications                                  |
-| Recharts        | Charts (analytics dashboards)                        |
-| next-themes     | Dark/light/system theme toggle                       |
-| lucide-react    | Icons                                                |
+| Tool            | Purpose                                             |
+| --------------- | --------------------------------------------------- |
+| React 19        | UI framework                                        |
+| Vite 8          | Build tool & dev server                             |
+| TypeScript 6    | Type safety                                         |
+| React Router v7 | Routing (`createBrowserRouter`, data router)        |
+| Tailwind CSS v4 | Styling (CSS-first, tokens in `src/index.css`)      |
+| shadcn/ui       | Accessible UI component library (Radix + Base UI)   |
+| TanStack Query  | Server state, caching, auto refetch on mutation     |
+| Zustand         | Auth/global client state (JWT tokens, user profile) |
+| Axios           | HTTP client (JWT request/response interceptors)     |
+| React Hook Form | Form state management                               |
+| Zod             | Schema validation (form + API response validation)  |
+| Sonner          | Toast notifications                                 |
+| Recharts        | Charts (analytics dashboards)                       |
+| next-themes     | Dark/light/system theme toggle                      |
+| lucide-react    | Icons                                               |
 
 ## Quick Start
 
@@ -41,16 +41,6 @@ npm run build
 # preview production build
 npm run preview
 ```
-
-## Environment Variables
-
-Create a `.env` file in the client root:
-
-```
-VITE_API_BASE_URL=http://localhost:5000/api
-```
-
-> **Note:** The backend API must be running and CORS must allow the client origin. See `client/.env.example`.
 
 ## Project Structure
 
@@ -170,35 +160,35 @@ Login with Google/GitHub
 
 ### Demo Credentials
 
-| Role       | Email               | Password         |
-| ---------- | ------------------- | ---------------- |
-| Admin      | admin@skillbridge.com | Password123!  |
-| Client     | nusrat@example.com  | Password123!     |
-| Freelancer | rakib@example.com   | Password123!     |
+| Role       | Email                 | Password     |
+| ---------- | --------------------- | ------------ |
+| Admin      | admin@skillbridge.com | Password123! |
+| Client     | nusrat@example.com    | Password123! |
+| Freelancer | rakib@example.com     | Password123! |
 
 ## Client-Side Routing
 
-| Path                                | Component          | Access         |
-| ----------------------------------- | ------------------ | -------------- |
-| `/`                                 | Home               | Public         |
-| `/services`                        | ServiceList        | Public         |
-| `/services/:id`                    | ServiceDetails     | Public         |
-| `/login`                           | Login              | Public         |
-| `/register`                        | Register           | Public         |
-| `/oauth-callback`                  | OAuthCallback      | Public         |
-| `/dashboard/client/overview`       | ClientOverview     | Client         |
-| `/dashboard/client/orders`         | MyOrders           | Client         |
-| `/dashboard/client/profile`        | ClientProfile      | Client         |
-| `/dashboard/freelancer/overview`   | FreelancerOverview | Freelancer     |
-| `/dashboard/freelancer/services`   | MyServices         | Freelancer     |
-| `/dashboard/freelancer/services/new` | CreateService   | Freelancer     |
-| `/dashboard/freelancer/services/:id/edit` | EditService  | Freelancer     |
-| `/dashboard/freelancer/orders`     | ReceivedOrders     | Freelancer     |
-| `/dashboard/admin/overview`        | AdminOverview      | Admin          |
-| `/dashboard/admin/users`           | ManageUsers        | Admin          |
-| `/dashboard/admin/categories`      | ManageCategories   | Admin          |
-| `/dashboard/admin/orders`          | ManageOrders       | Admin          |
-| `*`                                 | NotFound           | Public         |
+| Path                                      | Component          | Access     |
+| ----------------------------------------- | ------------------ | ---------- |
+| `/`                                       | Home               | Public     |
+| `/services`                               | ServiceList        | Public     |
+| `/services/:id`                           | ServiceDetails     | Public     |
+| `/login`                                  | Login              | Public     |
+| `/register`                               | Register           | Public     |
+| `/oauth-callback`                         | OAuthCallback      | Public     |
+| `/dashboard/client/overview`              | ClientOverview     | Client     |
+| `/dashboard/client/orders`                | MyOrders           | Client     |
+| `/dashboard/client/profile`               | ClientProfile      | Client     |
+| `/dashboard/freelancer/overview`          | FreelancerOverview | Freelancer |
+| `/dashboard/freelancer/services`          | MyServices         | Freelancer |
+| `/dashboard/freelancer/services/new`      | CreateService      | Freelancer |
+| `/dashboard/freelancer/services/:id/edit` | EditService        | Freelancer |
+| `/dashboard/freelancer/orders`            | ReceivedOrders     | Freelancer |
+| `/dashboard/admin/overview`               | AdminOverview      | Admin      |
+| `/dashboard/admin/users`                  | ManageUsers        | Admin      |
+| `/dashboard/admin/categories`             | ManageCategories   | Admin      |
+| `/dashboard/admin/orders`                 | ManageOrders       | Admin      |
+| `*`                                       | NotFound           | Public     |
 
 ## API Client
 
@@ -213,16 +203,16 @@ React Query hooks (`useServices`, `useOrders`, `useCategories`, `useReviews`, `u
 
 ## User Roles & Permissions
 
-| Feature                        | Reader | Freelancer | Admin |
-| ------------------------------ | :----: | :--------: | :---: |
-| Browse services                |   ✅   |    ✅     |  ✅   |
-| Place orders                   |   ✅   |    ✅     |  ✅   |
-| Create/edit services           |   ❌   |    ✅     |  ✅   |
-| Manage own service orders      |   ❌   |    ✅     |  ✅   |
-| Create reviews (completed orders only) | ✅ | ✅ | ✅ |
-| Manage all users               |   ❌   |    ❌     |  ✅   |
-| Manage all categories          |   ❌   |    ❌     |  ✅   |
-| View platform analytics        |   ❌   |    ❌     |  ✅   |
+| Feature                                | Reader | Freelancer | Admin |
+| -------------------------------------- | :----: | :--------: | :---: |
+| Browse services                        |   ✅   |     ✅     |  ✅   |
+| Place orders                           |   ✅   |     ✅     |  ✅   |
+| Create/edit services                   |   ❌   |     ✅     |  ✅   |
+| Manage own service orders              |   ❌   |     ✅     |  ✅   |
+| Create reviews (completed orders only) |   ✅   |     ✅     |  ✅   |
+| Manage all users                       |   ❌   |     ❌     |  ✅   |
+| Manage all categories                  |   ❌   |     ❌     |  ✅   |
+| View platform analytics                |   ❌   |     ❌     |  ✅   |
 
 ## Styling & Design System
 
@@ -238,13 +228,6 @@ React Query hooks (`useServices`, `useOrders`, `useCategories`, `useReviews`, `u
 - **Suspense & Skeletons** — `LoadingState` component with skeleton loaders
 - **Route-based code splitting** — Vite + React Router 7 lazy loading
 - **Image optimization** — Next/Image-style optimized images via Vite assets
-
-## Environment Setup
-
-| File             | Required | Description                         |
-| ---------------- | :------: | ----------------------------------- |
-| `.env`           |   Yes    | `VITE_API_BASE_URL=http://localhost:5000/api` |
-| `client/.env`    |    No    | Defaults to localhost:5000/api      |
 
 ## Build & Deploy
 
