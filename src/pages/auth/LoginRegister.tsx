@@ -195,7 +195,8 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
   }
 
   const handleSocial = (provider: "google" | "github") => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/${provider}`
+    const role = selectedRole;
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/${provider}?role=${role}`;
   }
 
   if (isAuthenticated && user) {
