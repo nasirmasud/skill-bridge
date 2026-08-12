@@ -19,6 +19,7 @@ import {
   Smartphone,
   Sparkles,
   PenLine,
+  Settings,
   type LucideIcon,
 } from "lucide-react"
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts"
@@ -204,10 +205,9 @@ function StatusMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" disabled={pending}>
+        <Button variant="ghost" size="icon-sm" disabled={pending} aria-label="Update status">
           {pending && <Loader2 className="size-3.5 animate-spin" />}
-          Update Status
-          <ChevronDown className="size-3.5" />
+          <Settings size={16} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -589,9 +589,11 @@ export default function ManageOrders() {
                           <OrderStatusBadge status={o.status} />
                         </td>
                         <td className="px-4 py-3.5">
-                          <div>{formatDate(o.createdAt)}</div>
-                          <div className="text-xs text-muted-foreground">
-                            {formatTime(o.createdAt)}
+                          <div className="space-y-0.5">
+                            <div>{formatDate(o.createdAt)}</div>
+                            <div className="text-xs text-muted-foreground">
+                              {formatTime(o.createdAt)}
+                            </div>
                           </div>
                         </td>
                         <td className="px-4 py-3.5 font-medium">
