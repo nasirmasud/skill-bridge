@@ -13,7 +13,6 @@ import {
   BadgeCheck,
   TrendingUp,
   Loader2,
-  ChevronDown,
   Code2,
   Clapperboard,
   Smartphone,
