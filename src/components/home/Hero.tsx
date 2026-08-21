@@ -78,6 +78,18 @@ export function Hero() {
         <span className="absolute right-[30%] bottom-[10%] h-1 w-1 rounded-full bg-fuchsia-200/60" />
       </div>
 
+      {/* Full-section background image */}
+      <img
+        src="https://images.unsplash.com/photo-1534430071631-854ff55eec78?w=1600&q=80&auto=format&fit=crop"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
+      />
+
+      {/* Overlay for text readability */}
+      <div className="pointer-events-none absolute inset-0 bg-[#07070c]/70" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#07070c] via-[#07070c]/80 to-transparent" />
+
       <div className="relative mx-auto grid grid-cols-1 items-center gap-16 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-28">
         {/* Left column */}
         <div className="flex flex-col space-y-8">
@@ -156,25 +168,9 @@ export function Hero() {
         </div>
 
         {/* Right column */}
-        <div className="relative ml-auto flex h-[480px] w-full max-w-xl items-center justify-center lg:h-[600px] lg:max-w-2xl">
-          {/* Glow */}
-          <div className="absolute h-[420px] w-[420px] rounded-full bg-indigo-600/25 blur-3xl lg:h-[520px] lg:w-[520px]" />
-
-          {/* Orbit rings */}
-          <div className="absolute h-[480px] w-[480px] rounded-full border border-indigo-400/20 lg:h-[560px] lg:w-[560px]" />
-          <div className="absolute h-[360px] w-[360px] rounded-full border border-fuchsia-400/10 lg:h-[420px] lg:w-[420px]" />
-          <span className="absolute left-[18%] top-[22%] h-1.5 w-1.5 rounded-full bg-fuchsia-300 shadow-[0_0_10px_2px_rgba(232,121,249,0.7)]" />
-          <span className="absolute bottom-[20%] right-[12%] h-1 w-1 rounded-full bg-indigo-200 shadow-[0_0_8px_2px_rgba(199,210,254,0.7)]" />
-
-          {/* Hero image */}
-          <img
-            src="https://images.unsplash.com/photo-1534430071631-854ff55eec78?w=800&q=80&auto=format&fit=crop"
-            alt="Freelancer working on a laptop"
-            className="relative z-10 h-full w-full rounded-3xl object-cover object-top [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_100%)]"
-          />
-
+        <div className="relative ml-auto flex h-[480px] w-full max-w-xl flex-col items-end justify-center gap-6 lg:h-[600px] lg:max-w-2xl">
           {/* Floating card: happy clients */}
-          <div className="absolute right-0 top-6 z-20 flex items-center gap-3 rounded-xl border border-white/10 bg-[#12121a]/95 px-4 py-3 shadow-xl backdrop-blur">
+          <div className="relative z-10 flex items-center gap-3 rounded-xl border border-white/10 bg-[#12121a]/95 px-4 py-3 shadow-xl backdrop-blur">
             <AvatarStack size="h-7 w-7" />
             <div>
               <p className="text-sm font-semibold text-white">10K+</p>
@@ -191,7 +187,7 @@ export function Hero() {
           </div>
 
           {/* Floating card: secure payments */}
-          <div className="absolute bottom-6 right-0 z-20 w-48 rounded-xl border border-white/10 bg-[#12121a]/95 p-4 shadow-xl backdrop-blur">
+          <div className="relative z-10 w-48 rounded-xl border border-white/10 bg-[#12121a]/95 p-4 shadow-xl backdrop-blur">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-indigo-400/30 bg-indigo-500/10">
               <ShieldCheck className="h-4 w-4 text-indigo-300" />
             </div>
