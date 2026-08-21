@@ -20,6 +20,7 @@ import {
   Users,
 } from "lucide-react"
 import { authApi } from "@/api/auth.api"
+import { usePageTitle } from "@/hooks/usePageTitle"
 import { useAuth } from "@/hooks/useAuth"
 import { getDashboardPath, getErrorMessage } from "@/lib/utils"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
@@ -105,6 +106,8 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
 
   const { login, isAuthenticated, user } = useAuth()
   const navigate = useNavigate()
+
+  usePageTitle(tab === "register" ? "Register" : "Login")
 
   const resolver: Resolver<FormValues> =
     tab === "register"

@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { useCreateService } from "@/hooks/useServices"
+import { usePageTitle } from "@/hooks/usePageTitle"
 import { getErrorMessage } from "@/lib/utils"
 import { ServiceForm } from "@/components/service/ServiceForm"
 import type { CreateServicePayload } from "@/types/service.types"
 
 export default function CreateService() {
+  usePageTitle("Create Service")
   const navigate = useNavigate()
   const createService = useCreateService()
 

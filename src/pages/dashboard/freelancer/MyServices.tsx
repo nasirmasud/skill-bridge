@@ -27,6 +27,7 @@ import {
 } from "lucide-react"
 import { useFreelancerServices, useDeleteService } from "@/hooks/useServices"
 import { useAuth } from "@/hooks/useAuth"
+import { usePageTitle } from "@/hooks/usePageTitle"
 import { getErrorMessage, cn } from "@/lib/utils"
 import { formatPrice, formatShortMonth } from "@/lib/format"
 import { LoadingState } from "@/components/shared/LoadingState"
@@ -215,6 +216,7 @@ function ServiceThumb({
 }
 
 export default function MyServices() {
+  usePageTitle("My Services")
   const { user } = useAuth()
   const { data, isLoading, isError, error, refetch } = useFreelancerServices(
     user?.id ?? ""

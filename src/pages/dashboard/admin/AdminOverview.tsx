@@ -37,6 +37,7 @@ import { useAdminOrders } from "@/hooks/useOrders"
 import { useRoleCount, useAdminUsers } from "@/hooks/useUsers"
 import { useCategories } from "@/hooks/useCategories"
 import { useAuth } from "@/hooks/useAuth"
+import { usePageTitle } from "@/hooks/usePageTitle"
 import { cn } from "@/lib/utils"
 import { formatCurrency, formatShortMonth } from "@/lib/format"
 import { OrderStatusBadge } from "@/components/order/OrderStatusBadge"
@@ -153,6 +154,7 @@ function StatCard({
 }
 
 export default function AdminOverview() {
+  usePageTitle("Admin Dashboard")
   const { user } = useAuth()
 
   const { data: ordersData, isLoading: ordersLoading } = useAdminOrders({

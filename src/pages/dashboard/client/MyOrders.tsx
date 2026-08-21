@@ -23,6 +23,7 @@ import {
 import { toast } from "sonner"
 import { useMyOrders } from "@/hooks/useOrders"
 import { useCreateReview } from "@/hooks/useReviews"
+import { usePageTitle } from "@/hooks/usePageTitle"
 import { getErrorMessage, cn } from "@/lib/utils"
 import { formatPrice, formatDateTime } from "@/lib/format"
 import { OrderStatusBadge } from "@/components/order/OrderStatusBadge"
@@ -106,6 +107,7 @@ function StatCard({
 }
 
 export default function MyOrders() {
+  usePageTitle("My Orders")
   const [page, setPage] = useState(1)
   const [query, setQuery] = useState("")
   const [statusFilter, setStatusFilter] = useState<"ALL" | OrderStatus>("ALL")

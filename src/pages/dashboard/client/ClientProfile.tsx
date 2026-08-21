@@ -29,6 +29,7 @@ import {
 } from "lucide-react"
 import { useAuth } from "@/hooks/useAuth"
 import { useMyOrders } from "@/hooks/useOrders"
+import { usePageTitle } from "@/hooks/usePageTitle"
 import { userApi } from "@/api/user.api"
 import { getErrorMessage, cn } from "@/lib/utils"
 import { formatDate } from "@/lib/format"
@@ -198,6 +199,7 @@ function timeAgo(date: string): string {
 }
 
 export default function ClientProfile() {
+  usePageTitle("Profile")
   const { user, setUser } = useAuth()
   const [activeTab, setActiveTab] = useState<TabId>("personal")
   const [showReferral, setShowReferral] = useState(true)

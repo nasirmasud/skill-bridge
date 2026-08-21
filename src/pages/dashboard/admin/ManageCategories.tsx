@@ -33,6 +33,7 @@ import {
 import { getErrorMessage, cn } from "@/lib/utils"
 import { formatDate } from "@/lib/format"
 import { LoadingState } from "@/components/shared/LoadingState"
+import { usePageTitle } from "@/hooks/usePageTitle"
 import { ErrorState } from "@/components/shared/ErrorState"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -230,6 +231,7 @@ function CategoryForm({ initial, onCancel, onSuccess }: CategoryFormProps) {
 }
 
 export default function ManageCategories() {
+  usePageTitle("Manage Categories")
   const { data, isLoading, isError, error, refetch } = useCategories()
   const deleteCategory = useDeleteCategory()
 

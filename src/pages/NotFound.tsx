@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { usePageTitle } from "@/hooks/usePageTitle"
 
 function Number404() {
   return (
@@ -11,6 +12,7 @@ function Number404() {
 }
 
 export default function NotFound() {
+  usePageTitle("Page Not Found")
   return (
     <main className="relative flex min-h-[80vh] w-full flex-col items-center justify-center overflow-hidden bg-background px-6 py-16">
       <div className="pointer-events-none absolute left-1/2 top-1/3 h-[500px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-[120px]" />

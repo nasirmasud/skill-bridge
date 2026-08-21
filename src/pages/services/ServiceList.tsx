@@ -24,6 +24,7 @@ import {
 } from "lucide-react"
 import { useCategories } from "@/hooks/useCategories"
 import { useServices } from "@/hooks/useServices"
+import { usePageTitle } from "@/hooks/usePageTitle"
 import { LoadingState } from "@/components/shared/LoadingState"
 import { ErrorState } from "@/components/shared/ErrorState"
 import { Pagination } from "@/components/shared/Pagination"
@@ -143,6 +144,8 @@ export default function ServiceList() {
   const activeCategoryId = searchParams.get("categoryId") ?? null
   const query = searchParams.get("search") ?? ""
   const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10) || 1)
+
+  usePageTitle(query ? `All Services – "${query}"` : "All Services")
 
   const [debouncedQuery, setDebouncedQuery] = useState(query)
 

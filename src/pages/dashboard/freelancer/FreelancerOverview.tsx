@@ -31,6 +31,7 @@ import {
 import { useReceivedOrders } from "@/hooks/useOrders"
 import { useFreelancerServices } from "@/hooks/useServices"
 import { useAuth } from "@/hooks/useAuth"
+import { usePageTitle } from "@/hooks/usePageTitle"
 import { getErrorMessage, cn } from "@/lib/utils"
 import { formatPrice, formatShortMonth } from "@/lib/format"
 import { OrderStatusBadge } from "@/components/order/OrderStatusBadge"
@@ -132,6 +133,7 @@ function StatCard({
 }
 
 export default function FreelancerOverview() {
+  usePageTitle("Freelancer Dashboard")
   const { user } = useAuth()
   const { data, isLoading, isError, error, refetch } = useReceivedOrders({
     page: 1,

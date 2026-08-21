@@ -20,6 +20,7 @@ import {
 } from "lucide-react"
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts"
 import { useReceivedOrders, useUpdateOrderStatus } from "@/hooks/useOrders"
+import { usePageTitle } from "@/hooks/usePageTitle"
 import { getErrorMessage, cn } from "@/lib/utils"
 import { formatPrice, formatDate, formatShortMonth } from "@/lib/format"
 import { LoadingState } from "@/components/shared/LoadingState"
@@ -273,6 +274,7 @@ function StatusMenu({
 }
 
 export default function ReceivedOrders() {
+  usePageTitle("Received Orders")
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState("")
   const [status, setStatus] = useState<"ALL" | OrderStatus>("ALL")

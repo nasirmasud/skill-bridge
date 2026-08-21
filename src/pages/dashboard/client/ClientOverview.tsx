@@ -31,6 +31,7 @@ import {
   Tooltip,
 } from "recharts"
 import { useMyOrders } from "@/hooks/useOrders"
+import { usePageTitle } from "@/hooks/usePageTitle"
 import { useAuth } from "@/hooks/useAuth"
 import { getErrorMessage, cn } from "@/lib/utils"
 import { formatPrice, formatShortMonth } from "@/lib/format"
@@ -125,6 +126,7 @@ function StatCard({
 }
 
 export default function ClientOverview() {
+  usePageTitle("Client Dashboard")
   const { user } = useAuth()
   const { data, isLoading, isError, error, refetch } = useMyOrders({
     page: 1,

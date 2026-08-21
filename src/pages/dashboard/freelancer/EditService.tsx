@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom"
 import { Loader2 } from "lucide-react"
 import { toast } from "sonner"
 import { useService, useUpdateService } from "@/hooks/useServices"
+import { usePageTitle } from "@/hooks/usePageTitle"
 import { getErrorMessage } from "@/lib/utils"
 import { ServiceForm } from "@/components/service/ServiceForm"
 import { ErrorState } from "@/components/shared/ErrorState"
@@ -12,6 +13,8 @@ export default function EditService() {
   const navigate = useNavigate()
   const { data: service, isLoading, isError, error, refetch } = useService(id)
   const updateService = useUpdateService()
+
+  usePageTitle(service ? `Edit: ${service.title}` : undefined)
 
   const handleSubmit = async (payload: CreateServicePayload) => {
     try {

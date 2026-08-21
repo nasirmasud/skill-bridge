@@ -30,6 +30,7 @@ import {
 import { getErrorMessage, cn } from "@/lib/utils"
 import { formatCurrency, formatDate, formatTime } from "@/lib/format"
 import { Pagination } from "@/components/shared/Pagination"
+import { usePageTitle } from "@/hooks/usePageTitle"
 import { LoadingState } from "@/components/shared/LoadingState"
 import { ErrorState } from "@/components/shared/ErrorState"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -224,6 +225,7 @@ function StatusMenu({
 }
 
 export default function ManageOrders() {
+  usePageTitle("Manage Orders")
   const { data, isLoading, isError, error, refetch } = useAdminOrders({
     page: 1,
     limit: 100,

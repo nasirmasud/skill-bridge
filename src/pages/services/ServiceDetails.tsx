@@ -14,6 +14,7 @@ import {
   Loader2,
 } from "lucide-react"
 import { useService, useServices } from "@/hooks/useServices"
+import { usePageTitle } from "@/hooks/usePageTitle"
 import { useCreateOrder } from "@/hooks/useOrders"
 import { useAuth } from "@/hooks/useAuth"
 import { getErrorMessage, cn } from "@/lib/utils"
@@ -151,6 +152,8 @@ export default function ServiceDetails() {
     error,
     refetch,
   } = useService(id)
+
+  usePageTitle(service ? service.title : undefined)
 
   const { data: relatedData } = useServices({
     page: 1,

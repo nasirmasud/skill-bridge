@@ -26,6 +26,7 @@ import { formatDate } from "@/lib/format"
 import { Pagination } from "@/components/shared/Pagination"
 import { LoadingState } from "@/components/shared/LoadingState"
 import { ErrorState } from "@/components/shared/ErrorState"
+import { usePageTitle } from "@/hooks/usePageTitle"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -153,6 +154,7 @@ function Sparkline() {
 }
 
 export default function ManageUsers() {
+  usePageTitle("Manage Users")
   const [page, setPage] = useState(1)
   const [search, setSearch] = useState("")
   const [role, setRole] = useState<"ALL" | Role>("ALL")
