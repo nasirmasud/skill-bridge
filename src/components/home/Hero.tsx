@@ -146,6 +146,18 @@ export function Hero() {
 
   return (
     <section className="relative w-full overflow-hidden bg-background">
+      {/* Full-banner background image */}
+      <img
+        src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1920&q=80&auto=format&fit=crop"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
+      />
+
+      {/* Readability overlays (theme-aware) */}
+      <div className="pointer-events-none absolute inset-0 bg-background/75" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background via-background/60 to-background/30" />
+
       {/* Soft brand tint */}
       <div className="pointer-events-none absolute -top-32 right-[-10%] h-[480px] w-[480px] rounded-full bg-primary/10 blur-[120px]" />
       <div className="pointer-events-none absolute bottom-[-25%] left-[-10%] h-[400px] w-[400px] rounded-full bg-primary/5 blur-[100px]" />
