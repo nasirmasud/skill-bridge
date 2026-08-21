@@ -35,7 +35,34 @@ const TRUST_ITEMS = [
   },
 ]
 
-function AvatarStack({ size = "h-6 w-6" }: { size?: string }) {
+const SAMPLE_SERVICES = [
+  {
+    name: "Sadia Rahman",
+    avatar: "https://i.pravatar.cc/64?img=47",
+    thumbnail:
+      "https://images.unsplash.com/photo-1547658719-da2b51169166?w=640&q=80&auto=format&fit=crop",
+    title: "Modern website design & development",
+    rating: "4.9",
+    reviews: 214,
+    price: 120,
+    wrapper:
+      "lg:absolute lg:left-0 lg:top-4 lg:-rotate-3 motion-safe:lg:animate-[hero-float_7s_ease-in-out_infinite]",
+  },
+  {
+    name: "Marcus Lee",
+    avatar: "https://i.pravatar.cc/64?img=32",
+    thumbnail:
+      "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=640&q=80&auto=format&fit=crop",
+    title: "Minimal logo design for your brand",
+    rating: "4.8",
+    reviews: 168,
+    price: 85,
+    wrapper:
+      "lg:absolute lg:bottom-8 lg:right-0 lg:rotate-2 motion-safe:lg:animate-[hero-float_9s_ease-in-out_1s_infinite]",
+  },
+]
+
+function AvatarStack({ size = "h-5 w-5" }: { size?: string }) {
   return (
     <div className="flex -space-x-2">
       {AVATARS.map((src, i) => (
@@ -43,9 +70,67 @@ function AvatarStack({ size = "h-6 w-6" }: { size?: string }) {
           key={i}
           src={src}
           alt=""
-          className={`${size} rounded-full border-2 border-[#07070c] object-cover`}
+          className={`${size} rounded-full border-2 border-background object-cover`}
         />
       ))}
+    </div>
+  )
+}
+
+function MiniServiceCard({
+  service,
+  className = "",
+}: {
+  service: (typeof SAMPLE_SERVICES)[number]
+  className?: string
+}) {
+  return (
+    <div
+      className={`w-full max-w-xs overflow-hidden rounded-2xl border border-border bg-card shadow-lg shadow-black/5 lg:w-72 ${className}`}
+    >
+      <div className="relative h-36 w-full overflow-hidden bg-muted">
+        <img
+          src={service.thumbnail}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className="h-full w-full object-cover"
+        />
+      </div>
+      <div className="p-4">
+        <div className="flex items-center gap-2">
+          <img
+            src={service.avatar}
+            alt=""
+            aria-hidden="true"
+            className="h-7 w-7 rounded-full object-cover"
+          />
+          <span className="text-sm font-medium text-foreground">
+            {service.name}
+          </span>
+          <span className="text-xs font-medium text-primary">Top Rated</span>
+        </div>
+        <p className="mt-3 text-[15px] font-semibold leading-snug text-foreground">
+          {service.title}
+        </p>
+        <div className="mt-3 flex items-center justify-between">
+          <div className="flex items-center gap-1 text-sm">
+            <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+            <span className="font-medium text-foreground">
+              {service.rating}
+            </span>
+            <span className="text-muted-foreground">
+              ({service.reviews})
+            </span>
+          </div>
+          <div className="text-sm text-muted-foreground">
+            From{" "}
+            <span className="font-semibold text-foreground">
+              ${service.price}
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -60,93 +145,70 @@ export function Hero() {
   }
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#07070c]">
-      {/* Ambient background effects */}
-      <div className="pointer-events-none absolute inset-0">
-        {/* Large purple ambient glow, biased top-left */}
-        <div className="absolute -top-40 left-[-10%] h-[700px] w-[700px] rounded-full bg-purple-700/25 blur-[120px]" />
-        <div className="absolute left-1/4 top-1/3 h-[400px] w-[400px] rounded-full bg-indigo-600/20 blur-[100px]" />
-        {/* Faint secondary glow bleeding toward the right/text side */}
-        <div className="absolute -left-[10%] top-10 h-[350px] w-[350px] rounded-full bg-indigo-900/20 blur-[110px]" />
+    <section className="relative w-full overflow-hidden bg-background">
+      {/* Soft brand tint */}
+      <div className="pointer-events-none absolute -top-32 right-[-10%] h-[480px] w-[480px] rounded-full bg-primary/10 blur-[120px]" />
+      <div className="pointer-events-none absolute bottom-[-25%] left-[-10%] h-[400px] w-[400px] rounded-full bg-primary/5 blur-[100px]" />
 
-        {/* Scattered star / sparkle dots across the whole section */}
-        <span className="absolute left-[8%] top-[14%] h-1 w-1 rounded-full bg-white/60 shadow-[0_0_6px_1px_rgba(255,255,255,0.5)]" />
-        <span className="absolute left-[22%] top-[55%] h-1 w-1 rounded-full bg-fuchsia-300/70 shadow-[0_0_8px_2px_rgba(232,121,249,0.5)]" />
-        <span className="absolute left-[40%] top-[8%] h-[3px] w-[3px] rounded-full bg-white/50" />
-        <span className="absolute right-[38%] top-[18%] h-1 w-1 rounded-full bg-indigo-200/70 shadow-[0_0_6px_1px_rgba(199,210,254,0.5)]" />
-        <span className="absolute right-[6%] top-[8%] h-[3px] w-[3px] rounded-full bg-white/60" />
-        <span className="absolute right-[30%] bottom-[10%] h-1 w-1 rounded-full bg-fuchsia-200/60" />
-      </div>
-
-      {/* Full-section background image */}
-      <img
-        src="https://images.unsplash.com/photo-1534430071631-854ff55eec78?w=1600&q=80&auto=format&fit=crop"
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
-      />
-
-      {/* Overlay for text readability */}
-      <div className="pointer-events-none absolute inset-0 bg-[#07070c]/70" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#07070c] via-[#07070c]/80 to-transparent" />
-
-      <div className="relative mx-auto grid grid-cols-1 items-center gap-16 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-28">
+      <div className="relative mx-auto grid w-full grid-cols-1 items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:px-12 lg:py-24 xl:px-16">
         {/* Left column */}
-        <div className="flex flex-col space-y-8">
+        <div className="flex flex-col space-y-7">
           {/* Trust badge */}
-          <div className="inline-flex items-center gap-2 self-start whitespace-nowrap rounded-full border border-white/10 bg-white/5 py-1.5 pl-3 pr-2 text-xs text-white/80">
-            <span className="h-2 w-2 rounded-full bg-emerald-400" />
+          <div className="inline-flex items-center gap-2 self-start rounded-full border border-border bg-muted/60 py-1.5 pl-3 pr-2 text-xs text-muted-foreground">
+            <span className="h-2 w-2 rounded-full bg-emerald-500" />
             <span>Trusted by 10K+ businesses worldwide</span>
-            <AvatarStack size="h-12 w-12" />
+            <AvatarStack />
           </div>
 
           {/* Headline */}
-          <h1 className="text-5xl font-bold leading-[1.1] tracking-tight text-white sm:text-6xl">
-            Find the perfect freelance service for your{" "}
-            <span className="bg-gradient-to-r from-indigo-400 to-fuchsia-500 bg-clip-text text-transparent">
-              business
-            </span>
+          <h1 className="text-4xl font-bold leading-[1.08] tracking-tight text-foreground sm:text-5xl xl:text-6xl">
+            Find the perfect{" "}
+            <span className="relative inline-block whitespace-nowrap">
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 bottom-1 h-3 rounded-sm bg-primary/15 sm:h-4"
+              />
+              <span className="relative">freelance service</span>
+            </span>{" "}
+            for your business
           </h1>
 
           {/* Subcopy */}
-          <p className="max-w-md text-base text-white/60">
+          <p className="max-w-lg text-base text-muted-foreground sm:text-lg">
             Connect with talented freelancers and get high-quality work done —
             fast, reliable, and hassle-free.
           </p>
 
           {/* Search bar */}
           <form
-            className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 p-1.5 pl-4 max-w-lg"
+            className="flex h-14 w-full max-w-xl items-center gap-2 rounded-2xl border border-border bg-card p-2 pl-4 shadow-sm transition-shadow focus-within:border-primary/50 focus-within:ring-4 focus-within:ring-primary/10"
             onSubmit={(e) => {
               e.preventDefault()
               submitSearch(query)
             }}
           >
-            <Search className="h-4 w-4 shrink-0 text-white/40" />
+            <Search className="h-5 w-5 shrink-0 text-muted-foreground" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="What service are you looking for?"
-              className="w-full bg-transparent text-sm text-white placeholder:text-white/40 focus:outline-none"
+              className="h-full w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
             />
-            <Button
-              type="submit"
-              className="shrink-0 rounded-lg bg-gradient-to-r from-indigo-600 to-blue-500 px-6 text-white hover:opacity-90"
-            >
+            <Button type="submit" size="lg" className="h-full rounded-xl px-6">
               Search
             </Button>
           </form>
 
           {/* Popular tags */}
           <div className="flex flex-wrap items-center gap-2 text-sm">
-            <span className="text-white/50">Popular:</span>
+            <span className="text-muted-foreground">Popular:</span>
             {POPULAR_TAGS.map((tag) => (
               <button
                 key={tag}
                 type="button"
                 onClick={() => submitSearch(tag)}
-                className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/80 transition-colors hover:bg-white/10"
+                className="rounded-full border border-border bg-muted/60 px-3 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
               >
                 {tag}
               </button>
@@ -154,49 +216,39 @@ export function Hero() {
           </div>
 
           {/* Trust row */}
-          <div className="grid grid-cols-3 gap-6 border-t border-white/10 pt-8">
+          <div className="grid grid-cols-1 gap-4 border-t border-border pt-6 sm:grid-cols-3 sm:gap-6">
             {TRUST_ITEMS.map(({ icon: Icon, title, subtitle }) => (
               <div key={title} className="flex items-start gap-2.5">
-                <Icon className="mt-0.5 h-5 w-5 shrink-0 text-white/70" />
+                <Icon className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
                 <div>
-                  <p className="text-sm font-medium text-white">{title}</p>
-                  <p className="text-xs text-white/50">{subtitle}</p>
+                  <p className="text-sm font-medium text-foreground">{title}</p>
+                  <p className="text-xs text-muted-foreground">{subtitle}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Right column */}
-        <div className="relative ml-auto flex h-[480px] w-full max-w-xl flex-col items-end justify-center gap-6 lg:h-[600px] lg:max-w-2xl">
-          {/* Floating card: happy clients */}
-          <div className="relative z-10 flex items-center gap-3 rounded-xl border border-white/10 bg-[#12121a]/95 px-4 py-3 shadow-xl backdrop-blur">
-            <AvatarStack size="h-7 w-7" />
-            <div>
-              <p className="text-sm font-semibold text-white">10K+</p>
-              <p className="text-xs text-white/50">Happy Clients</p>
-              <div className="mt-0.5 flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className="h-3 w-3 fill-amber-400 text-amber-400"
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+        {/* Right column — marketplace collage */}
+        <div className="relative flex flex-col items-center justify-center gap-6 lg:block lg:h-[540px]">
+          {/* Backdrop blob */}
+          <div className="absolute left-1/2 top-1/2 hidden h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-3xl lg:block" />
 
-          {/* Floating card: secure payments */}
-          <div className="relative z-10 w-48 rounded-xl border border-white/10 bg-[#12121a]/95 p-4 shadow-xl backdrop-blur">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-indigo-400/30 bg-indigo-500/10">
-              <ShieldCheck className="h-4 w-4 text-indigo-300" />
-            </div>
-            <p className="mt-2.5 text-sm font-semibold leading-tight text-white">
-              Secure Payments
-            </p>
-            <p className="mt-1 text-xs leading-snug text-white/50">
-              Your transactions are protected
-            </p>
+          {SAMPLE_SERVICES.map((service) => (
+            <MiniServiceCard
+              key={service.name}
+              service={service}
+              className={service.wrapper}
+            />
+          ))}
+
+          {/* Floating rating chip */}
+          <div className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 shadow-md lg:absolute lg:right-10 lg:top-[38%] motion-safe:lg:animate-[hero-float_8s_ease-in-out_0.5s_infinite]">
+            <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+            <span className="text-sm font-semibold text-foreground">4.9</span>
+            <span className="text-xs text-muted-foreground">
+              Average rating
+            </span>
           </div>
         </div>
       </div>
