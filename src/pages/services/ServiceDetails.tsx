@@ -18,7 +18,7 @@ import { usePageTitle } from "@/hooks/usePageTitle"
 import { useCreateOrder } from "@/hooks/useOrders"
 import { useAuth } from "@/hooks/useAuth"
 import { getErrorMessage, cn } from "@/lib/utils"
-import { formatPrice, formatDate, formatRating } from "@/lib/format"
+import { formatCurrency, formatDate, formatRating } from "@/lib/format"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -124,7 +124,7 @@ function RelatedCard({ service }: { service: Service }) {
           <span className="text-xs text-muted-foreground">
             From{" "}
             <span className="font-semibold text-foreground">
-              ${formatPrice(service.price)}
+              {formatCurrency(service.price)}
             </span>
           </span>
         </div>
@@ -532,7 +532,7 @@ export default function ServiceDetails() {
                 {service.packageName ?? "Basic Package"}
               </span>
               <div className="mt-1 text-3xl font-bold text-foreground">
-                ${formatPrice(service.price)}
+                {formatCurrency(service.price)}
               </div>
 
               <ul className="mt-4 space-y-2.5">
@@ -565,7 +565,7 @@ export default function ServiceDetails() {
                     ? "You can't order your own service"
                     : "Only clients can order"
                   : isAuthenticated
-                    ? `Continue ($${formatPrice(service.price)})`
+                    ? `Continue (${formatCurrency(service.price)})`
                     : "Login to Order"}
               </Button>
               <button
@@ -611,7 +611,7 @@ export default function ServiceDetails() {
                 </div>
                 <div>
                   <div className="text-sm font-semibold text-foreground">
-                    ${formatPrice(service.price)}
+                    {formatCurrency(service.price)}
                   </div>
                   <div className="mt-0.5 text-xs text-muted-foreground/70">
                     Starting at
@@ -707,7 +707,7 @@ export default function ServiceDetails() {
                 </p>
               </div>
               <div className="text-lg font-bold text-foreground">
-                ${formatPrice(service.price)}
+                {formatCurrency(service.price)}
               </div>
             </div>
 
