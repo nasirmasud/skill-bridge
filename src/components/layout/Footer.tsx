@@ -21,40 +21,92 @@ const SOCIAL_LINKS = [
   },
 ]
 
-const PLATFORM_LINKS = [
+interface FooterLink {
+  label: string
+  to?: string
+  href?: string
+}
+
+const PLATFORM_LINKS: FooterLink[] = [
   { label: "Browse Services", to: "/services" },
   { label: "How It Works", to: "/#how-it-works" },
   { label: "Become a Seller", to: "/#become-a-seller" },
   { label: "Categories", to: "/#categories" },
 ]
 
-const COMPANY_LINKS = ["About Us", "Careers", "Blog", "Contact Us"]
-const LEGAL_LINKS = ["Terms of Service", "Privacy Policy", "Cookies Policy"]
+const COMPANY_LINKS: FooterLink[] = [
+  { label: "About Us", href: "#" },
+  { label: "Careers", href: "#" },
+  { label: "Blog", href: "#" },
+  { label: "Contact Us", href: "#" },
+]
+
+const LEGAL_LINKS: FooterLink[] = [
+  { label: "Terms of Service", href: "#" },
+  { label: "Privacy Policy", href: "#" },
+  { label: "Cookies Policy", href: "#" },
+]
+
+function FooterColumn({ title, links }: { title: string; links: FooterLink[] }) {
+  return (
+    <div>
+      <p className="font-label-caps text-label-caps tracking-wider uppercase text-outline">
+        {title}
+      </p>
+      <ul className="mt-4 space-y-3">
+        {links.map((link) => (
+          <li key={link.label}>
+            {link.to ? (
+              <Link
+                to={link.to}
+                className="font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-on-surface"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                href={link.href ?? "#"}
+                className="font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-on-surface"
+              >
+                {link.label}
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
 
 export function Footer() {
   return (
-    <footer className="w-full bg-card px-4 pt-14 sm:px-6 lg:px-8">
+    <footer className="w-full bg-surface-container-lowest px-4 pt-14 sm:px-6 lg:px-8 2xl:px-12">
       <div className="mx-auto w-full">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:[grid-template-columns:1.4fr_0.8fr_0.8fr_1.3fr]">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5">
           {/* Brand */}
-          <div>
-            <Logo showText={false} imgClassName="h-30 w-30" />
-            <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
+          <div className="sm:col-span-2 lg:col-span-1">
+            <div className="flex items-center gap-2">
+              <Logo showText={false} imgClassName="h-8 w-auto object-contain" />
+              <span className="font-heading text-headline-sm font-semibold tracking-tight text-foreground">
+                Skillbridge
+              </span>
+            </div>
+            <p className="mt-3 max-w-xs font-body-sm text-body-sm text-on-surface-variant">
               The best place to discover and hire skilled freelancers for any
               project.
             </p>
-            <div className="mt-5 flex items-center gap-3">
+            <div className="mt-4 flex items-center gap-1">
               {SOCIAL_LINKS.map((social) => (
                 <a
                   key={social.label}
                   href="#"
                   aria-label={social.label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full bg-muted text-muted-foreground transition-colors hover:bg-muted/70 hover:text-foreground"
+                  className="rounded-lg p-2 text-outline transition-colors hover:bg-surface-container-high hover:text-on-surface"
                 >
                   <svg
                     viewBox="0 0 24 24"
                     fill="currentColor"
-                    className="size-4"
+                    className="size-[18px]"
                     aria-hidden="true"
                   >
                     <path d={social.path} />
@@ -64,83 +116,49 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Platform links */}
-          <div>
-            <p className="text-sm font-semibold text-foreground">Platform</p>
-            <ul className="mt-4 space-y-3">
-              {PLATFORM_LINKS.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    to={link.to}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Platform */}
+          <FooterColumn title="Platform" links={PLATFORM_LINKS} />
 
-          {/* Company links */}
-          <div>
-            <p className="text-sm font-semibold text-foreground">Company</p>
-            <ul className="mt-4 space-y-3">
-              {COMPANY_LINKS.map((link) => (
-                <li key={link}>
-                  <a
-                    href="#"
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {link}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Company */}
+          <FooterColumn title="Company" links={COMPANY_LINKS} />
+
+          {/* Legal */}
+          <FooterColumn title="Legal" links={LEGAL_LINKS} />
 
           {/* Newsletter */}
           <div>
-            <p className="text-sm font-semibold text-foreground">Stay in the loop</p>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
+            <p className="font-label-caps text-label-caps tracking-wider uppercase text-outline">
+              Stay in the loop
+            </p>
+            <p className="mt-3 font-body-sm text-body-sm text-on-surface-variant">
               Subscribe to get the latest updates and exclusive offers.
             </p>
             <form
-              className="mt-4 flex items-center overflow-hidden rounded-lg border border-border bg-muted/50"
+              className="mt-4 flex items-center overflow-hidden rounded-lg border border-outline-variant/40 bg-surface-container-low"
               onSubmit={(event) => event.preventDefault()}
             >
               <input
                 type="email"
                 placeholder="Enter your email"
                 aria-label="Email address"
-                className="w-full min-w-0 bg-transparent px-3.5 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+                className="w-full min-w-0 bg-transparent px-3.5 py-2.5 font-body-sm text-body-sm text-foreground placeholder:text-on-surface-variant focus:outline-none"
               />
               <button
                 type="submit"
                 aria-label="Subscribe"
-                className="flex h-full shrink-0 items-center justify-center bg-gradient-to-r from-indigo-600 to-fuchsia-500 px-3.5 py-2.5 text-white transition-opacity hover:opacity-90"
+                className="flex h-full shrink-0 items-center justify-center bg-primary px-3.5 py-2.5 text-primary-foreground transition-opacity hover:opacity-90"
               >
-                <Send className="h-4 w-4" />
+                <Send className="size-4" />
               </button>
             </form>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border py-6 sm:flex-row">
-          <p className="text-xs text-muted-foreground">
+        <div className="mt-10 border-t border-outline-variant/30 py-6">
+          <p className="font-caption text-caption text-center text-on-surface-variant sm:text-left">
             © 2026 Skillbridge. All rights reserved.
           </p>
-          <div className="flex items-center gap-6">
-            {LEGAL_LINKS.map((link) => (
-              <a
-                key={link}
-                href="#"
-                className="text-xs text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {link}
-              </a>
-            ))}
-          </div>
         </div>
       </div>
     </footer>
