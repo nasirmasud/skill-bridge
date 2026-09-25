@@ -1,7 +1,15 @@
-import { ArrowRight, BadgeCheck, ChevronDown, LayoutGrid, Search, Star, Users, Wallet } from "lucide-react"
+import { ArrowRight, BadgeCheck, LayoutGrid, Search, Star, Users, Wallet } from "lucide-react"
 import { useState, type FormEvent } from "react"
 import { useNavigate } from "react-router-dom"
 import { useCategories } from "@/hooks/useCategories"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import LiquidWaveHero from "./LiquidWaveHero"
 
 const TRENDING_TAGS = [
@@ -67,7 +75,7 @@ export function Hero() {
   }
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#031b2e]">
+    <section className="relative flex min-h-[640px] w-full flex-col justify-center overflow-hidden bg-[#031b2e] lg:min-h-[760px]">
       <LiquidWaveHero />
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 pb-10 pt-10 sm:px-6 lg:px-8 lg:pt-20 xl:px-12">
         <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
@@ -92,26 +100,42 @@ export function Hero() {
             className="relative flex w-full flex-col items-stretch gap-2 rounded-xl bg-white/10 p-2 shadow-xl backdrop-blur-xl sm:p-3 md:flex-row md:items-center"
             onSubmit={handleSubmit}
           >
-            <label className="flex min-w-0 items-center gap-2 rounded-lg bg-white/10 px-3 py-2.5 md:min-w-[170px]">
-              <LayoutGrid className="size-4 shrink-0 text-white/50" />
-              <select
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
-                className="w-full cursor-pointer appearance-none bg-transparent font-body-sm text-body-sm text-white focus:outline-none"
+            <Select value={categoryId} onValueChange={setCategoryId}>
+              <SelectTrigger
+                aria-label="Category"
+                className="h-auto w-full min-w-0 border-white/10 bg-white/10 px-3 py-2.5 font-body-sm text-body-sm text-white shadow-none hover:bg-white/15 focus-visible:border-white/20 focus-visible:ring-2 focus-visible:ring-[#c0c1ff]/40 dark:bg-white/10 dark:hover:bg-white/15 md:w-[170px]"
               >
-                <option value="all">All Categories</option>
-                {(categories ?? []).map((category) => (
-                  <option
-                    key={category.id}
-                    value={category.id}
-                    className="bg-[#0d1830]"
+                <LayoutGrid className="size-4 shrink-0 text-white/55" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent
+                position="popper"
+                side="bottom"
+                avoidCollisions={false}
+                align="start"
+                sideOffset={6}
+                style={{ animation: "none" }}
+                className="min-w-(--radix-select-trigger-width) overflow-hidden rounded-xl border border-white/10 bg-[#0b1830]/95 p-1 text-white shadow-2xl shadow-black/35 backdrop-blur-xl"
+              >
+                <SelectGroup>
+                  <SelectItem
+                    value="all"
+                    className="rounded-lg py-2.5 text-body-sm text-white/85 focus:bg-white/10 focus:text-white data-[state=checked]:text-[#c0c1ff]"
                   >
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="size-4 shrink-0 text-white/50" aria-hidden="true" />
-            </label>
+                    All Categories
+                  </SelectItem>
+                  {(categories ?? []).map((category) => (
+                    <SelectItem
+                      key={category.id}
+                      value={category.id}
+                      className="rounded-lg py-2.5 text-body-sm text-white/85 focus:bg-white/10 focus:text-white data-[state=checked]:text-[#c0c1ff]"
+                    >
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
 
             <div className="flex min-w-0 flex-1 items-center gap-2.5 rounded-lg bg-white/10 px-3.5 py-2.5">
               <Search className="size-4 shrink-0 text-[#c0c1ff]" />
@@ -126,20 +150,51 @@ export function Hero() {
               </span>
             </div>
 
-            <label className="flex min-w-0 items-center gap-2 rounded-lg bg-white/10 px-3 py-2.5 md:min-w-[150px]">
-              <Wallet className="size-4 shrink-0 text-white/50" />
-              <select
-                value={budgetKey}
-                onChange={(e) => setBudgetKey(e.target.value)}
-                className="w-full cursor-pointer appearance-none bg-transparent font-body-sm text-body-sm text-white focus:outline-none"
+            <Select value={budgetKey} onValueChange={setBudgetKey}>
+              <SelectTrigger
+                aria-label="Budget"
+                className="h-auto w-full min-w-0 border-white/10 bg-white/10 px-3 py-2.5 font-body-sm text-body-sm text-white shadow-none hover:bg-white/15 focus-visible:border-white/20 focus-visible:ring-2 focus-visible:ring-[#c0c1ff]/40 dark:bg-white/10 dark:hover:bg-white/15 md:w-[150px]"
               >
-                <option value="any">Any Budget</option>
-                <option value="entry">&lt; $500</option>
-                <option value="mid">$500 - $2,500</option>
-                <option value="enterprise">$2,500+</option>
-              </select>
-              <ChevronDown className="size-4 shrink-0 text-white/50" aria-hidden="true" />
-            </label>
+                <Wallet className="size-4 shrink-0 text-white/55" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent
+                position="popper"
+                side="bottom"
+                avoidCollisions={false}
+                align="start"
+                sideOffset={6}
+                style={{ animation: "none" }}
+                className="min-w-(--radix-select-trigger-width) overflow-hidden rounded-xl border border-white/10 bg-[#0b1830]/95 p-1 text-white shadow-2xl shadow-black/35 backdrop-blur-xl"
+              >
+                <SelectGroup>
+                  <SelectItem
+                    value="any"
+                    className="rounded-lg py-2.5 text-body-sm text-white/85 focus:bg-white/10 focus:text-white data-[state=checked]:text-[#c0c1ff]"
+                  >
+                    Any Budget
+                  </SelectItem>
+                  <SelectItem
+                    value="entry"
+                    className="rounded-lg py-2.5 text-body-sm text-white/85 focus:bg-white/10 focus:text-white data-[state=checked]:text-[#c0c1ff]"
+                  >
+                    &lt; $500
+                  </SelectItem>
+                  <SelectItem
+                    value="mid"
+                    className="rounded-lg py-2.5 text-body-sm text-white/85 focus:bg-white/10 focus:text-white data-[state=checked]:text-[#c0c1ff]"
+                  >
+                    $500 - $2,500
+                  </SelectItem>
+                  <SelectItem
+                    value="enterprise"
+                    className="rounded-lg py-2.5 text-body-sm text-white/85 focus:bg-white/10 focus:text-white data-[state=checked]:text-[#c0c1ff]"
+                  >
+                    $2,500+
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
 
             <button
               type="submit"
