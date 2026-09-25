@@ -67,6 +67,9 @@ export function Navbar() {
       ? location.hash === to.slice(1)
       : location.pathname === to
 
+  const overDarkHero =
+    location.pathname === "/" && location.hash === "" && !scrolled
+
   useEffect(() => {
     let frame = 0
 
@@ -94,17 +97,17 @@ export function Navbar() {
     navigate("/")
   }
 
-  const idleColor = scrolled
-    ? "text-on-surface-variant hover:text-on-surface"
-    : "text-white/80 hover:text-white"
+  const idleColor = overDarkHero
+    ? "text-white/80 hover:text-white"
+    : "text-on-surface-variant hover:text-on-surface"
 
   return (
     <header
       className={cn(
         "sticky top-0 z-50 border-b transition-colors duration-200 motion-reduce:transition-none",
-        scrolled
-          ? "border-outline-variant/30 bg-surface-container-lowest/80 shadow-sm backdrop-blur-xl"
-          : "border-transparent bg-transparent"
+        overDarkHero
+          ? "border-transparent bg-transparent"
+          : "border-outline-variant/30 bg-surface-container-lowest/80 shadow-sm backdrop-blur-xl"
       )}
     >
       <div className="mx-auto w-full max-w-[1440px] px-margin-mobile lg:px-margin-desktop">
@@ -143,9 +146,9 @@ export function Navbar() {
                     cn(
                       "rounded-sm font-body-sm text-body-sm leading-none whitespace-nowrap transition-colors",
                       isActive
-                        ? scrolled
-                          ? "font-medium text-primary"
-                          : "font-medium text-white"
+                        ? overDarkHero
+                          ? "font-medium text-white"
+                          : "font-medium text-primary"
                         : idleColor,
                       FOCUS_RING
                     )
@@ -172,7 +175,7 @@ export function Navbar() {
             <span
               className={cn(
                 "flex",
-                !scrolled &&
+                overDarkHero &&
                   "[&_button]:text-white/85 [&_button:hover]:bg-white/10"
               )}
             >
@@ -255,7 +258,10 @@ export function Navbar() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className={cn("lg:hidden", !scrolled && "text-white/85")}
+                  className={cn(
+                    "lg:hidden",
+                    overDarkHero && "text-white/85"
+                  )}
                   aria-label="Open navigation menu"
                 >
                   <Menu />
