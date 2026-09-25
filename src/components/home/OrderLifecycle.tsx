@@ -1,10 +1,10 @@
 import {
   BadgeCheck,
   ClipboardCheck,
-  Code2,
   Lock,
   RefreshCcw,
   Star,
+  Wrench,
 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 
@@ -22,8 +22,8 @@ const STEPS: {
     step: "STEP 01",
     status: "PENDING",
     title: "Order Placed",
-    body: "Price snapshot locked instantly. Client funds held safely in zero-leakage vault.",
-    footer: "Snapshot Locked",
+    body: "The agreed price is copied into your order, so later edits to the service can never change what you pay.",
+    footer: "Price Snapshot Saved",
     Icon: Lock,
     statusTone: "bg-primary/20 text-primary",
     iconTone: "text-primary",
@@ -31,9 +31,9 @@ const STEPS: {
   {
     step: "STEP 02",
     status: "ACCEPTED",
-    title: "Scope Validated",
-    body: "Freelancer verifies specs, sets delivery SLA countdown, and confirms dependencies.",
-    footer: "SLA Timer Commenced",
+    title: "Seller Confirms Scope",
+    body: "The seller accepts the order and confirms the scope before any work begins.",
+    footer: "Seller Accepted",
     Icon: ClipboardCheck,
     statusTone: "bg-secondary-container/40 text-on-secondary-container",
     iconTone: "text-on-secondary-container",
@@ -41,10 +41,10 @@ const STEPS: {
   {
     step: "STEP 03",
     status: "IN_PROGRESS",
-    title: "Sprint Execution",
-    body: "Continuous milestone updates, code branch reviews, and live preview staging builds.",
-    footer: "Commits & Revisions",
-    Icon: Code2,
+    title: "Work in Progress",
+    body: "Only the seller or an admin can move an order forward. No step can be skipped or reversed.",
+    footer: "No Skipped Steps",
+    Icon: Wrench,
     statusTone: "bg-primary-container/30 text-primary",
     iconTone: "text-primary",
   },
@@ -52,17 +52,15 @@ const STEPS: {
     step: "STEP 04",
     status: "COMPLETED",
     title: "Sign-Off & Review",
-    body: "Delivery approved. Assets transferred. 1-5 Star cryptographic review system unlocked.",
-    footer: "Review Authenticated",
+    body: "Delivery is approved and the order locks at COMPLETED. The client can then leave one review.",
+    footer: "One Review Per Order",
     Icon: Star,
     statusTone: "bg-tertiary/20 text-tertiary",
     iconTone: "text-tertiary",
   },
 ]
 
-const SPECS_URL = `${
-  (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/api\/?$/, "")
-}/api-docs`
+const STATES = ["PENDING", "ACCEPTED", "IN_PROGRESS", "COMPLETED"]
 
 export function OrderLifecycle() {
   return (
@@ -81,18 +79,17 @@ export function OrderLifecycle() {
               className="mb-2 inline-flex items-center gap-2 font-label-caps text-label-caps tracking-wider text-tertiary uppercase"
             >
               <RefreshCcw className="size-4 shrink-0" />
-              PRD Sections 2.3 &amp; 6.5 Engine Spec
+              Protected Order Delivery
             </div>
             <h2 className="font-headline-xl text-headline-xl font-semibold tracking-tight text-on-surface">
-              Deterministic Order Lifecycle &amp; Delivery Guarantees
+              Every Order Follows the Same Protected Path
             </h2>
           </div>
           <p
             data-slot="lifecycle-note"
             className="max-w-sm rounded-lg bg-surface-container px-4 py-2 font-caption text-caption text-on-surface-variant"
           >
-            Strict State Transitions enforced at database layer via Prisma transactions
-            and price snapshots.
+            Every status change is validated on the server before it is saved.
           </p>
         </div>
 
@@ -149,26 +146,30 @@ export function OrderLifecycle() {
                 data-slot="lifecycle-banner-title"
                 className="font-headline-sm text-headline-sm font-medium text-on-surface"
               >
-                Built with Zero Fraud Architecture
+                Every Transition Validated Server-Side
               </div>
               <p
                 data-slot="lifecycle-banner-caption"
                 className="font-caption text-caption text-on-surface-variant"
               >
-                Prevents unauthorized state jumps. No seller can jump from PENDING to
-                COMPLETED without verification.
+                Clients can never change an order's status themselves, and a completed
+                order can only ever be reviewed once.
               </p>
             </div>
           </div>
-          <a
-            data-slot="lifecycle-specs-link"
-            href={SPECS_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shrink-0 whitespace-nowrap rounded-lg bg-surface-container px-4 py-2 font-body-sm text-body-sm text-on-surface transition-colors hover:bg-surface-container-lowest"
+          <div
+            data-slot="lifecycle-states"
+            className="flex shrink-0 flex-wrap items-center gap-1.5 rounded-lg bg-surface-container px-4 py-2 font-label-caps text-label-caps text-on-surface-variant"
           >
-            View Order State Specs
-          </a>
+            {STATES.map((state, index) => (
+              <span key={state} className="flex items-center gap-1.5">
+                {index > 0 ? (
+                  <span aria-hidden="true">→</span>
+                ) : null}
+                {state}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>
