@@ -33,7 +33,7 @@ import { useFreelancerServices } from "@/hooks/useServices"
 import { useAuth } from "@/hooks/useAuth"
 import { usePageTitle } from "@/hooks/usePageTitle"
 import { getErrorMessage, cn } from "@/lib/utils"
-import { formatPrice, formatShortMonth } from "@/lib/format"
+import { formatCurrency, formatShortMonth } from "@/lib/format"
 import { OrderStatusBadge } from "@/components/order/OrderStatusBadge"
 import { LoadingState } from "@/components/shared/LoadingState"
 import { ErrorState } from "@/components/shared/ErrorState"
@@ -275,9 +275,7 @@ export default function FreelancerOverview() {
           iconBg="bg-violet-500/15"
           iconColor="text-violet-400"
           label="Total Earnings"
-          value={
-            isLoading ? "—" : `$${stats.earnings.toLocaleString()}`
-          }
+          value={isLoading ? "—" : formatCurrency(stats.earnings)}
           sub="From delivered & active orders"
         />
         <StatCard
@@ -532,7 +530,7 @@ export default function FreelancerOverview() {
                     </div>
                     <OrderStatusBadge status={o.status} />
                     <span className="w-16 shrink-0 text-right text-sm font-medium">
-                      ${formatPrice(o.totalPrice)}
+                      {formatCurrency(o.totalPrice)}
                     </span>
                   </Link>
                 )

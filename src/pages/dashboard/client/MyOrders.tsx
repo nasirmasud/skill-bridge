@@ -25,7 +25,7 @@ import { useMyOrders } from "@/hooks/useOrders"
 import { useCreateReview } from "@/hooks/useReviews"
 import { usePageTitle } from "@/hooks/usePageTitle"
 import { getErrorMessage, cn } from "@/lib/utils"
-import { formatPrice, formatDateTime } from "@/lib/format"
+import { formatCurrency, formatDateTime } from "@/lib/format"
 import { OrderStatusBadge } from "@/components/order/OrderStatusBadge"
 import { Pagination } from "@/components/shared/Pagination"
 import { LoadingState } from "@/components/shared/LoadingState"
@@ -160,7 +160,7 @@ export default function MyOrders() {
       o.service.freelancer.name,
       o.status,
       formatDateTime(o.createdAt).date,
-      `$${formatPrice(o.totalPrice)}`,
+      `${formatCurrency(o.totalPrice)}`,
     ])
     const csv = [header, ...rows]
       .map((r) => r.join(","))
@@ -398,7 +398,7 @@ export default function MyOrders() {
                           </div>
                         </td>
                         <td className="px-4 py-4 align-top font-medium">
-                          ${formatPrice(o.totalPrice)}
+                          {formatCurrency(o.totalPrice)}
                         </td>
                         <td className="px-4 py-4 align-top">
                           {canReview ? (
@@ -485,7 +485,7 @@ export default function MyOrders() {
                         {o.service.freelancer.name}
                       </span>
                       <span className="font-medium">
-                        ${formatPrice(o.totalPrice)}
+                        {formatCurrency(o.totalPrice)}
                       </span>
                     </div>
                     <div className="mt-1 text-xs text-muted-foreground">

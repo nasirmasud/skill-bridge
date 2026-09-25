@@ -29,7 +29,7 @@ import { LoadingState } from "@/components/shared/LoadingState"
 import { ErrorState } from "@/components/shared/ErrorState"
 import { Pagination } from "@/components/shared/Pagination"
 import { getErrorMessage, cn } from "@/lib/utils"
-import { formatPrice, formatRating } from "@/lib/format"
+import { formatCurrency, formatRating } from "@/lib/format"
 import type { Category, Service } from "@/types/service.types"
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -130,7 +130,7 @@ function ServiceCard({ service }: { service: Service }) {
           <div className="text-sm text-muted-foreground">
             From{" "}
             <span className="font-semibold text-foreground">
-              ${formatPrice(service.price)}
+              {formatCurrency(service.price)}
             </span>
           </div>
         </div>

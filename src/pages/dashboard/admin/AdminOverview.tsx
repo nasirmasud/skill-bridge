@@ -415,7 +415,7 @@ export default function AdminOverview() {
                       tick={{ fontSize: 11 }}
                       axisLine={false}
                       tickLine={false}
-                      tickFormatter={(v: number) => `$${v}`}
+                      tickFormatter={(v: number) => formatCurrency(v)}
                     />
                     <Tooltip
                       formatter={(value) => formatCurrency(value as number)}

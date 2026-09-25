@@ -15,6 +15,7 @@ import {
   Sparkles,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { formatCurrency } from "@/lib/format"
 import { useCategories } from "@/hooks/useCategories"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -535,7 +536,7 @@ export function ServiceForm({
                       <div className="flex items-center justify-between">
                         <span className="text-muted-foreground">From</span>
                         <span className="font-medium">
-                          ${values.price ? Number(values.price).toLocaleString() : "—"}
+                          {values.price ? formatCurrency(values.price) : "—"}
                         </span>
                       </div>
                     </div>

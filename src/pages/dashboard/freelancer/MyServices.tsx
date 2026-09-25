@@ -29,7 +29,7 @@ import { useFreelancerServices, useDeleteService } from "@/hooks/useServices"
 import { useAuth } from "@/hooks/useAuth"
 import { usePageTitle } from "@/hooks/usePageTitle"
 import { getErrorMessage, cn } from "@/lib/utils"
-import { formatPrice, formatShortMonth } from "@/lib/format"
+import { formatCurrency, formatShortMonth } from "@/lib/format"
 import { LoadingState } from "@/components/shared/LoadingState"
 import { ErrorState } from "@/components/shared/ErrorState"
 import { Button } from "@/components/ui/button"
@@ -504,7 +504,7 @@ export default function MyServices() {
                         <td className="px-4 py-4 text-muted-foreground">
                           From{" "}
                           <span className="font-medium text-foreground">
-                            ${formatPrice(s.price)}
+                            {formatCurrency(s.price)}
                           </span>
                         </td>
                         <td className="px-4 py-4">
@@ -599,7 +599,7 @@ export default function MyServices() {
                           <span className="text-sm text-muted-foreground">
                             From{" "}
                             <span className="font-semibold text-foreground">
-                              ${formatPrice(s.price)}
+                              {formatCurrency(s.price)}
                             </span>
                           </span>
                           <div className="flex items-center gap-1">

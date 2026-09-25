@@ -22,7 +22,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts"
 import { useReceivedOrders, useUpdateOrderStatus } from "@/hooks/useOrders"
 import { usePageTitle } from "@/hooks/usePageTitle"
 import { getErrorMessage, cn } from "@/lib/utils"
-import { formatPrice, formatDate, formatShortMonth } from "@/lib/format"
+import { formatCurrency, formatDate, formatShortMonth } from "@/lib/format"
 import { LoadingState } from "@/components/shared/LoadingState"
 import { ErrorState } from "@/components/shared/ErrorState"
 import { Pagination } from "@/components/shared/Pagination"
@@ -460,7 +460,7 @@ export default function ReceivedOrders() {
           iconBg="bg-amber-500/15"
           iconColor="text-amber-400"
           label="Total Earnings"
-          value={isLoading ? "—" : `$${stats.earnings.toLocaleString()}`}
+          value={isLoading ? "—" : formatCurrency(stats.earnings)}
           sub="From completed orders"
         />
         <StatCard
@@ -605,7 +605,7 @@ export default function ReceivedOrders() {
                           {formatDate(o.createdAt)}
                         </td>
                         <td className="px-4 py-4 font-medium">
-                          ${formatPrice(o.totalPrice)}
+                          {formatCurrency(o.totalPrice)}
                         </td>
                         <td className="px-4 py-4">
                           <div className="flex items-center gap-1.5">
@@ -730,7 +730,7 @@ export default function ReceivedOrders() {
           <div className="rounded-2xl border bg-card p-6">
             <h3 className="text-base font-semibold">Recent Earnings</h3>
             <div className="mt-3 text-2xl font-bold">
-              ${thisMonth.toLocaleString()}
+              {formatCurrency(thisMonth)}
             </div>
             <div className="mt-1 flex items-center gap-1.5 text-xs">
               <span className="text-muted-foreground">This month</span>
@@ -803,7 +803,7 @@ export default function ReceivedOrders() {
                 <div>
                   <div className="text-xs text-muted-foreground">Amount</div>
                   <div className="mt-0.5 font-medium">
-                    ${formatPrice(detailsOrder.totalPrice)}
+                    {formatCurrency(detailsOrder.totalPrice)}
                   </div>
                 </div>
                 <div>

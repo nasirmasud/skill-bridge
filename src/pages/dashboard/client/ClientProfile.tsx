@@ -32,7 +32,7 @@ import { useMyOrders } from "@/hooks/useOrders"
 import { usePageTitle } from "@/hooks/usePageTitle"
 import { userApi } from "@/api/user.api"
 import { getErrorMessage, cn } from "@/lib/utils"
-import { formatDate } from "@/lib/format"
+import { formatDate, formatCurrency } from "@/lib/format"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -237,7 +237,7 @@ export default function ClientProfile() {
     totalOrders,
     ongoing,
     completed,
-    `$${totalSpent.toLocaleString()}`,
+    formatCurrency(totalSpent),
   ]
 
   const recentOrders = [...orders]
