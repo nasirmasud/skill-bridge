@@ -75,6 +75,8 @@
     --text-label-numeric--letter-spacing: -0.01em;
     --text-label-numeric--font-weight: 500;
     --color-surface: var(--surface);
+    --color-on-surface: var(--on-surface);
+    --color-on-surface-variant: var(--on-surface-variant);
     --color-surface-container-lowest: var(--surface-container-lowest);
     --color-surface-container-low: var(--surface-container-low);
     --color-surface-container: var(--surface-container);
@@ -84,6 +86,7 @@
     --color-outline-variant: var(--outline-variant);
     --color-primary-container: var(--primary-container);
     --color-on-primary-container: var(--on-primary-container);
+    --color-primary-fixed: var(--primary-fixed);
     --color-secondary-container: var(--secondary-container);
     --color-on-secondary-container: var(--on-secondary-container);
     --color-tertiary: var(--tertiary);
@@ -137,6 +140,8 @@
 :root {
     --background: #f8f7fd;
     --surface: #f8f7fd;
+    --on-surface: #1a1c20;
+    --on-surface-variant: #45474e;
     --foreground: #1a1b22;
     --card: #ffffff;
     --card-foreground: #1a1b22;
@@ -179,6 +184,7 @@
     --outline-variant: #c5c6cf;
     --primary-container: #e0e0ff;
     --on-primary-container: #06006d;
+    --primary-fixed: #e0e0ff;
     --secondary-container: #e0e0ff;
     --on-secondary-container: #000767;
     --tertiary: #00684a;
@@ -193,6 +199,8 @@
 .dark {
     --background: #0f131c;
     --surface: #0f131c;
+    --on-surface: #e2e0e8;
+    --on-surface-variant: #c6c6d0;
     --foreground: #dfe2ef;
     --card: #181b25;
     --card-foreground: #dfe2ef;
@@ -234,6 +242,7 @@
     --outline-variant: #464554;
     --primary-container: #8083ff;
     --on-primary-container: #0d0096;
+    --primary-fixed: #e1e0ff;
     --secondary-container: #2f3aa3;
     --on-secondary-container: #a8afff;
     --tertiary: #4edea3;
