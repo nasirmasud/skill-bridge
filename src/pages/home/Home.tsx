@@ -1,4 +1,5 @@
 import { Hero } from "@/components/home/Hero"
+import { TrustedBy } from "@/components/home/TrustedBy"
 import { BrowseCategory } from "@/components/home/BrowseCategory"
 import { PopularServices } from "@/components/home/PopularServices"
 import { Stats } from "@/components/home/Stats"
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <TrustedBy />
       <BrowseCategory />
       <PopularServices />
       <Stats />
