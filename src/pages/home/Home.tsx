@@ -6,6 +6,7 @@ import { OrderLifecycle } from "@/components/home/OrderLifecycle"
 import { Stats } from "@/components/home/Stats"
 import { HowItWorks } from "@/components/home/HowItWorks"
 import { CuratedStacks } from "@/components/home/CuratedStacks"
+import { VerifiedTalents } from "@/components/home/VerifiedTalents"
 import { BecomeASeller } from "@/components/home/BecomeASeller"
 import { usePageTitle } from "@/hooks/usePageTitle"
 
@@ -21,6 +22,7 @@ export default function Home() {
       <Stats />
       <HowItWorks />
       <CuratedStacks />
+      <VerifiedTalents />
       <BecomeASeller />
     </main>
   )
