@@ -119,7 +119,7 @@ const fragmentShader = `
 
     uv += direction * influence * 0.10 * uRippleStrength;
 
-    float ripple = sin(distToMouse * 18.0 - uTime * 3.5) * influence * 0.015 * uRippleStrength;
+    float ripple = sin(distToMouse * 18.0 - uTime * 1.5) * influence * 0.015 * uRippleStrength;
     uv += direction * ripple;
 
     float t = uTime * uSpeed;
@@ -144,7 +144,7 @@ function hexToVector(hex: string) {
 export default function LiquidWaveHero({
   colors = DEFAULT_COLORS,
   backgroundColor = "#0a0a1e",
-  speed = 1.2,
+  speed = 0.35,
   intensity = 1.15,
   rippleStrength = 1,
   className = "",
