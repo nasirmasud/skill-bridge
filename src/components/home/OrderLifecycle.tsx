@@ -66,7 +66,7 @@ export function OrderLifecycle() {
   return (
     <section
       id="order-lifecycle"
-      className="mx-auto w-full max-w-[1440px] scroll-mt-24 px-margin-mobile py-space-xl lg:px-margin-desktop"
+      className="mx-auto w-full max-w-[1440px] scroll-mt-24 px-margin-mobile py-space-2xl lg:px-margin-desktop"
     >
       <div
         data-slot="lifecycle-panel"
