@@ -25,7 +25,7 @@ const STEPS: {
     body: "The agreed price is copied into your order, so later edits to the service can never change what you pay.",
     footer: "Price Snapshot Saved",
     Icon: Lock,
-    statusTone: "bg-primary/20 text-primary",
+    statusTone: "bg-primary/10 text-primary",
     iconTone: "text-primary",
   },
   {
@@ -55,7 +55,7 @@ const STEPS: {
     body: "Delivery is approved and the order locks at COMPLETED. The client can then leave one review.",
     footer: "One Review Per Order",
     Icon: Star,
-    statusTone: "bg-tertiary/20 text-tertiary",
+    statusTone: "bg-tertiary/10 text-tertiary",
     iconTone: "text-tertiary",
   },
 ]
