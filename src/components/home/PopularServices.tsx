@@ -102,7 +102,7 @@ function ServiceCard({ service }: { service: Service }) {
               data-slot="service-tier"
               className={`shrink-0 rounded px-1.5 py-0.5 font-label-caps text-[10px] leading-tight font-semibold ${
                 (service.avgRating ?? 0) >= 4.9
-                  ? "bg-primary/20 text-primary"
+                  ? "bg-primary-container/30 text-on-surface"
                   : "bg-on-secondary-container/20 text-on-secondary-container"
               }`}
             >
