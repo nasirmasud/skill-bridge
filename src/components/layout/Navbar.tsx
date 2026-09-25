@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react"
-import { Link, NavLink, useNavigate } from "react-router-dom"
-import { LayoutDashboard, LogOut, Menu } from "lucide-react"
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom"
+import {
+  ChevronRight,
+  Compass,
+  LayoutDashboard,
+  LayoutGrid,
+  LogOut,
+  Menu,
+  Route,
+  ShieldCheck,
+  Store,
+} from "lucide-react"
 import { useAuth } from "@/hooks/useAuth"
 import { getDashboardPath } from "@/lib/utils"
 import { cn } from "@/lib/utils"
@@ -26,10 +36,10 @@ import { Logo } from "./Logo"
 import { ThemeToggle } from "./ThemeToggle"
 
 const NAV_LINKS = [
-  { label: "Services", to: "/services" },
-  { label: "Categories", to: "/#categories" },
-  { label: "How It Works", to: "/#how-it-works" },
-  { label: "Enterprise", to: "/#governance" },
+  { label: "Services", to: "/services", icon: Compass },
+  { label: "Categories", to: "/#categories", icon: LayoutGrid },
+  { label: "How It Works", to: "/#how-it-works", icon: Route },
+  { label: "Enterprise", to: "/#governance", icon: ShieldCheck },
 ]
 
 const FOCUS_RING =
@@ -50,6 +60,12 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const { user, isAuthenticated, isLoading, logout } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const isLinkActive = (to: string) =>
+    to.startsWith("/#")
+      ? location.hash === to.slice(1)
+      : location.pathname === to
 
   useEffect(() => {
     let frame = 0
@@ -102,7 +118,7 @@ export function Navbar() {
           </Link>
 
           <nav
-            className="hidden items-center gap-1 lg:flex"
+            className="hidden items-center gap-5 lg:flex xl:gap-6"
             aria-label="Main"
           >
             {NAV_LINKS.map((link) =>
@@ -245,8 +261,8 @@ export function Navbar() {
                   <Menu />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80">
-                <SheetHeader className="border-b">
+              <SheetContent side="right" className="w-[min(21rem,88vw)] gap-0 p-0">
+                <SheetHeader className="shrink-0 border-b p-4">
                   <SheetTitle className="sr-only">Navigation menu</SheetTitle>
                   <Link to="/" onClick={() => setMenuOpen(false)}>
                     <Logo
@@ -257,29 +273,65 @@ export function Navbar() {
                 </SheetHeader>
 
                 <nav
-                  className="flex flex-col gap-4 px-margin-mobile pt-4"
+                  className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto px-margin-mobile py-5"
                   aria-label="Mobile"
                 >
-                  {NAV_LINKS.map((link) => (
-                    <Link
-                      key={link.label}
-                      to={link.to}
-                      onClick={() => setMenuOpen(false)}
-                      className="rounded-lg px-2 py-1.5 font-body-md text-body-md text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-on-surface"
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
+                  <p className="px-2 pb-1 font-label-caps text-label-caps text-on-surface-variant/60">
+                    Explore
+                  </p>
+                  {NAV_LINKS.map((link) => {
+                    const Icon = link.icon
+                    const active = isLinkActive(link.to)
+
+                    return (
+                      <Link
+                        key={link.label}
+                        to={link.to}
+                        onClick={() => setMenuOpen(false)}
+                        aria-current={active ? "page" : undefined}
+                        className={cn(
+                          "group flex min-h-12 items-center gap-3 rounded-xl border px-3 py-2.5 font-body-md text-body-md transition-colors",
+                          FOCUS_RING,
+                          active
+                            ? "border-primary/50 bg-primary/10 text-primary"
+                            : "border-outline-variant/20 bg-surface-container-low text-on-surface hover:border-primary/40 hover:bg-surface-container-high"
+                        )}
+                      >
+                        <span
+                          className={cn(
+                            "flex size-9 shrink-0 items-center justify-center rounded-lg transition-colors",
+                            active
+                              ? "bg-primary/15 text-primary"
+                              : "bg-surface-container-highest text-primary group-hover:bg-primary/10"
+                          )}
+                        >
+                          <Icon size={18} />
+                        </span>
+                        {link.label}
+                        <ChevronRight
+                          size={16}
+                          className="ml-auto shrink-0 text-outline transition-transform duration-200 group-hover:translate-x-0.5"
+                        />
+                      </Link>
+                    )
+                  })}
+
+                  <div className="my-2 h-px bg-outline-variant/20" />
+
                   <Link
                     to="/#become-a-seller"
                     onClick={() => setMenuOpen(false)}
-                    className="rounded-lg px-2 py-1.5 font-body-md text-body-md text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-on-surface"
+                    className={cn(
+                      "flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-3 py-2.5 font-body-md text-body-md font-medium text-primary-foreground transition-opacity hover:opacity-90",
+                      FOCUS_RING
+                    )}
                   >
+                    <Store size={18} />
                     Become a Seller
                   </Link>
                 </nav>
 
-                <div className="mt-auto flex flex-col gap-2 border-t p-4">
+                <div className="mt-auto flex shrink-0 flex-col gap-2 border-t p-4">
                   {isAuthenticated && user ? (
                     <>
                       <Button
