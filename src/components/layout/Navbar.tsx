@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Link, NavLink, useNavigate } from "react-router-dom"
-import { LayoutDashboard, LogOut, Menu } from "lucide-react"
+import { Bell, LayoutDashboard, LogOut, Menu, Search } from "lucide-react"
 import { useAuth } from "@/hooks/useAuth"
 import { getDashboardPath } from "@/lib/utils"
 import { cn } from "@/lib/utils"
@@ -26,11 +26,11 @@ import { Logo } from "./Logo"
 import { ThemeToggle } from "./ThemeToggle"
 
 const NAV_LINKS = [
-  { label: "Home", to: "/" },
-  { label: "Services", to: "/services" },
-  { label: "Categories", to: "/#categories" },
+  { label: "Explore Services", to: "/services" },
+  { label: "Browse Categories", to: "/#categories" },
   { label: "How It Works", to: "/#how-it-works" },
-  { label: "Become a Seller", to: "/#become-a-seller" },
+  { label: "Enterprise", to: "/#governance" },
+  { label: "Verified Talents", to: "/#verified-talents" },
 ]
 
 function getInitials(name: string): string {
@@ -44,17 +44,9 @@ function getInitials(name: string): string {
 }
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const { user, isAuthenticated, isLoading, logout } = useAuth()
   const navigate = useNavigate()
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8)
-    onScroll()
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
 
   const handleLogout = () => {
     logout()
@@ -65,23 +57,32 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 border-b backdrop-blur transition-colors duration-200",
-        "border-black/5 bg-white/80 dark:border-white/5 dark:bg-[#07070c]/80",
-        scrolled && "shadow-sm"
+        "sticky top-0 z-50 border-b border-outline-variant/30 backdrop-blur-xl",
+        "bg-surface-container-lowest/80"
       )}
     >
-      <div className="mx-auto flex h-16 w-full items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Link to="/" aria-label="Skillbridge home">
-                  <Logo showText={false} imgClassName="h-36 w-36" />
-        </Link>
+      <div className="mx-auto flex h-16 w-full max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-4 lg:gap-6">
+          <Link to="/" aria-label="Skillbridge home">
+            <Logo showText={false} imgClassName="h-8 w-auto object-contain" />
+          </Link>
+          <span className="flex items-center gap-2">
+            <span className="font-heading text-headline-sm font-semibold tracking-tight text-foreground">
+              Skillbridge
+            </span>
+            <span className="rounded border border-primary/30 bg-primary-container/20 px-1.5 py-0.5 font-label-caps text-label-caps font-medium tracking-wider text-primary uppercase">
+              PRO
+            </span>
+          </span>
+        </div>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
+        <nav className="hidden items-center gap-6 xl:flex" aria-label="Main">
           {NAV_LINKS.map((link) =>
             link.to.startsWith("/#") ? (
               <Link
                 key={link.label}
                 to={link.to}
-                className="text-sm font-medium text-black/60 transition-colors hover:text-black dark:text-white/70 dark:hover:text-white"
+                className="font-body-md text-body-md text-on-surface-variant transition-colors hover:text-on-surface"
               >
                 {link.label}
               </Link>
@@ -92,10 +93,10 @@ export function Navbar() {
                 end
                 className={({ isActive }) =>
                   cn(
-                    "text-sm transition-colors",
+                    "font-body-md text-body-md transition-colors",
                     isActive
-                      ? "font-semibold text-black dark:text-white"
-                      : "font-medium text-black/60 hover:text-black dark:text-white/70 dark:hover:text-white"
+                      ? "font-medium text-primary"
+                      : "text-on-surface-variant hover:text-on-surface"
                   )
                 }
               >
@@ -105,8 +106,37 @@ export function Navbar() {
           )}
         </nav>
 
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-3">
+          <Link
+            to="/services"
+            className="hidden items-center gap-2 rounded-lg border border-outline-variant/40 bg-surface-container-low px-3 py-1.5 transition-colors focus-within:border-primary md:flex"
+          >
+            <Search size={16} className="text-outline" />
+            <span className="font-body-sm text-body-sm text-outline">
+              Search services or skills...
+            </span>
+            <span className="rounded border border-outline-variant/30 bg-surface-container-high px-1.5 py-0.5 font-label-caps text-label-caps text-on-surface-variant">
+              ⌘K
+            </span>
+          </Link>
+
+          <Link
+            to="/#become-a-seller"
+            className="hidden px-2 py-1.5 font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-on-surface sm:inline-flex"
+          >
+            Become a Seller
+          </Link>
+
           <ThemeToggle />
+
+          <button
+            type="button"
+            aria-label="Notifications"
+            className="relative rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-on-surface"
+          >
+            <Bell size={20} />
+            <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-tertiary" />
+          </button>
 
           {!isLoading &&
             (isAuthenticated && user ? (
@@ -158,13 +188,13 @@ export function Navbar() {
               <>
                 <Link
                   to="/login"
-                  className="hidden text-sm font-medium text-black/80 transition-colors hover:text-black sm:inline dark:text-white/85 dark:hover:text-white"
+                  className="hidden px-2 py-1.5 font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-on-surface sm:inline"
                 >
                   Login
                 </Link>
                 <Button
                   asChild
-                  className="rounded-lg border-0 bg-gradient-to-r from-indigo-600 to-fuchsia-500 px-5 text-white shadow-none transition-opacity hover:opacity-90"
+                  className="rounded-lg border-0 bg-primary px-5 text-primary-foreground shadow-none transition-opacity hover:opacity-90"
                 >
                   <Link to="/register">Sign Up</Link>
                 </Button>
@@ -176,7 +206,7 @@ export function Navbar() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="md:hidden"
+                className="xl:hidden"
                 aria-label="Open navigation menu"
               >
                 <Menu />
@@ -186,24 +216,39 @@ export function Navbar() {
               <SheetHeader className="border-b">
                 <SheetTitle className="sr-only">Navigation menu</SheetTitle>
                 <Link to="/" onClick={() => setMenuOpen(false)}>
-          <Logo showText={false} imgClassName="h-36 w-36" />
+                  <Logo showText={false} imgClassName="h-8 w-auto object-contain" />
                 </Link>
               </SheetHeader>
 
-              <nav
-                className="flex flex-col gap-1 px-4"
-                aria-label="Mobile"
-              >
+              <nav className="flex flex-col gap-4 px-4 pt-4" aria-label="Mobile">
+                <Link
+                  to="/services"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-2 rounded-lg border border-outline-variant/40 bg-surface-container-low px-3 py-2 font-body-sm text-body-sm text-on-surface-variant"
+                >
+                  <Search size={16} className="text-outline" />
+                  Search services or skills...
+                  <span className="ml-auto rounded border border-outline-variant/30 bg-surface-container-high px-1.5 py-0.5 font-label-caps text-label-caps text-on-surface-variant">
+                    ⌘K
+                  </span>
+                </Link>
                 {NAV_LINKS.map((link) => (
                   <Link
                     key={link.label}
                     to={link.to}
                     onClick={() => setMenuOpen(false)}
-                    className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    className="rounded-lg px-2 py-1.5 font-body-md text-body-md text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-on-surface"
                   >
                     {link.label}
                   </Link>
                 ))}
+                <Link
+                  to="/#become-a-seller"
+                  onClick={() => setMenuOpen(false)}
+                  className="rounded-lg px-2 py-1.5 font-body-md text-body-md text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-on-surface"
+                >
+                  Become a Seller
+                </Link>
               </nav>
 
               <div className="mt-auto flex flex-col gap-2 border-t p-4">
