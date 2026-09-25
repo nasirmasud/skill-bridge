@@ -2,6 +2,7 @@ import { ArrowRight, BadgeCheck, ChevronDown, LayoutGrid, Search, Star, Users, W
 import { useState, type FormEvent } from "react"
 import { useNavigate } from "react-router-dom"
 import { useCategories } from "@/hooks/useCategories"
+import LiquidWaveHero from "./LiquidWaveHero"
 
 const TRENDING_TAGS = [
   "Next.js 15",
@@ -17,19 +18,19 @@ const TRUST_METRICS = [
     icon: BadgeCheck,
     value: "99.4%",
     label: "Order Success Rate",
-    tone: "bg-tertiary/15 text-tertiary",
+    tone: "bg-[#4edea3]/15 text-[#4edea3]",
   },
   {
     icon: Star,
     value: "4.9 / 5.0",
     label: "Avg Client Rating",
-    tone: "bg-primary/15 text-primary",
+    tone: "bg-[#c0c1ff]/15 text-[#c0c1ff]",
   },
   {
     icon: Users,
     value: "12,400+",
     label: "Elite Freelancers",
-    tone: "bg-secondary-container/30 text-on-secondary-container",
+    tone: "bg-[#bdc2ff]/20 text-[#bdc2ff]",
   },
 ]
 
@@ -66,11 +67,12 @@ export function Hero() {
   }
 
   return (
-    <section className="relative w-full overflow-hidden bg-background">
-      <div className="mx-auto w-full max-w-[1440px] px-4 pb-10 pt-10 sm:px-6 lg:px-8 lg:pt-20 xl:px-12">
+    <section className="relative w-full overflow-hidden bg-[#031b2e]">
+      <LiquidWaveHero />
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 pb-10 pt-10 sm:px-6 lg:px-8 lg:pt-20 xl:px-12">
         <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
-          <div className="mb-4 inline-flex items-center gap-2.5 rounded-full bg-surface-container-high px-3 py-1 font-label-caps text-label-caps tracking-wider text-primary uppercase shadow-sm">
-            <span className="size-2 animate-pulse rounded-full bg-tertiary" />
+          <div className="mb-4 inline-flex items-center gap-2.5 rounded-full bg-white/10 px-3 py-1 font-label-caps text-label-caps tracking-wider text-[#c0c1ff] uppercase shadow-sm">
+            <span className="size-2 animate-pulse rounded-full bg-[#4edea3]" />
             <span>Skillbridge 2.0 Engine Live — Powered by Express + Prisma</span>
             <ArrowRight className="size-3.5" />
           </div>
@@ -80,63 +82,63 @@ export function Hero() {
             <span className='text-white'>Freelancers</span>
           </h1>
 
-          <p className="mx-auto mb-8 max-w-2xl font-body-lg text-body-lg text-on-surface-variant">
+          <p className="mx-auto mb-8 max-w-2xl font-body-lg text-body-lg text-white/80">
             The trusted marketplace connecting ambitious companies with elite
             engineers, designers, and AI specialists. Instant booking,
             transparent pricing, guaranteed delivery.
           </p>
 
           <form
-            className="relative flex w-full flex-col items-stretch gap-2 rounded-xl bg-surface-container-low/90 p-2 shadow-xl backdrop-blur-xl sm:p-3 md:flex-row md:items-center"
+            className="relative flex w-full flex-col items-stretch gap-2 rounded-xl bg-white/10 p-2 shadow-xl backdrop-blur-xl sm:p-3 md:flex-row md:items-center"
             onSubmit={handleSubmit}
           >
-            <label className="flex min-w-0 items-center gap-2 rounded-lg bg-surface-container px-3 py-2.5 md:min-w-[170px]">
-              <LayoutGrid className="size-4 shrink-0 text-outline" />
+            <label className="flex min-w-0 items-center gap-2 rounded-lg bg-white/10 px-3 py-2.5 md:min-w-[170px]">
+              <LayoutGrid className="size-4 shrink-0 text-white/50" />
               <select
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
-                className="w-full cursor-pointer appearance-none bg-transparent font-body-sm text-body-sm text-foreground focus:outline-none"
+                className="w-full cursor-pointer appearance-none bg-transparent font-body-sm text-body-sm text-white focus:outline-none"
               >
                 <option value="all">All Categories</option>
                 {(categories ?? []).map((category) => (
                   <option
                     key={category.id}
                     value={category.id}
-                    className="bg-surface-container"
+                    className="bg-[#0d1830]"
                   >
                     {category.name}
                   </option>
                 ))}
               </select>
-              <ChevronDown className="size-4 shrink-0 text-outline" aria-hidden="true" />
+              <ChevronDown className="size-4 shrink-0 text-white/50" aria-hidden="true" />
             </label>
 
-            <div className="flex min-w-0 flex-1 items-center gap-2.5 rounded-lg bg-surface-container px-3.5 py-2.5">
-              <Search className="size-4 shrink-0 text-primary" />
+            <div className="flex min-w-0 flex-1 items-center gap-2.5 rounded-lg bg-white/10 px-3.5 py-2.5">
+              <Search className="size-4 shrink-0 text-[#c0c1ff]" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Try 'Full-Stack Next.js 15', 'Figma Design System', 'FastAPI'..."
-                className="w-full bg-transparent font-body-sm text-body-sm text-foreground placeholder:text-outline focus:outline-none"
+                className="w-full bg-transparent font-body-sm text-body-sm text-white placeholder:text-white/40 focus:outline-none"
               />
-              <span className="hidden rounded bg-surface-container-high px-1.5 py-0.5 font-label-caps text-label-caps text-on-surface-variant lg:inline-block">
+              <span className="hidden rounded bg-white/15 px-1.5 py-0.5 font-label-caps text-label-caps text-white/70 lg:inline-block">
                 ⌘K
               </span>
             </div>
 
-            <label className="flex min-w-0 items-center gap-2 rounded-lg bg-surface-container px-3 py-2.5 md:min-w-[150px]">
-              <Wallet className="size-4 shrink-0 text-outline" />
+            <label className="flex min-w-0 items-center gap-2 rounded-lg bg-white/10 px-3 py-2.5 md:min-w-[150px]">
+              <Wallet className="size-4 shrink-0 text-white/50" />
               <select
                 value={budgetKey}
                 onChange={(e) => setBudgetKey(e.target.value)}
-                className="w-full cursor-pointer appearance-none bg-transparent font-body-sm text-body-sm text-foreground focus:outline-none"
+                className="w-full cursor-pointer appearance-none bg-transparent font-body-sm text-body-sm text-white focus:outline-none"
               >
                 <option value="any">Any Budget</option>
                 <option value="entry">&lt; $500</option>
                 <option value="mid">$500 - $2,500</option>
                 <option value="enterprise">$2,500+</option>
               </select>
-              <ChevronDown className="size-4 shrink-0 text-outline" aria-hidden="true" />
+              <ChevronDown className="size-4 shrink-0 text-white/50" aria-hidden="true" />
             </label>
 
             <button
@@ -149,7 +151,7 @@ export function Hero() {
           </form>
 
           <div className="mt-3.5 flex flex-wrap items-center justify-center gap-2">
-            <span className="mr-1 font-caption text-caption tracking-wider text-outline uppercase">
+            <span className="mr-1 font-caption text-caption tracking-wider text-white/50 uppercase">
               Trending:
             </span>
             {TRENDING_TAGS.map((tag) => (
@@ -157,7 +159,7 @@ export function Hero() {
                 key={tag}
                 type="button"
                 onClick={() => buildUrl(tag, "all", "any")}
-                className="rounded-full bg-surface-container px-2.5 py-1 font-body-sm text-body-sm text-on-surface-variant transition-colors hover:bg-surface-container-high hover:text-primary"
+                className="rounded-full bg-white/10 px-2.5 py-1 font-body-sm text-body-sm text-white/80 transition-colors hover:bg-white/20 hover:text-[#c0c1ff]"
               >
                 {tag}
               </button>
@@ -165,20 +167,20 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-3 rounded-xl bg-surface-container-lowest/60 p-3 shadow-sm backdrop-blur sm:grid-cols-3 sm:gap-4 sm:p-4">
+        <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-3 rounded-xl bg-white/5 p-3 shadow-sm backdrop-blur sm:grid-cols-3 sm:gap-4 sm:p-4">
           {TRUST_METRICS.map(({ icon: Icon, value, label, tone }) => (
             <div
               key={label}
-              className="flex items-center justify-center gap-3 rounded-lg bg-surface-container-low px-4 py-2.5 sm:justify-start"
+              className="flex items-center justify-center gap-3 rounded-lg bg-white/10 px-4 py-2.5 sm:justify-start"
             >
               <div className={`flex size-9 items-center justify-center rounded-lg ${tone}`}>
                 <Icon className="size-4" />
               </div>
               <div className="text-left">
-                <div className="font-label-numeric text-headline-sm font-semibold text-foreground">
+                <div className="font-label-numeric text-headline-sm font-semibold text-white">
                   {value}
                 </div>
-                <div className="font-caption text-caption text-outline">
+                <div className="font-caption text-caption text-white/60">
                   {label}
                 </div>
               </div>
