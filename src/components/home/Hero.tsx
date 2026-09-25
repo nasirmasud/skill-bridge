@@ -75,12 +75,8 @@ export function Hero() {
             <ArrowRight className="size-3.5" />
           </div>
 
-          <h1 className="mb-4 text-display-hero-mobile font-semibold tracking-tight text-foreground lg:text-display-hero">
-            Scale Faster with{" "}
-            <span className="bg-[linear-gradient(to_right,white,#49b5c7_45%,#5a1fc2_75%,white)] bg-clip-text text-transparent">
-              Vetted World-Class
-            </span>{" "}
-            Freelancers
+          <h1 className="mb-4 bg-[linear-gradient(to_right,white,#49b5c7_45%,#5a1fc2_75%,white)] bg-clip-text text-display-hero-mobile font-semibold tracking-tight text-transparent lg:text-display-hero">
+            Scale Faster with Vetted World-Class Freelancers
           </h1>
 
           <p className="mx-auto mb-8 max-w-2xl font-body-lg text-body-lg text-on-surface-variant">
