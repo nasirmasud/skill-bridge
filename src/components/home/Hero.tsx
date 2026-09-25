@@ -77,7 +77,7 @@ export function Hero() {
 
           <h1 className="mb-4 text-display-hero-mobile font-semibold tracking-tight text-foreground lg:text-display-hero">
             Scale Faster with{" "}
-            <span className="bg-gradient-to-r from-primary via-primary-fixed to-tertiary bg-clip-text text-transparent">
+            <span className="bg-[linear-gradient(to_right,white,#49b5c7_45%,#5a1fc2_75%,white)] bg-clip-text text-transparent">
               Vetted World-Class
             </span>{" "}
             Freelancers
