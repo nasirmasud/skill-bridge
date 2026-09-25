@@ -67,9 +67,6 @@ export function Navbar() {
       ? location.hash === to.slice(1)
       : location.pathname === to
 
-  const overDarkHero =
-    location.pathname === "/" && location.hash === "" && !scrolled
-
   useEffect(() => {
     let frame = 0
 
@@ -97,17 +94,13 @@ export function Navbar() {
     navigate("/")
   }
 
-  const idleColor = overDarkHero
-    ? "text-white/80 hover:text-white"
-    : "text-on-surface-variant hover:text-on-surface"
+  const idleColor = "text-on-surface-variant hover:text-on-surface"
 
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 border-b transition-colors duration-200 motion-reduce:transition-none",
-        overDarkHero
-          ? "border-transparent bg-transparent"
-          : "border-outline-variant/30 bg-surface-container-lowest/80 shadow-sm backdrop-blur-xl"
+        "sticky top-0 z-50 border-b border-outline-variant/30 bg-surface-container-lowest/80 backdrop-blur-xl transition-shadow duration-200 motion-reduce:transition-none",
+        scrolled ? "shadow-sm" : "shadow-none"
       )}
     >
       <div className="mx-auto w-full max-w-[1440px] px-margin-mobile lg:px-margin-desktop">
@@ -146,9 +139,7 @@ export function Navbar() {
                     cn(
                       "rounded-sm font-body-sm text-body-sm leading-none whitespace-nowrap transition-colors",
                       isActive
-                        ? overDarkHero
-                          ? "font-medium text-white"
-                          : "font-medium text-primary"
+                        ? "font-medium text-primary"
                         : idleColor,
                       FOCUS_RING
                     )
@@ -172,13 +163,7 @@ export function Navbar() {
               Become a Seller
             </Link>
 
-            <span
-              className={cn(
-                "flex",
-                overDarkHero &&
-                  "[&_button]:text-white/85 [&_button:hover]:bg-white/10"
-              )}
-            >
+            <span className="flex">
               <ThemeToggle />
             </span>
 
@@ -258,10 +243,7 @@ export function Navbar() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className={cn(
-                    "lg:hidden",
-                    overDarkHero && "text-white/85"
-                  )}
+                  className="lg:hidden"
                   aria-label="Open navigation menu"
                 >
                   <Menu />
