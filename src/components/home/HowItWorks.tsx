@@ -83,7 +83,7 @@ export function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="mx-auto w-full max-w-[1440px] scroll-mt-20 bg-background px-margin-mobile py-space-xl lg:px-margin-desktop"
+      className="mx-auto w-full max-w-[1440px] scroll-mt-20 bg-background px-margin-mobile py-space-2xl lg:px-margin-desktop"
     >
       <div className="mx-auto mb-space-xl max-w-2xl text-center">
         <span

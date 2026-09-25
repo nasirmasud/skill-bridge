@@ -3,11 +3,16 @@ import { TrustedBy } from "@/components/home/TrustedBy"
 import { BrowseCategory } from "@/components/home/BrowseCategory"
 import { PopularServices } from "@/components/home/PopularServices"
 import { OrderLifecycle } from "@/components/home/OrderLifecycle"
-import { Stats } from "@/components/home/Stats"
 import { HowItWorks } from "@/components/home/HowItWorks"
 import { CuratedStacks } from "@/components/home/CuratedStacks"
 import { VerifiedTalents } from "@/components/home/VerifiedTalents"
-import { BecomeASeller } from "@/components/home/BecomeASeller"
+import { ClientDashboardPreview } from "@/components/home/ClientDashboardPreview"
+import { SellerWizardPreview } from "@/components/home/SellerWizardPreview"
+import { Testimonials } from "@/components/home/Testimonials"
+import { Governance } from "@/components/home/Governance"
+import { MarketplaceStats } from "@/components/home/MarketplaceStats"
+import { Faq } from "@/components/home/Faq"
+import { DualCta } from "@/components/home/DualCta"
 import { usePageTitle } from "@/hooks/usePageTitle"
 
 export default function Home() {
@@ -19,11 +24,16 @@ export default function Home() {
       <BrowseCategory />
       <PopularServices />
       <OrderLifecycle />
-      <Stats />
       <HowItWorks />
       <CuratedStacks />
       <VerifiedTalents />
-      <BecomeASeller />
+      <ClientDashboardPreview />
+      <SellerWizardPreview />
+      <Testimonials />
+      <Governance />
+      <MarketplaceStats />
+      <Faq />
+      <DualCta />
     </main>
   )
 }

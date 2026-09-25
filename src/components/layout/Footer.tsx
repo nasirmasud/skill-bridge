@@ -85,11 +85,8 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
-            <div className="flex items-center gap-2">
-              <Logo showText={false} imgClassName="h-8 w-auto object-contain" />
-              <span className="font-heading text-headline-sm font-semibold tracking-tight text-foreground">
-                Skillbridge
-              </span>
+            <div className="flex items-center">
+              <Logo showText={false} imgClassName="h-20 w-auto object-contain sm:h-24" />
             </div>
             <p className="mt-3 max-w-xs font-body-sm text-body-sm text-on-surface-variant">
               The best place to discover and hire skilled freelancers for any

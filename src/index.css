@@ -88,6 +88,7 @@ html body[data-scroll-locked] {
     --spacing-space-md: 1rem;
     --spacing-space-lg: 1.5rem;
     --spacing-space-xl: 2.5rem;
+    --spacing-space-2xl: 10rem;
     --spacing-gutter-sm: 1rem;
     --spacing-gutter: 1.5rem;
     --spacing-gutter-lg: 2rem;
