@@ -66,14 +66,6 @@ export function Navbar() {
           <Link to="/" aria-label="Skillbridge home">
             <Logo showText={false} imgClassName="h-32 w-32 object-contain" />
           </Link>
-          <span className="flex items-center gap-2">
-            <span className="font-heading text-headline-sm font-semibold tracking-tight text-foreground">
-              Skillbridge
-            </span>
-            <span className="rounded border border-primary/30 bg-primary-container/20 px-1.5 py-0.5 font-label-caps text-label-caps font-medium tracking-wider text-primary uppercase">
-              PRO
-            </span>
-          </span>
         </div>
 
         <nav className="hidden items-center gap-6 xl:flex" aria-label="Main">
@@ -82,7 +74,7 @@ export function Navbar() {
               <Link
                 key={link.label}
                 to={link.to}
-                className="font-body-md text-body-md text-on-surface-variant transition-colors hover:text-on-surface"
+                className="font-body-md text-body-md leading-none whitespace-nowrap text-on-surface-variant transition-colors hover:text-on-surface"
               >
                 {link.label}
               </Link>
@@ -93,7 +85,7 @@ export function Navbar() {
                 end
                 className={({ isActive }) =>
                   cn(
-                    "font-body-md text-body-md transition-colors",
+                    "font-body-md text-body-md leading-none whitespace-nowrap transition-colors",
                     isActive
                       ? "font-medium text-primary"
                       : "text-on-surface-variant hover:text-on-surface"
@@ -122,7 +114,7 @@ export function Navbar() {
 
           <Link
             to="/#become-a-seller"
-            className="hidden px-2 py-1.5 font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-on-surface sm:inline-flex"
+            className="hidden px-2 py-1.5 font-body-sm text-body-sm leading-none whitespace-nowrap text-on-surface-variant transition-colors hover:text-on-surface sm:inline-flex"
           >
             Become a Seller
           </Link>
@@ -188,7 +180,7 @@ export function Navbar() {
               <>
                 <Link
                   to="/login"
-                  className="hidden px-2 py-1.5 font-body-sm text-body-sm text-on-surface-variant transition-colors hover:text-on-surface sm:inline"
+                  className="hidden px-2 py-1.5 font-body-sm text-body-sm leading-none whitespace-nowrap text-on-surface-variant transition-colors hover:text-on-surface sm:inline"
                 >
                   Login
                 </Link>
