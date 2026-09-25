@@ -2,7 +2,6 @@ import { useCategories } from "@/hooks/useCategories";
 import type { Category } from "@/types/service.types";
 import {
   ArrowRight,
-  ArrowUpRight,
   Briefcase,
   Code2,
   Grid,
@@ -33,7 +32,7 @@ const TONES = [
   "bg-secondary-container/30 text-on-secondary-container",
   "bg-tertiary-container/30 text-tertiary",
   "bg-surface-container-high text-primary",
-  "bg-primary-container/20 text-on-primary-container",
+  "bg-primary-container/20 text-primary dark:text-primary-fixed",
   "bg-secondary-container/20 text-on-secondary-container",
   "bg-tertiary-container/20 text-tertiary",
   "bg-error-container/30 text-error",
@@ -84,9 +83,13 @@ export function BrowseCategory() {
                 <div
                   className={`flex size-10 items-center justify-center rounded-lg ${TONES[i % TONES.length]}`}
                 >
-                  <Icon className='size-5' />
+                  <Icon className='size-6' />
                 </div>
-                <ArrowUpRight className='size-4 text-outline transition-colors group-hover:text-primary' />
+                {category.serviceCount ? (
+                  <span className='rounded bg-surface-container px-2 py-0.5 font-label-numeric text-caption text-outline'>
+                    {category.serviceCount.toLocaleString()}+ gigs
+                  </span>
+                ) : null}
               </div>
               <div>
                 <h3 className='font-headline-sm text-headline-sm text-on-surface transition-colors group-hover:text-primary'>
