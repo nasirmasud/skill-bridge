@@ -20,6 +20,9 @@ interface LiquidWaveHeroProps {
   speed?: number
   intensity?: number
   rippleStrength?: number
+  spread?: number
+  surface?: number
+  feather?: number
   className?: string
 }
 
@@ -48,6 +51,9 @@ const fragmentShader = `
   uniform float uSpeed;
   uniform float uIntensity;
   uniform float uRippleStrength;
+  uniform float uSpread;
+  uniform float uSurface;
+  uniform float uFeather;
   uniform vec2 uMouse;
   uniform float uMouseVelocity;
   uniform float uAspect;
@@ -55,6 +61,10 @@ const fragmentShader = `
 
   vec2 aspectSpread(vec2 center) {
     return vec2(center.x * uAspect, center.y);
+  }
+
+  float potential(vec2 offset, float invSigmaSquared) {
+    return exp(-dot(offset, offset) * invSigmaSquared);
   }
 
   vec4 blobField(vec2 point, float t) {
@@ -70,27 +80,19 @@ const fragmentShader = `
     vec2 c10 = aspectSpread(vec2(cos(t * 0.37 + 1.1) * 0.46, sin(t * 0.29 + 2.2) * 0.41));
 
     float radius = mix(0.17, 0.25, clamp(uAspect * 0.55, 0.0, 1.0));
-    float d1 = 1.0 - smoothstep(0.0, radius, length(point - c1));
-    float d2 = 1.0 - smoothstep(0.0, radius, length(point - c2));
-    float d3 = 1.0 - smoothstep(0.0, radius, length(point - c3));
-    float d4 = 1.0 - smoothstep(0.0, radius, length(point - c4));
-    float d5 = 1.0 - smoothstep(0.0, radius, length(point - c5));
-    float d6 = 1.0 - smoothstep(0.0, radius, length(point - c6));
-    float d7 = 1.0 - smoothstep(0.0, radius, length(point - c7));
-    float d8 = 1.0 - smoothstep(0.0, radius, length(point - c8));
-    float d9 = 1.0 - smoothstep(0.0, radius, length(point - c9));
-    float d10 = 1.0 - smoothstep(0.0, radius, length(point - c10));
+    float sigma = radius * uSpread;
+    float invSigmaSquared = 1.0 / max(2.0 * sigma * sigma, 0.0001);
 
-    float w1 = d1 * (0.72 + 0.28 * sin(t));
-    float w2 = d2 * (0.70 + 0.30 * cos(t * 1.2));
-    float w3 = d3 * (0.74 + 0.26 * sin(t * 0.8));
-    float w4 = d4 * (0.68 + 0.32 * cos(t * 1.1));
-    float w5 = d5 * (0.71 + 0.29 * sin(t * 0.9));
-    float w6 = d6 * (0.69 + 0.31 * cos(t * 1.3));
-    float w7 = d7 * (0.73 + 0.27 * sin(t * 1.4));
-    float w8 = d8 * (0.67 + 0.33 * cos(t * 0.7));
-    float w9 = d9 * (0.70 + 0.30 * sin(t * 1.6));
-    float w10 = d10 * (0.72 + 0.28 * cos(t * 0.95));
+    float w1 = potential(point - c1, invSigmaSquared) * (0.72 + 0.28 * sin(t));
+    float w2 = potential(point - c2, invSigmaSquared) * (0.70 + 0.30 * cos(t * 1.2));
+    float w3 = potential(point - c3, invSigmaSquared) * (0.74 + 0.26 * sin(t * 0.8));
+    float w4 = potential(point - c4, invSigmaSquared) * (0.68 + 0.32 * cos(t * 1.1));
+    float w5 = potential(point - c5, invSigmaSquared) * (0.71 + 0.29 * sin(t * 0.9));
+    float w6 = potential(point - c6, invSigmaSquared) * (0.69 + 0.31 * cos(t * 1.3));
+    float w7 = potential(point - c7, invSigmaSquared) * (0.73 + 0.27 * sin(t * 1.4));
+    float w8 = potential(point - c8, invSigmaSquared) * (0.67 + 0.33 * cos(t * 0.7));
+    float w9 = potential(point - c9, invSigmaSquared) * (0.70 + 0.30 * sin(t * 1.6));
+    float w10 = potential(point - c10, invSigmaSquared) * (0.72 + 0.28 * cos(t * 0.95));
     float total = w1 + w2 + w3 + w4 + w5 + w6 + w7 + w8 + w9 + w10;
 
     vec3 color = uColor1 * w1
@@ -103,7 +105,9 @@ const fragmentShader = `
       + uColor8 * w8
       + uColor9 * w9
       + uColor10 * w10;
-    float strength = 1.0 - exp(-total * 1.6);
+    float body = smoothstep(uSurface, uSurface + uFeather, total);
+    float glow = 0.15 * smoothstep(0.04, uSurface, total);
+    float strength = clamp(body + glow * (1.0 - body), 0.0, 1.0);
     return vec4(color / max(total, 0.0001), strength);
   }
 
@@ -147,6 +151,9 @@ export default function LiquidWaveHero({
   speed = 0.35,
   intensity = 1.15,
   rippleStrength = 1,
+  spread = 0.55,
+  surface = 0.55,
+  feather = 0.3,
   className = "",
 }: LiquidWaveHeroProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -200,6 +207,9 @@ export default function LiquidWaveHero({
       uSpeed: { value: speed },
       uIntensity: { value: intensity },
       uRippleStrength: { value: rippleStrength },
+      uSpread: { value: spread },
+      uSurface: { value: surface },
+      uFeather: { value: feather },
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
       uMouseVelocity: { value: 0 },
       uAspect: { value: width / height },
@@ -291,7 +301,16 @@ export default function LiquidWaveHero({
       renderer.dispose()
       renderer.domElement.remove()
     }
-  }, [backgroundColor, colors, intensity, rippleStrength, speed])
+  }, [
+    backgroundColor,
+    colors,
+    feather,
+    intensity,
+    rippleStrength,
+    speed,
+    spread,
+    surface,
+  ])
 
   return (
     <div
