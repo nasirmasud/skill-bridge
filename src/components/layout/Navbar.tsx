@@ -61,14 +61,12 @@ export function Navbar() {
         "bg-surface-container-lowest/80"
       )}
     >
-      <div className="mx-auto flex h-16 w-full max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-4 lg:gap-6">
-          <Link to="/" aria-label="Skillbridge home">
-            <Logo showText={false} imgClassName="h-32 w-32 object-contain" />
-          </Link>
-        </div>
+      <div className="flex h-16 w-full items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 2xl:px-12">
+        <Link to="/" aria-label="Skillbridge home">
+          <Logo showText={false} imgClassName="h-32 w-32 object-contain" />
+        </Link>
 
-        <nav className="hidden items-center gap-6 xl:flex" aria-label="Main">
+        <nav className="hidden items-center gap-4 xl:flex 2xl:gap-6" aria-label="Main">
           {NAV_LINKS.map((link) =>
             link.to.startsWith("/#") ? (
               <Link
