@@ -11,6 +11,18 @@
     --font-sans: 'Plus Jakarta Sans Variable', sans-serif;
     --font-heading: 'Space Grotesk Variable', sans-serif;
     --font-mono: 'JetBrains Mono Variable', monospace;
+    --font-body-sm: 'Plus Jakarta Sans Variable', sans-serif;
+    --font-body-md: 'Plus Jakarta Sans Variable', sans-serif;
+    --font-body-lg: 'Plus Jakarta Sans Variable', sans-serif;
+    --font-caption: 'Plus Jakarta Sans Variable', sans-serif;
+    --font-label-caps: 'JetBrains Mono Variable', monospace;
+    --font-label-numeric: 'JetBrains Mono Variable', monospace;
+    --font-headline-sm: 'Space Grotesk Variable', sans-serif;
+    --font-headline-md: 'Space Grotesk Variable', sans-serif;
+    --font-headline-lg: 'Space Grotesk Variable', sans-serif;
+    --font-headline-xl: 'Space Grotesk Variable', sans-serif;
+    --font-display-hero: 'Space Grotesk Variable', sans-serif;
+    --font-display-hero-mobile: 'Space Grotesk Variable', sans-serif;
     --text-display-hero: 56px;
     --text-display-hero--line-height: 64px;
     --text-display-hero--letter-spacing: -0.03em;
