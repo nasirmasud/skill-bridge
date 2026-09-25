@@ -5,6 +5,7 @@ import { PopularServices } from "@/components/home/PopularServices"
 import { OrderLifecycle } from "@/components/home/OrderLifecycle"
 import { Stats } from "@/components/home/Stats"
 import { HowItWorks } from "@/components/home/HowItWorks"
+import { CuratedStacks } from "@/components/home/CuratedStacks"
 import { BecomeASeller } from "@/components/home/BecomeASeller"
 import { usePageTitle } from "@/hooks/usePageTitle"
 
@@ -19,6 +20,7 @@ export default function Home() {
       <OrderLifecycle />
       <Stats />
       <HowItWorks />
+      <CuratedStacks />
       <BecomeASeller />
     </main>
   )
