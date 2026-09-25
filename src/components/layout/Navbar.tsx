@@ -101,7 +101,7 @@ export function Navbar() {
         <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-3">
           <Link
             to="/services"
-            className="hidden items-center gap-2 rounded-lg border border-outline-variant/40 bg-surface-container-low px-3 py-1.5 transition-colors focus-within:border-primary md:flex"
+            className="hidden items-center gap-2 rounded-lg border border-outline-variant/40 bg-surface-container-low px-3 py-1.5 leading-none whitespace-nowrap transition-colors focus-within:border-primary md:flex"
           >
             <Search size={16} className="text-outline" />
             <span className="font-body-sm text-body-sm text-outline">
@@ -216,7 +216,7 @@ export function Navbar() {
                 <Link
                   to="/services"
                   onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2 rounded-lg border border-outline-variant/40 bg-surface-container-low px-3 py-2 font-body-sm text-body-sm text-on-surface-variant"
+                  className="flex items-center gap-2 rounded-lg border border-outline-variant/40 bg-surface-container-low px-3 py-2 font-body-sm text-body-sm leading-none whitespace-nowrap text-on-surface-variant"
                 >
                   <Search size={16} className="text-outline" />
                   Search services or skills...
