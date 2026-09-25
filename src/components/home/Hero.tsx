@@ -68,7 +68,7 @@ export function Hero() {
   return (
     <section className="relative w-full overflow-hidden bg-background">
       <div className="mx-auto w-full max-w-[1440px] px-4 pb-10 pt-10 sm:px-6 lg:px-8 lg:pt-20 xl:px-12">
-        <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
+        <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
           <div className="mb-4 inline-flex items-center gap-2.5 rounded-full bg-surface-container-high px-3 py-1 font-label-caps text-label-caps tracking-wider text-primary uppercase shadow-sm">
             <span className="size-2 animate-pulse rounded-full bg-tertiary" />
             <span>Skillbridge 2.0 Engine Live — Powered by Express + Prisma</span>
