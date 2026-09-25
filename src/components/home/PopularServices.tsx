@@ -3,7 +3,7 @@ import { Heart, Star, ArrowRight, Grid } from "lucide-react"
 import { useServices } from "@/hooks/useServices"
 import { ErrorState } from "@/components/shared/ErrorState"
 import { getErrorMessage } from "@/lib/utils"
-import { formatPrice, formatRating } from "@/lib/format"
+import { formatCurrency, formatRating } from "@/lib/format"
 import type { Service } from "@/types/service.types"
 
 function Avatar({ name, src }: { name: string; src?: string | null }) {
@@ -95,7 +95,7 @@ function ServiceCard({ service }: { service: Service }) {
           <div className="text-sm text-muted-foreground">
             From{" "}
             <span className="font-semibold text-foreground">
-              ${formatPrice(service.price)}
+              {formatCurrency(service.price)}
             </span>
           </div>
         </div>
