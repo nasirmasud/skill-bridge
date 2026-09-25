@@ -86,7 +86,7 @@ export function BrowseCategory() {
                   <Icon className='size-6' />
                 </div>
                 {category.serviceCount ? (
-                  <span className='rounded bg-surface-container px-2 py-0.5 font-label-numeric text-caption text-outline'>
+                  <span className='rounded bg-surface-container px-2 py-0.5 font-label-numeric text-caption text-on-surface-variant'>
                     {category.serviceCount.toLocaleString()}+ gigs
                   </span>
                 ) : null}
