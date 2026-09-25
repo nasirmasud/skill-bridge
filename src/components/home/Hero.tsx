@@ -1,265 +1,248 @@
-import { Button } from "@/components/ui/button";
-import { Headphones, RotateCcw, Search, ShieldCheck, Star } from "lucide-react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { ArrowRight, BadgeCheck, LayoutGrid, Search, Star, Users, Wallet } from "lucide-react"
+import { useState, type FormEvent } from "react"
+import { useNavigate } from "react-router-dom"
+import { useCategories } from "@/hooks/useCategories"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import LiquidWaveHero from "./LiquidWaveHero"
 
-const AVATARS = [
-  "https://i.pravatar.cc/64?img=12",
-  "https://i.pravatar.cc/64?img=32",
-  "https://i.pravatar.cc/64?img=47",
-];
+const TRENDING_TAGS = [
+  "Next.js 15",
+  "UI/UX Systems",
+  "PostgreSQL Tuning",
+  "Tailwind CSS",
+  "LLM Fine-Tuning",
+  "Mobile Flutter",
+]
 
-const POPULAR_TAGS = [
-  "Web Design",
-  "Logo Design",
-  "Video Editing",
-  "SEO",
-  "WordPress",
-];
-
-const TRUST_ITEMS = [
+const TRUST_METRICS = [
   {
-    icon: ShieldCheck,
-    title: "Secure Payments",
-    subtitle: "100% protected",
+    icon: BadgeCheck,
+    value: "99.4%",
+    label: "Order Success Rate",
+    tone: "bg-[#4edea3]/15 text-[#4edea3]",
   },
   {
-    icon: RotateCcw,
-    title: "Money Back Guarantee",
-    subtitle: "14-day guarantee",
+    icon: Star,
+    value: "4.9 / 5.0",
+    label: "Avg Client Rating",
+    tone: "bg-[#c0c1ff]/15 text-[#c0c1ff]",
   },
   {
-    icon: Headphones,
-    title: "24/7 Support",
-    subtitle: "We're here to help",
+    icon: Users,
+    value: "12,400+",
+    label: "Elite Freelancers",
+    tone: "bg-[#bdc2ff]/20 text-[#bdc2ff]",
   },
-];
+]
 
-const SAMPLE_SERVICES = [
-  {
-    name: "Sadia Rahman",
-    avatar: "https://i.pravatar.cc/64?img=47",
-    thumbnail:
-      "https://images.unsplash.com/photo-1547658719-da2b51169166?w=640&q=80&auto=format&fit=crop",
-    title: "Modern website design & development",
-    rating: "4.9",
-    reviews: 214,
-    price: 120,
-    wrapper:
-      "lg:absolute lg:left-0 lg:top-0 lg:-rotate-3 motion-safe:lg:animate-[hero-float_7s_ease-in-out_infinite]",
-  },
-  {
-    name: "Marcus Lee",
-    avatar: "https://i.pravatar.cc/64?img=32",
-    thumbnail:
-      "https://images.unsplash.com/photo-1626785774573-4b799315345d?w=640&q=80&auto=format&fit=crop",
-    title: "Minimal logo design for your brand",
-    rating: "4.8",
-    reviews: 168,
-    price: 85,
-    wrapper:
-      "lg:absolute lg:bottom-0 lg:right-0 lg:rotate-2 motion-safe:lg:animate-[hero-float_9s_ease-in-out_1s_infinite]",
-  },
-];
-
-function AvatarStack({ size = "h-5 w-5" }: { size?: string }) {
-  return (
-    <div className='flex -space-x-2'>
-      {AVATARS.map((src, i) => (
-        <img
-          key={i}
-          src={src}
-          alt=''
-          className={`${size} rounded-full border-2 border-background object-cover`}
-        />
-      ))}
-    </div>
-  );
-}
-
-function MiniServiceCard({
-  service,
-  className = "",
-}: {
-  service: (typeof SAMPLE_SERVICES)[number];
-  className?: string;
-}) {
-  return (
-    <div
-      className={`w-full max-w-xs overflow-hidden rounded-2xl border border-border bg-card shadow-lg shadow-black/5 lg:w-72 ${className}`}
-    >
-      <div className='relative h-36 w-full overflow-hidden bg-muted'>
-        <img
-          src={service.thumbnail}
-          alt=''
-          aria-hidden='true'
-          loading='lazy'
-          className='h-full w-full object-cover'
-        />
-      </div>
-      <div className='p-4'>
-        <div className='flex items-center gap-2'>
-          <img
-            src={service.avatar}
-            alt=''
-            aria-hidden='true'
-            className='h-7 w-7 rounded-full object-cover'
-          />
-          <span className='text-sm font-medium text-foreground'>
-            {service.name}
-          </span>
-          <span className='text-xs font-medium text-primary'>Top Rated</span>
-        </div>
-        <p className='mt-3 text-[15px] font-semibold leading-snug text-foreground'>
-          {service.title}
-        </p>
-        <div className='mt-3 flex items-center justify-between'>
-          <div className='flex items-center gap-1 text-sm'>
-            <Star className='h-4 w-4 fill-amber-400 text-amber-400' />
-            <span className='font-medium text-foreground'>
-              {service.rating}
-            </span>
-            <span className='text-muted-foreground'>({service.reviews})</span>
-          </div>
-          <div className='text-sm text-muted-foreground'>
-            From{" "}
-            <span className='font-semibold text-foreground'>
-              ${service.price}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+const BUDGET_RANGES: Record<string, { min?: number; max?: number }> = {
+  any: {},
+  entry: { min: 0, max: 500 },
+  mid: { min: 500, max: 2500 },
+  enterprise: { min: 2500 },
 }
 
 export function Hero() {
-  const [query, setQuery] = useState("");
-  const navigate = useNavigate();
+  const [query, setQuery] = useState("")
+  const [categoryId, setCategoryId] = useState("all")
+  const [budgetKey, setBudgetKey] = useState("any")
+  const { data: categories } = useCategories()
+  const navigate = useNavigate()
 
-  const submitSearch = (value: string) => {
-    const term = value.trim();
-    navigate(
-      term ? `/services?search=${encodeURIComponent(term)}` : "/services",
-    );
-  };
+  const buildUrl = (term: string, categoryIdValue: string, budgetValue: string) => {
+    const params = new URLSearchParams()
+    if (term.trim()) params.set("search", term.trim())
+    if (categoryIdValue && categoryIdValue !== "all") {
+      params.set("categoryId", categoryIdValue)
+    }
+    const range = BUDGET_RANGES[budgetValue]
+    if (range?.min !== undefined) params.set("minPrice", String(range.min))
+    if (range?.max !== undefined) params.set("maxPrice", String(range.max))
+    const qs = params.toString()
+    navigate(qs ? `/services?${qs}` : "/services")
+  }
+
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault()
+    buildUrl(query, categoryId, budgetKey)
+  }
 
   return (
-    <section className='relative w-full overflow-hidden bg-background'>
-      {/* Full-banner background image */}
-      <img
-        src='https://images.unsplash.com/photo-1758612215020-842383aadb9e?w=1920&q=80&auto=format&fit=crop'
-        alt=''
-        aria-hidden='true'
-        className='pointer-events-none absolute inset-0 h-full w-full object-cover object-center'
-      />
-
-      {/* Readability overlays (theme-aware) */}
-      <div className='pointer-events-none absolute inset-0 bg-background/75' />
-      <div className='pointer-events-none absolute inset-0 bg-gradient-to-r from-background via-background/60 to-background/30' />
-
-      {/* Soft brand tint */}
-      <div className='pointer-events-none absolute -top-32 right-[-10%] h-[480px] w-[480px] rounded-full bg-primary/10 blur-[120px]' />
-      <div className='pointer-events-none absolute bottom-[-25%] left-[-10%] h-[400px] w-[400px] rounded-full bg-primary/5 blur-[100px]' />
-
-      <div className='relative mx-auto grid w-full grid-cols-1 items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:px-12 lg:py-36 xl:px-16'>
-        {/* Left column */}
-        <div className='flex flex-col space-y-9 lg:space-y-12'>
-          {/* Trust badge */}
-          <div className='inline-flex items-center gap-2 self-start rounded-full border border-border bg-muted/60 py-1.5 pl-3 pr-2 text-xs text-muted-foreground'>
-            <span className='h-2 w-2 rounded-full bg-emerald-500' />
-            <span>Trusted by 10K+ businesses worldwide</span>
-            <AvatarStack />
+    <section className="relative flex min-h-[640px] w-full flex-col justify-center overflow-hidden bg-[#031b2e] lg:min-h-[760px]">
+      <LiquidWaveHero />
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 pb-10 pt-10 sm:px-6 lg:px-8 lg:pt-20 xl:px-12">
+        <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
+          <div className="mb-4 inline-flex items-center gap-2.5 rounded-full bg-white/10 px-3 py-1 font-label-caps text-label-caps tracking-wider text-[#c0c1ff] uppercase shadow-sm">
+            <span className="size-2 animate-pulse rounded-full bg-[#4edea3]" />
+            <span>Skillbridge 2.0 Engine Live — Powered by Express + Prisma</span>
+            <ArrowRight className="size-3.5" />
           </div>
 
-          {/* Headline */}
-          <h1 className='text-4xl font-bold leading-[1.08] tracking-tight text-foreground sm:text-5xl xl:text-6xl'>
-            Find the perfect{" "}
-            <span className='whitespace-nowrap bg-gradient-to-r from-[#08d2fa] to-[#681ce4] bg-clip-text text-transparent'>
-              Freelance Service
-            </span>{" "}
-            for your business
+          <h1 className="mb-4 w-fit bg-[linear-gradient(to_right,white,#49b5c7_45%,#5a1fc2_75%,white)] bg-clip-text text-display-hero-mobile font-semibold tracking-tight text-transparent lg:text-display-hero">
+            Scale Faster with Vetted World-Class{" "}
+            <span className='text-white'>Freelancers</span>
           </h1>
 
-          {/* Subcopy */}
-          <p className='max-w-lg text-base text-muted-foreground sm:text-lg'>
-            Connect with talented freelancers and get high-quality work done —
-            fast, reliable, and hassle-free.
+          <p className="mx-auto mb-8 max-w-2xl font-body-lg text-body-lg text-white/80">
+            The trusted marketplace connecting ambitious companies with elite
+            engineers, designers, and AI specialists. Instant booking,
+            transparent pricing, guaranteed delivery.
           </p>
 
-          {/* Search bar */}
           <form
-            className='flex h-14 w-full max-w-xl items-center gap-2 rounded-2xl border border-border bg-card p-2 pl-4 shadow-sm transition-shadow focus-within:border-primary/50 focus-within:ring-4 focus-within:ring-primary/10'
-            onSubmit={(e) => {
-              e.preventDefault();
-              submitSearch(query);
-            }}
+            className="relative flex w-full flex-col items-stretch gap-2 rounded-xl bg-white/10 p-2 shadow-xl backdrop-blur-xl sm:p-3 md:flex-row md:items-center"
+            onSubmit={handleSubmit}
           >
-            <Search className='h-5 w-5 shrink-0 text-muted-foreground' />
-            <input
-              type='text'
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder='What service are you looking for?'
-              className='h-full w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none'
-            />
-            <Button type='submit' size='lg' className='h-full rounded-xl px-6'>
-              Search
-            </Button>
+            <Select value={categoryId} onValueChange={setCategoryId}>
+              <SelectTrigger
+                aria-label="Category"
+                className="h-auto w-full min-w-0 border-white/10 bg-white/10 px-3 py-2.5 font-body-sm text-body-sm text-white shadow-none hover:bg-white/15 focus-visible:border-white/20 focus-visible:ring-2 focus-visible:ring-[#c0c1ff]/40 dark:bg-white/10 dark:hover:bg-white/15 md:w-[170px]"
+              >
+                <LayoutGrid className="size-4 shrink-0 text-white/55" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent
+                position="popper"
+                side="bottom"
+                avoidCollisions={false}
+                align="start"
+                sideOffset={6}
+                style={{ animation: "none" }}
+                className="min-w-(--radix-select-trigger-width) overflow-hidden rounded-xl border border-white/10 bg-[#0b1830]/95 p-1 text-white shadow-2xl shadow-black/35 backdrop-blur-xl"
+              >
+                <SelectGroup>
+                  <SelectItem
+                    value="all"
+                    className="rounded-lg py-2.5 text-body-sm text-white/85 focus:bg-white/10 focus:text-white data-[state=checked]:text-[#c0c1ff]"
+                  >
+                    All Categories
+                  </SelectItem>
+                  {(categories ?? []).map((category) => (
+                    <SelectItem
+                      key={category.id}
+                      value={category.id}
+                      className="rounded-lg py-2.5 text-body-sm text-white/85 focus:bg-white/10 focus:text-white data-[state=checked]:text-[#c0c1ff]"
+                    >
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            <div className="flex min-w-0 flex-1 items-center gap-2.5 rounded-lg bg-white/10 px-3.5 py-2.5">
+              <Search className="size-4 shrink-0 text-[#c0c1ff]" />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Try 'Full-Stack Next.js 15', 'Figma Design System', 'FastAPI'..."
+                className="w-full bg-transparent font-body-sm text-body-sm text-white placeholder:text-white/40 focus:outline-none"
+              />
+              <span className="hidden rounded bg-white/15 px-1.5 py-0.5 font-label-caps text-label-caps text-white/70 lg:inline-block">
+                ⌘K
+              </span>
+            </div>
+
+            <Select value={budgetKey} onValueChange={setBudgetKey}>
+              <SelectTrigger
+                aria-label="Budget"
+                className="h-auto w-full min-w-0 border-white/10 bg-white/10 px-3 py-2.5 font-body-sm text-body-sm text-white shadow-none hover:bg-white/15 focus-visible:border-white/20 focus-visible:ring-2 focus-visible:ring-[#c0c1ff]/40 dark:bg-white/10 dark:hover:bg-white/15 md:w-[150px]"
+              >
+                <Wallet className="size-4 shrink-0 text-white/55" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent
+                position="popper"
+                side="bottom"
+                avoidCollisions={false}
+                align="start"
+                sideOffset={6}
+                style={{ animation: "none" }}
+                className="min-w-(--radix-select-trigger-width) overflow-hidden rounded-xl border border-white/10 bg-[#0b1830]/95 p-1 text-white shadow-2xl shadow-black/35 backdrop-blur-xl"
+              >
+                <SelectGroup>
+                  <SelectItem
+                    value="any"
+                    className="rounded-lg py-2.5 text-body-sm text-white/85 focus:bg-white/10 focus:text-white data-[state=checked]:text-[#c0c1ff]"
+                  >
+                    Any Budget
+                  </SelectItem>
+                  <SelectItem
+                    value="entry"
+                    className="rounded-lg py-2.5 text-body-sm text-white/85 focus:bg-white/10 focus:text-white data-[state=checked]:text-[#c0c1ff]"
+                  >
+                    &lt; $500
+                  </SelectItem>
+                  <SelectItem
+                    value="mid"
+                    className="rounded-lg py-2.5 text-body-sm text-white/85 focus:bg-white/10 focus:text-white data-[state=checked]:text-[#c0c1ff]"
+                  >
+                    $500 - $2,500
+                  </SelectItem>
+                  <SelectItem
+                    value="enterprise"
+                    className="rounded-lg py-2.5 text-body-sm text-white/85 focus:bg-white/10 focus:text-white data-[state=checked]:text-[#c0c1ff]"
+                  >
+                    $2,500+
+                  </SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+
+            <button
+              type="submit"
+              className="flex items-center justify-center gap-2 rounded-lg bg-primary-container px-6 py-3 font-headline-sm text-headline-sm font-semibold text-on-primary-container shadow-md transition-all hover:brightness-110 active:scale-[0.98]"
+            >
+              Find Talent
+              <ArrowRight className="size-4" />
+            </button>
           </form>
 
-          {/* Popular tags */}
-          <div className='flex flex-wrap items-center gap-2 text-sm'>
-            <span className='text-muted-foreground'>Popular:</span>
-            {POPULAR_TAGS.map((tag) => (
+          <div className="mt-3.5 flex flex-wrap items-center justify-center gap-2">
+            <span className="mr-1 font-caption text-caption tracking-wider text-white/50 uppercase">
+              Trending:
+            </span>
+            {TRENDING_TAGS.map((tag) => (
               <button
                 key={tag}
-                type='button'
-                onClick={() => submitSearch(tag)}
-                className='rounded-full border border-border bg-muted/60 px-3 py-1 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-foreground'
+                type="button"
+                onClick={() => buildUrl(tag, "all", "any")}
+                className="rounded-full bg-white/10 px-2.5 py-1 font-body-sm text-body-sm text-white/80 transition-colors hover:bg-white/20 hover:text-[#c0c1ff]"
               >
                 {tag}
               </button>
             ))}
           </div>
-
-          {/* Trust row */}
-          <div className='grid grid-cols-1 gap-4 border-t border-border pt-6 sm:grid-cols-3 sm:gap-6'>
-            {TRUST_ITEMS.map(({ icon: Icon, title, subtitle }) => (
-              <div key={title} className='flex items-start gap-2.5'>
-                <Icon className='mt-0.5 h-5 w-5 shrink-0 text-primary' />
-                <div>
-                  <p className='text-sm font-medium text-foreground'>{title}</p>
-                  <p className='text-xs text-muted-foreground'>{subtitle}</p>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
 
-        {/* Right column — marketplace collage */}
-        <div className='relative flex flex-col items-center justify-center gap-6 lg:block lg:h-[620px]'>
-          {/* Backdrop blob */}
-          <div className='absolute left-1/2 top-1/2 hidden h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-3xl lg:block' />
-
-          {SAMPLE_SERVICES.map((service) => (
-            <MiniServiceCard
-              key={service.name}
-              service={service}
-              className={service.wrapper}
-            />
+        <div className="mx-auto mt-8 grid max-w-3xl grid-cols-1 gap-3 rounded-xl bg-white/5 p-3 shadow-sm backdrop-blur sm:grid-cols-3 sm:gap-4 sm:p-4">
+          {TRUST_METRICS.map(({ icon: Icon, value, label, tone }) => (
+            <div
+              key={label}
+              className="flex items-center justify-center gap-3 rounded-lg bg-white/10 px-4 py-2.5 sm:justify-start"
+            >
+              <div className={`flex size-9 items-center justify-center rounded-lg ${tone}`}>
+                <Icon className="size-4" />
+              </div>
+              <div className="text-left">
+                <div className="font-label-numeric text-headline-sm font-semibold text-white">
+                  {value}
+                </div>
+                <div className="font-caption text-caption text-white/60">
+                  {label}
+                </div>
+              </div>
+            </div>
           ))}
-
-          {/* Floating rating chip */}
-          <div className='flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 shadow-md lg:absolute lg:right-10 lg:top-[38%] motion-safe:lg:animate-[hero-float_8s_ease-in-out_0.5s_infinite]'>
-            <Star className='h-4 w-4 fill-amber-400 text-amber-400' />
-            <span className='text-sm font-semibold text-foreground'>4.9</span>
-            <span className='text-xs text-muted-foreground'>
-              Average rating
-            </span>
-          </div>
         </div>
       </div>
     </section>
-  );
+  )
 }
