@@ -12,7 +12,7 @@ const TRUSTED_BY = [
 
 export function TrustedBy() {
   return (
-    <section data-slot="trusted-by" className="w-full bg-surface-container-lowest/50 py-space-md">
+    <section data-slot="trusted-by" className="w-full bg-surface-container-lowest/50 py-space-xl">
       <div className="mx-auto w-full max-w-[1440px] px-margin-mobile lg:px-margin-desktop">
         <p className="mb-space-md text-center font-label-caps text-label-caps tracking-widest text-outline uppercase">
           Powering next-generation product teams at scale
