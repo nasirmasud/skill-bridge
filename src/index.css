@@ -7,6 +7,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
+html {
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+}
+
+html body[data-scroll-locked] {
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+}
+
 @theme inline {
     --font-sans: 'Plus Jakarta Sans Variable', sans-serif;
     --font-heading: 'Space Grotesk Variable', sans-serif;
