@@ -77,7 +77,7 @@ export function Hero() {
   return (
     <section className="relative flex min-h-[640px] w-full flex-col justify-center overflow-hidden bg-[#031b2e] lg:min-h-[760px]">
       <LiquidWaveHero />
-      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 pb-10 pt-10 sm:px-6 lg:px-8 lg:pt-20 xl:px-12">
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 pb-40 pt-10 sm:px-6 lg:px-8 lg:pt-20 xl:px-12">
         <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
           <div className="mb-4 inline-flex items-center gap-2.5 rounded-full bg-white/10 px-3 py-1 font-label-caps text-label-caps tracking-wider text-[#c0c1ff] uppercase shadow-sm">
             <span className="size-2 animate-pulse rounded-full bg-[#4edea3]" />
