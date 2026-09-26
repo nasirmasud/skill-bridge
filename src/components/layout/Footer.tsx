@@ -80,8 +80,8 @@ function FooterColumn({ title, links }: { title: string; links: FooterLink[] }) 
 
 export function Footer() {
   return (
-    <footer className="w-full bg-surface-container-lowest px-4 pt-14 sm:px-6 lg:px-8 2xl:px-12">
-      <div className="mx-auto w-full">
+    <footer className="w-full bg-surface-container-lowest pt-14">
+      <div className="mx-auto w-full max-w-[1440px] px-margin-mobile lg:px-margin-desktop">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
