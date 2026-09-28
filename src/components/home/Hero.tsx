@@ -10,7 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import LiquidWaveHero from "./LiquidWaveHero"
+import { Velaris } from "@/components/ui/velaris"
+
+const VELARIS_BG = "#031b2e"
+const VELARIS_COLORS = ["#5a1fc2", "#49b5c7", "#c0c1ff", "#0a2240"]
 
 const TRENDING_TAGS = [
   "Next.js 15",
@@ -75,8 +78,14 @@ export function Hero() {
   }
 
   return (
-    <section className="relative flex min-h-[640px] w-full flex-col justify-center overflow-hidden bg-[#031b2e] lg:min-h-[760px]">
-      <LiquidWaveHero />
+    <section className="relative flex min-h-[max(720px,92svh)] w-full flex-col justify-center overflow-hidden bg-[#031b2e]">
+      <div className="absolute inset-0">
+        <Velaris bg={VELARIS_BG} colors={VELARIS_COLORS} speed={1.4} grain={0.25} height="100%" />
+      </div>
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-b from-[#031b2e]/80 via-[#031b2e]/45 to-[#031b2e]"
+      />
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 pb-40 pt-10 sm:px-6 lg:px-8 lg:pt-20 xl:px-12">
         <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
           <div className="mb-4 inline-flex items-center gap-2.5 rounded-full bg-white/10 px-3 py-1 font-label-caps text-label-caps tracking-wider text-[#c0c1ff] uppercase shadow-sm">
