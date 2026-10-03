@@ -196,7 +196,7 @@ export default function ServiceList() {
   const activeCategory = categories?.find((c) => c.id === activeCategoryId)
 
   return (
-    <div className="bg-background font-sans">
+    <div className="font-sans">
       <div className="mx-auto w-full px-8 py-8 md:px-12 lg:px-16">
         {/* Breadcrumb */}
         <nav className="mb-8 flex items-center gap-2 text-sm text-muted-foreground">
