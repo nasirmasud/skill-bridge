@@ -3,6 +3,7 @@ import { ThemeProvider } from "next-themes";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
+import { HexHoverBackground } from "./components/shared/HexHoverBackground";
 import { Toaster } from "./components/ui/sonner";
 import "./index.css";
 import { router } from "./routes/router";
@@ -28,6 +29,7 @@ createRoot(document.getElementById("root")!).render(
       disableTransitionOnChange
     >
       <QueryClientProvider client={queryClient}>
+        <HexHoverBackground />
         <RouterProvider router={router} />
         <Toaster richColors position='bottom-center' />
       </QueryClientProvider>
