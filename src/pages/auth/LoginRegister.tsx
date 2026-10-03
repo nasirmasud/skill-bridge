@@ -207,7 +207,7 @@ export function LoginRegister({ initialTab = "login" }: LoginRegisterProps) {
   }
 
   return (
-    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-background px-4 py-12 font-sans sm:px-6">
+    <div className="flex min-h-screen w-full flex-col items-center justify-center px-4 py-12 font-sans sm:px-6">
       {/* Heading */}
       <div className="mb-8 max-w-lg text-center">
         <Link
