@@ -15,7 +15,7 @@ export function DashboardLayout() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b bg-background/80 px-4 backdrop-blur lg:hidden">
         <Logo showText={false} imgClassName="h-30 w-30" />
         <Sheet open={menuOpen} onOpenChange={setMenuOpen}>

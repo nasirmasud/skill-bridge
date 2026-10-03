@@ -316,3 +316,48 @@ html body[data-scroll-locked] {
     scroll-behavior: auto !important;
   }
 }
+
+/* Hex hover site background */
+/* The SVG data-URIs must live in CSS (not JS): an SVG used as a background-image
+   is a separate document and cannot read CSS custom properties, so each theme
+   has to supply its own stroke colours to stay visible on its own background. */
+:root {
+  --hex-cell: 78px 135px;
+  --hex-spotlight: 300px;
+  --hex-grid-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='45' viewBox='0 0 26 45'%3E%3Cpath d='M13 0V7.5L26 15V30L13 37.5L0 30V15L13 7.5M13 37.5V45' fill='none' stroke='%2363638A' stroke-opacity='0.2' stroke-width='0.3' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --hex-glow-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='45' viewBox='0 0 26 45'%3E%3Cpath d='M13 0V7.5L26 15V30L13 37.5L0 30V15L13 7.5M13 37.5V45' fill='none' stroke='%234F46E5' stroke-opacity='1' stroke-width='0.5' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.dark {
+  --hex-grid-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='45' viewBox='0 0 26 45'%3E%3Cpath d='M13 0V7.5L26 15V30L13 37.5L0 30V15L13 7.5M13 37.5V45' fill='none' stroke='%23CFC9DD' stroke-opacity='0.18' stroke-width='0.18' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --hex-glow-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='45' viewBox='0 0 26 45'%3E%3Cpath d='M13 0V7.5L26 15V30L13 37.5L0 30V15L13 7.5M13 37.5V45' fill='none' stroke='%23A5B4FC' stroke-opacity='1' stroke-width='0.45' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+#root {
+  position: relative;
+}
+
+.hex-hover-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+  background-color: var(--background);
+}
+
+.hex-hover-grid,
+.hex-hover-glow {
+  position: absolute;
+  inset: 0;
+  background-size: var(--hex-cell);
+  background-repeat: repeat;
+}
+
+.hex-hover-grid {
+  background-image: var(--hex-grid-image);
+}
+
+.hex-hover-glow {
+  background-image: var(--hex-glow-image);
+  opacity: 0.85;
+}

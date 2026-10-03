@@ -10,10 +10,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Velaris } from "@/components/ui/velaris"
+import { VantaWaves } from "@/components/ui/vanta-waves"
 
-const VELARIS_BG = "#031b2e"
-const VELARIS_COLORS = ["#5a1fc2", "#49b5c7", "#c0c1ff", "#0a2240"]
+const VANTA_WAVES = {
+  color: 0x2b1f5e,
+  waveHeight: 14,
+  shininess: 42,
+  waveSpeed: 0.9,
+  zoom: 0.8,
+  mouseControls: true,
+  touchControls: true,
+  gyroControls: false,
+}
 
 const TRENDING_TAGS = [
   "Next.js 15",
@@ -79,9 +87,7 @@ export function Hero() {
 
   return (
     <section className="relative flex min-h-[max(720px,92svh)] w-full flex-col justify-center overflow-hidden bg-[#031b2e]">
-      <div className="absolute inset-0">
-        <Velaris bg={VELARIS_BG} colors={VELARIS_COLORS} speed={1.4} grain={0.25} height="100%" />
-      </div>
+      <VantaWaves {...VANTA_WAVES} />
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-gradient-to-b from-[#031b2e]/80 via-[#031b2e]/45 to-[#031b2e]"
