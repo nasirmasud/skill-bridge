@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { Send } from "lucide-react"
 import { Logo } from "./Logo"
+import { VantaWaves } from "@/components/ui/vanta-waves"
 
 const SOCIAL_LINKS = [
   {
@@ -80,8 +81,20 @@ function FooterColumn({ title, links }: { title: string; links: FooterLink[] }) 
 
 export function Footer() {
   return (
-    <footer className="w-full bg-surface-container-lowest pt-14">
-      <div className="mx-auto w-full max-w-[1440px] px-margin-mobile lg:px-margin-desktop">
+    <footer className="dark relative w-full bg-surface-container-lowest pt-14">
+      <VantaWaves
+        className="pointer-events-none"
+        color={0x161d2c}
+        waveHeight={14}
+        shininess={42}
+        waveSpeed={0.7}
+        zoom={0.8}
+        mouseControls
+        touchControls
+        gyroControls={false}
+        fallbackColor="transparent"
+      />
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-margin-mobile lg:px-margin-desktop">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
